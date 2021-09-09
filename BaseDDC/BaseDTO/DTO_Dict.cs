@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WpfApp_
+namespace BaseDTO
 {
-    public class Class1
+    public class DTO_Dict
     {
+        public int id { get; set; }
+        public string title { get; set; }
     }
 }
