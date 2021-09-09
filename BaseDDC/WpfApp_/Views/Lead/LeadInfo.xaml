@@ -1,0 +1,109 @@
+﻿<Window x:Class="WpfApp_.Views.Lead.LeadInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_.Views.Lead"
+        mc:Ignorable="d"
+        FontSize="18"
+        Background="Gainsboro"
+        ResizeMode="NoResize"
+        Title="LeadInfo" Height="849.706" Width="800">
+    <StackPanel>
+        <DockPanel>
+            <Label>Имя заявителя: </Label>
+            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold" x:Name="Representer" Text="{Binding Path= Fio}"></TextBlock>
+        </DockPanel>
+        <DockPanel>
+            <Label>Телефон:</Label>
+            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"  FontWeight="Bold"  Text="{Binding Path= Phone}"></TextBlock>
+        </DockPanel>
+        <DockPanel>
+            <Label>Email:</Label>
+            <TextBlock  VerticalAlignment="Center" TextWrapping="Wrap"  FontWeight="Bold"  Text="{Binding Path= Email}"/>
+        </DockPanel>
+        <DockPanel>
+            <Label>ФИО нуждающегося:</Label>
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold" Text="{Binding Path= FioNeed}"/>
+        </DockPanel>
+        <DockPanel>
+            <Label>Город:</Label>
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold"  Text="{Binding Path= City}"/>
+        </DockPanel>
+        <DockPanel>
+            <Label>Район:</Label>
+            <TextBlock TextWrapping="Wrap" FontWeight="Bold"  Text="{Binding Path= District}"/>
+        </DockPanel>
+        <DockPanel>
+            <Label>Есть ли доходы?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" x:Name="Income"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Есть ли приемные?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" x:Name="Adopted"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Категории</Label>
+            <ListBox  HorizontalAlignment="Left" x:Name="Categories" Height="79" Width="370"></ListBox>
+        </DockPanel>
+        <DockPanel>
+            <Label>Какая помощь необходима?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= Need}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Желает ли быть волонтером?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" x:Name="Volunteer"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Контакты с нуждающимся:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= Subcontact}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Дата анкетирования: </Label>
+            <Label FontWeight="Bold" x:Name="dateAnswers"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Подвергался ли район обстрелу?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= IdBdistrictNavigation.title}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>У благополучателя в семье есть ли несовершеннолетние?</Label>
+            <Label>Ответ:</Label>
+            <TextBlock FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path= IdChildNavigation.title}"></TextBlock>
+        </DockPanel>
+        <DockPanel>
+            <Label>У благополучателя в семье есть ли трудоспособные?</Label>
+            <Label>Ответ:</Label>
+            <TextBlock FontWeight="Bold" TextWrapping="Wrap" Text="{Binding Path= IdFamUnempNavigation.title}"></TextBlock>
+        </DockPanel>
+        <DockPanel>
+            <Label>У благополучателя семья полноценная ?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= IdFamilyNavigation.title}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Благополучатель переселенец ?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= IdMigrantNavigation.title}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Для кого была заполнена анкета ?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= IdReasonNavigation.title}"></Label>
+        </DockPanel>
+        <DockPanel>
+            <Label>Тип жилья благополучателя?</Label>
+            <Label>Ответ:</Label>
+            <Label FontWeight="Bold" Content="{Binding Path= IdTypeOfHouseNavigation.title}"></Label>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Center">
+            <Button Click="Register_Click" Margin="10" Height="50" Background="White" Content="Зарегистрировать" Width="178"></Button>
+            <Button  Click="Cancel_Click" Margin="10" Background="White" Content="Отмена" Width="116"></Button>
+        </DockPanel>
+    </StackPanel>
+</Window>

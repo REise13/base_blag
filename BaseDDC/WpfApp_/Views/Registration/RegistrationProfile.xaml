@@ -1,0 +1,61 @@
+﻿<Window x:Class="WpfApp_.Views.Registration.RegistrationProfile"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:forms ="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        mc:Ignorable="d"
+        Background="Gainsboro"
+        FontSize="18"
+        Title="Регистрация" Height="800" Width="450">
+    <ScrollViewer>
+    <StackPanel>
+        <DockPanel Width="440" HorizontalAlignment="Right">
+            <StackPanel Width="130">
+                <Label   Content="Фамилия" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5"/>
+                <Label   Content="Имя" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="0,13"/>
+                <Label   Content="Отчество"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="90"   />
+                <Label   Content="Пол"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="0,21" />
+                <Label   Content="Год рождения"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="130"   />
+                <Label   Content="ИНН" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Margin="0,15" />
+                <Label   Content="Email"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="55"   />
+                <Label   Content="Телефон"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="80" Margin="0,15" />
+                <Label   Content="Паспорт"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="80"   />
+                <Label   Content="Город"  HorizontalAlignment="Right" VerticalAlignment="Top" Width="60"    Margin="0,21"/>
+            </StackPanel>
+            <StackPanel Width="311" VerticalAlignment="Top" >
+                <TextBox x:Name="SecondName" KeyDown="Name_KeyDown"    TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,12"  Width="245"/>
+                <TextBox x:Name="Name" KeyDown="Name_KeyDown"   VerticalAlignment="Center" TextWrapping="Wrap"  HorizontalAlignment="Left" Margin="0,12" Width="245" />
+                <TextBox   x:Name="Patr"   KeyDown="Name_KeyDown" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,12"     Width="245"/>
+                <ComboBox x:Name="Gender"   IsEditable="False" VerticalAlignment="Center" HorizontalAlignment="Left"   Margin="0,12"  Width="245"/>
+                <wpfTool:MaskedTextBox x:Name="Year"    Mask="0000" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,12"   Width="245" />
+                <DockPanel HorizontalAlignment="Left" Width="245">
+                    <wpfTool:MaskedTextBox   x:Name="INN_text" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Right" Mask="0000000000" Width="94"   Margin="0,12"/>
+                    <CheckBox x:Name="isHave_INN" Unchecked="isHave_INN_Unchecked" Checked="isHave_INN_Checked" Content="Отсутсвует" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,10,0,0" Height="30" Width="118"/>
+                </DockPanel>
+                <wpfTool:MaskedTextBox x:Name="Email"   TextWrapping="Wrap" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="0,12"    Width="245"/>
+                <wpfTool:MaskedTextBox x:Name="Phone"    TextWrapping="Wrap" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="0,12"   Width="245"/>
+                <wpfTool:MaskedTextBox x:Name="Pasport"    TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left"   Margin="0,12"  Width="245"/>
+                <ComboBox x:Name="City"   IsEditable="False" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,12"   Width="245"/>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Center" LastChildFill="False" Height="36" VerticalAlignment="Bottom">
+            <Label   Content="Выбранные категории" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label   Content="Существующие категории" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Column="1"/>
+        </DockPanel>
+        <DockPanel HorizontalAlignment="Center" LastChildFill="False" Height="101" VerticalAlignment="Center" Margin="10,0">
+            <ListBox FontSize="15" x:Name="SelectedCategoriesListBox"  HorizontalAlignment="Left" Height="100"  VerticalAlignment="Top" Width="183"/>
+            <StackPanel Margin="0,29,0,26">
+                <Button Click="Add_category_Click" FontSize="23" Content="3" Background="Green" FontFamily="Marlett"  VerticalAlignment="Center" Height="23" HorizontalAlignment="Right" Width="23"/>
+                <Button Click="Remove_category_Click" FontSize="23" Background="Red" Content="4" FontFamily="Marlett" VerticalAlignment="Center" Height="23" HorizontalAlignment="Right" Width="23" />
+            </StackPanel>
+            <ListBox FontSize="15" x:Name="AllCategoriesListBox" Height="100" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Left" Width="191"/>
+        </DockPanel>
+        <Border Height="10"></Border>
+        <Button Click="Registration_Click" Background="White" Content="Регистрация" Height="30"/>
+        <Border Height="10"></Border>
+        <Button Click="Cancel_Click" Background="White"  Content="Отмена" Height="30"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

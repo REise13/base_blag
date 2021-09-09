@@ -1,0 +1,141 @@
+﻿<Window x:Class="WpfApp_.Views.LeadSearch"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_.Views"
+        mc:Ignorable="d"
+        FontSize="18"
+        Background="Gainsboro"
+        Title="LeadSearch" Height="922.955" Width="1138.5">
+    <ScrollViewer>
+    <StackPanel>
+        <DockPanel Margin="0,5">
+            <Label  Width="200" Content="Имя представителя"></Label>
+            <TextBox HorizontalAlignment="Left" x:Name="Representer" Width="200"></TextBox>
+            <Label  Width="250" Content="Причина заполнения заявки"/>
+            <ComboBox x:Name="Reason" Width="200" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+            </ComboBox>
+        </DockPanel>
+        <DockPanel>
+            <Label Width="100" Content="Телефон"></Label>
+            <TextBox x:Name="Phone" Width="120" HorizontalAlignment="Left"></TextBox>
+            <Label  Width="100" Content="Город"></Label>
+            <TextBox x:Name="City" HorizontalAlignment="Left" Width="120"></TextBox>
+            <Label  Width="100" Content="Тип жилья"/>
+            <ComboBox x:Name="TypeOfHouse" Width="200" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Margin="0,5">
+            <Label Width="100" Content="Фамилия"></Label>
+            <TextBox x:Name="SecondName" Width="120"></TextBox>
+            <Label  Width="100" Content="Имя"></Label>
+            <TextBox HorizontalAlignment="Left" x:Name="Name" Width="120"></TextBox>
+            <Label  Width="100" Content="Отчество"></Label>
+            <TextBox x:Name="Patr" Width="120" HorizontalAlignment="Left"></TextBox>
+            
+        </DockPanel >
+        <DockPanel>
+            <StackPanel>
+                <Label Content="Выберите категории"></Label>
+                <ListBox SelectionMode="Multiple" x:Name="Categories">
+                    <ListBoxItem>малоимущие</ListBoxItem>
+                    <ListBoxItem>одинокие пожилые люди;</ListBoxItem>
+                    <ListBoxItem>лица старше 75 лет;</ListBoxItem>
+                    <ListBoxItem>лица с хроническими заболеваниями;</ListBoxItem>
+                    <ListBoxItem>инвалиды I группы;</ListBoxItem>
+                    <ListBoxItem>инвалиды II группы;</ListBoxItem>
+                    <ListBoxItem>инвалиды III группы;</ListBoxItem>
+                    <ListBoxItem>дети-инвалиды или дети с хроническими заболеваниями;</ListBoxItem>
+                    <ListBoxItem>военные разрушения;</ListBoxItem>
+                    <ListBoxItem>дополнительных социальных уязвимостей нет</ListBoxItem>
+                </ListBox>
+            </StackPanel>
+            <StackPanel>
+                <DockPanel Margin="0,5">
+                    <Label  VerticalAlignment="Center" Content="Какая помощь нужна?"></Label>
+                    <TextBox  VerticalAlignment="Center" HorizontalAlignment="Left" Height="30" Width="150" x:Name="HelpAnswer"></TextBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Есть несовершеннолетние?"></Label>
+                    <ComboBox x:Name="IsHaveMinorsAnswers" Width="120" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label VerticalAlignment="Center" Content="Волнтер?"></Label>
+                    <RadioButton VerticalAlignment="Center" Margin="0,5" GroupName="VolunterAdopted" x:Name="VolunterYes">Да</RadioButton>
+                    <RadioButton VerticalAlignment="Center" Margin="0,5" GroupName="VolunterAdopted" x:Name="VolunterNo">Нет</RadioButton>
+                </DockPanel>
+                <DockPanel>
+                    <Label HorizontalAlignment="Right" Content="Семья полная?"></Label>
+                    <ComboBox x:Name="IsFullFamilyAnswers" Width="120" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Есть ли усыновленные дети?"></Label>
+                    <RadioButton Margin="0,5" GroupName="HaveAdopted" x:Name="AdoptedYes">Да</RadioButton>
+                    <RadioButton Margin="0,5" GroupName="HaveAdopted" x:Name="AdoptedNo">Нет</RadioButton>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Есть ли доходы?"></Label>
+                    <RadioButton Margin="0,5" GroupName="IsHaveIncomeAnswers" x:Name="IncomeYes">Да</RadioButton>
+                    <RadioButton Margin="0,5" GroupName="IsHaveIncomeAnswers" x:Name="IncomeNo">Нет</RadioButton>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Есть ли трудоспособные?"></Label>
+                    <ComboBox x:Name="IsEmployable" Width="120" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Подвергаеться район обстрелу?"></Label>
+                    <ComboBox x:Name="DistrictIsFire" Width="120" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <Label  Width="130" Content="Переселенец?"></Label>
+                    <ComboBox x:Name="IsMigrant" Width="200" HorizontalAlignment="Left"
+                      SelectedValuePath="id" DisplayMemberPath="title">
+                    </ComboBox>
+                </DockPanel>
+            </StackPanel>
+        </DockPanel>
+        <DatePicker Margin="0,10" x:Name="LeadDate">
+
+        </DatePicker>
+        <Button Margin="0,10" x:Name="Search" Width="100" Click="Search_Click" Content="Поиск"></Button>
+        <DockPanel Margin="0,10" Height="264" VerticalAlignment="Bottom" LastChildFill="True" HorizontalAlignment="Left" >
+            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <DataGrid AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="True" MouseDoubleClick="DataLeads_MouseDoubleClick" x:Name="DataLeads" HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="3000">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ФИО" MinWidth="10" Width="3*" Binding="{Binding Fio}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Телефон" MinWidth="10" Width="2*" Binding="{Binding Phone}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Email" MinWidth="10" Width="2*" Binding="{Binding Email}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Имя нуждающегося" MinWidth="10" Width="4*" Binding="{Binding FioNeed}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Город" MinWidth="10"  Width="2*" Binding="{Binding City}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Доход" MinWidth="10" Width="1*" Binding="{Binding Income}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Приемные" MinWidth="10" Width="2*" Binding="{Binding Adopted}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Категории" MinWidth="10" Width="2*" Binding="{Binding Categories}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Нужды" MinWidth="10" Width="2*" Binding="{Binding Need}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Волонтер" MinWidth="10" Width="2*" Binding="{Binding Volunteer}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Контакты с нуждающимся" MinWidth="10" Width="2*" Binding="{Binding Subcontact}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Обстрелы" MinWidth="10" Width="2*" Binding="{Binding IdBdistrictNavigation.title }" FontSize="18"/>
+                        <DataGridTextColumn Header="Несовршеннолетние" MinWidth="10" Width="2*" Binding="{Binding Path = IdChildNavigation.title}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Безработные" MinWidth="10" Width="2*" Binding="{Binding Path = IdFamUnempNavigation.title}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Полноценная семья" MinWidth="10" Width="2*" Binding="{Binding Path = IdFamilyNavigation.title}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Переселенец" MinWidth="10" Width="2*" Binding="{Binding Path=IdMigrantNavigation.title}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Цель заявки" MinWidth="10" Width="2*" Binding="{Binding Path=IdReasonNavigation.title}"  FontSize="18"/>
+                        <DataGridTextColumn Header="Тип жилья" MinWidth="10" Width="2*" Binding="{Binding Path=IdTypeOfHouseNavigation.title}"  FontSize="18"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </DockPanel>
+        <Button Height="50" Content="Закрыть" Click="Cancel_Click"></Button>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

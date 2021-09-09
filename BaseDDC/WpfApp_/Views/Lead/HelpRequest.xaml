@@ -1,0 +1,223 @@
+﻿<Window x:Class="WpfApp_.Views.Lead.HelpRequest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_.Views"
+        FontSize="18"
+        Loaded="Window_Loaded"
+        Background="Gainsboro"
+        ResizeMode="CanResize"
+        mc:Ignorable="d"
+        Title="HelpRequest" Height="503.55" Width="1058">
+
+    <Window.Resources>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Violet" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock Foreground="Red" FontSize="26" FontWeight="Bold">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <StackPanel HorizontalAlignment="Center" Margin="9,0,3,-18" Width="1038" Height="492" VerticalAlignment="Top" >
+        <ScrollViewer Height="414" VerticalAlignment="Top" HorizontalAlignment="Right" Width="1038">
+            <StackPanel>
+                <Label Margin="0,10" FontWeight="DemiBold" HorizontalAlignment="Left" Content="Заявка на получение гуманитарной помощи нуждающегося и его семьи"/>
+                <StackPanel HorizontalAlignment="Center" Width="500">
+                    <Label Content="Пожалуйста, представьтесь: "/>
+                    <TextBox x:Name="NameQuestioned" Height="35" Width="500" >
+                        <TextBox.Text>
+                            <Binding Path="Fio" Mode="TwoWay" ValidatesOnDataErrors="True" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Content="Контактный телефон:"/>
+                    <TextBox x:Name="Phone" Height="35" Width="500"  >
+                        <TextBox.Text>
+                            <Binding Path="Phone" ValidatesOnDataErrors="True"  UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Content="Email:"/>
+                    <TextBox x:Name="Email" Height="35" Width="500" >
+                        <TextBox.Text>
+                            <Binding Path="Email" ValidatesOnDataErrors="True"  UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules >
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Content="Зачем Вы заполняете данную заявку?"/>
+                    <ComboBox Height="35" x:Name="Reason"
+                              SelectedValuePath ="id"
+                              DisplayMemberPath="title">
+                        <ComboBox.SelectedValue>
+                            <Binding Path="IdReason"  UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </ComboBox.SelectedValue>
+                    </ComboBox>
+                </StackPanel>
+                <Label Margin="0,10" FontWeight="DemiBold" HorizontalAlignment="Left" Content="Непосредственная информация о нуждающемся:"/>
+                <StackPanel HorizontalAlignment="Center">
+                    <Label Height="35" Content="ФИО нуждающегося (главы семьи (домохозяйства), контактного лица):"/>
+                    <DockPanel>
+                        <StackPanel HorizontalAlignment="Center" Width="500">
+                            <TextBox x:Name="Name" Height="35" Width="500" >
+                                <TextBox.Text>
+                                    <Binding Path="FioNeed"  UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <DataErrorValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                    </DockPanel>
+                    <Label Height="35" Content="Населённый пункт проживания в настоящий момент:"/>
+                    <TextBox x:Name="City" Height="35" Width="500" >
+                        <TextBox.Text>
+                            <Binding Path="City"  UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Height="35" Content="Район проживания:"/>
+                    <TextBox x:Name="District" Height="35" Width="500" >
+                        <TextBox.Text>
+                            <Binding Path="District"  UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <DataErrorValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Label Height="35" Content="Место проживания нуждающегося:"/>
+                    <ComboBox x:Name="TypeOfHouse" Height="35" Width="500" SelectedValuePath="id" DisplayMemberPath="title"/>
+                </StackPanel>
+                <Label Margin="0,10" FontWeight="DemiBold" HorizontalAlignment="Left" Content="Социальные уязвимости нуждающегося и его семьи:"/>
+                <DockPanel HorizontalAlignment="Center">
+                    <StackPanel Width="890">
+                        <TextBlock Margin="3" TextWrapping="Wrap"  Text="В настоящий момент микрорайон проживания подвергается обстрелам?"/>
+                        <ComboBox x:Name="IsDistrictFire" Height="35"
+                              DisplayMemberPath="title"
+                                  SelectedValuePath ="id">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="IdBdistrict"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <TextBlock  Margin="3" TextWrapping="Wrap"><Run Text="Был ли нуждающийся вынужден менять место своего проживания за время военного конфликта, из-за угроз и проблем, с ним связанных?"/></TextBlock>
+                        <ComboBox x:Name="IsForceMigrant" Height="35"
+                              DisplayMemberPath="title"
+                                  SelectedValuePath ="id">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="IdMigrant"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <TextBlock  Margin="3" TextWrapping="Wrap"><Run Text="Есть ли в семье (домохозяйстве) нуждающегося трудоспособные (возможно частично) лица, не имеющие работы?"/></TextBlock>
+                        <ComboBox x:Name="IsEmployable" Height="35" 
+                              DisplayMemberPath="title"
+                                  SelectedValuePath ="id">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="IdFamUnemp"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <TextBlock  Margin="3" TextWrapping="Wrap"><Run Text="В данной семье (домохозяйстве) есть источники доходов, позволяющие им удовлетворять свои базовые (физиологические и медицинские) потребности?"/></TextBlock>
+                        <RadioButton GroupName="IncomeSource" Name="IncomeSourceYes">да, есть</RadioButton>
+                        <RadioButton GroupName="IncomeSource" Name="IncomeSourceNo">нет, нету.</RadioButton>
+                        <TextBlock  Margin="3" TextWrapping="Wrap"><Run Text="Семья (домохозяйство) нуждающихся полная (есть муж и жена (включая сожителей)) или нет?"/></TextBlock>
+                        <ComboBox x:Name="FullFamily" Height="35" 
+                              DisplayMemberPath="title"
+                                  SelectedValuePath ="id">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="IdFamily"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+
+                        <TextBlock Margin="3" TextWrapping="Wrap"><Run Text="В семье есть несовершеннолетние дети на иждивении?"/></TextBlock>
+                        <ComboBox  x:Name="Childrens" Height="35" 
+                              DisplayMemberPath="title"
+                                   SelectedValuePath ="id">
+                            <ComboBox.SelectedValue>
+                                <Binding Path="IdChild"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <DataErrorValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <TextBlock  x:Name="IsHaveAdopted" Margin="3" TextWrapping="Wrap"><Run Text="В семье есть усыновлённые/удочерённые несовершеннолетние лица? *"/></TextBlock>
+                        <RadioButton GroupName="Adopted" Name="IsHaveAdoptedYes">да, есть</RadioButton>
+                        <RadioButton GroupName="Adopted" Name="IsHaveAdoptedNo">нет, нету.</RadioButton>
+                        <TextBlock  Margin="3" TextWrapping="Wrap"><Run Text="Выберите все дополнительные социальные уязвимости нуждающегося (в том числе членов его домохозяйства):"/></TextBlock>
+                        <ListBox SelectionMode="Multiple" x:Name="Categories">
+                            <ListBoxItem>малоимущие</ListBoxItem>
+                            <ListBoxItem>одинокие пожилые люди;</ListBoxItem>
+                            <ListBoxItem>лица старше 75 лет;</ListBoxItem>
+                            <ListBoxItem>лица с хроническими заболеваниями;</ListBoxItem>
+                            <ListBoxItem>инвалиды I группы;</ListBoxItem>
+                            <ListBoxItem>инвалиды II группы;</ListBoxItem>
+                            <ListBoxItem>инвалиды III группы;</ListBoxItem>
+                            <ListBoxItem>дети-инвалиды или дети с хроническими заболеваниями;</ListBoxItem>
+                            <ListBoxItem>военные разрушения;</ListBoxItem>
+                            <ListBoxItem>дополнительных социальных уязвимостей нет</ListBoxItem>
+                        </ListBox>
+                        <DockPanel Margin="0,10">
+                            <CheckBox x:Name="Enother" Width="92">Другое</CheckBox>
+                            <TextBox x:Name="EnotherCategory" HorizontalAlignment="Left" Height="30" Width="543"></TextBox>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Right">
+                        <TextBlock Margin="10" TextWrapping="Wrap" Text="Опишите, какая именно гуманитарная помощь нуждающемуся была бы на Ваш взгляд наиболее актуальной и своевременной?"/>
+                        <TextBox x:Name="HelpType" Height="35" Width="500" />
+                        <Label Content="Есть ли возможность Вам заниматься волонтёрской деятельностью?:"/>
+                        <RadioButton GroupName="Volunteer activities" Name="VolunteerYes" Content="Да, есть"/>
+                        <RadioButton GroupName="Volunteer activities" Name="VolunteerNo" Content="Нет, нету"/>
+                        <Label Content= "Если Вы заполняете анкету в интересах третьего лица, пожалуйста, укажите способы прямой связи с ним:"/>
+                        <TextBox x:Name="Subcontact" Height="35" Width="500" />
+                        <TextBlock Margin="10" TextWrapping="Wrap" Text="Я подтверждаю, что обладая персональными данными, указанными в данной анкете, и, в соответствии с законодательством о защите персональных данных, предоставляю согласие БО БФ ЦРД на их обработку, сбор, хранение.Подтверждаю, что согласие на обработку персональных данных является безусловным, безотзывным и не ограничено сроком действия. *"/>
+                        <CheckBox x:Name="AgreePersonal" Content="Да" ></CheckBox>
+                        <TextBlock Margin="10" TextWrapping="Wrap" Text="Я осознаю, что заполнение данной анкеты не создаёт обязательств по её положительному рассмотрению или гарантированному ответу заявителю *"/>
+                        <CheckBox x:Name="AgreeLiabilities" Content="Да" ></CheckBox>
+                    </StackPanel>
+                </DockPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <DockPanel HorizontalAlignment="Center">
+            <Button Margin="10" Background="White" HorizontalAlignment="Center" Content="Закрыть" Click="Button_Click" Width="140"/>
+            <Button Margin="10"  Background="White" HorizontalAlignment="Center" Content="Добавить" Click="Button_Click" Width="140"/>
+        </DockPanel>
+    </StackPanel>
+</Window>
