@@ -84,8 +84,8 @@ namespace DDC_App
                 using (TextWriter textWriter = new StreamWriter(iniPath))
                 {
                     textWriter.WriteLine("[SERVERCONFIG]");
-                    textWriter.WriteLine("ADRESS=109.254.94.229");
-                    textWriter.WriteLine("PORT=17101");
+                    textWriter.WriteLine("ADRESS=");
+                    textWriter.WriteLine("PORT=");
                 }
                 try
                 {

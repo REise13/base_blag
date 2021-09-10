@@ -24,10 +24,10 @@ namespace WpfApp_
             string port = _iniPasrser.GetSetting("ServerConfig", "Port");
             if(adress == null || port == null )
             {
-                adress = "109.254.94.229";
-                port = "17101";
-                _iniPasrser.AddSetting("ServerConfig", "Adress", "109.254.94.229");
-                _iniPasrser.AddSetting("ServerConfig", "Port", "17101");
+                adress = "";
+                port = "";
+                _iniPasrser.AddSetting("ServerConfig", "Adress", "");
+                _iniPasrser.AddSetting("ServerConfig", "Port", "");
                 _iniPasrser.SaveSettings();
             }
             Connection = String.Format("http://{0}:{1}", adress, port);
