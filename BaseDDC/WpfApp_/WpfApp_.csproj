@@ -41,7 +41,209 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Authorization.xaml.cs">
+      <DependentUpon>Authorization.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Config.cs" />
+    <Compile Include="GeoHelp.cs" />
+    <Compile Include="iniParser.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RestAPI.cs" />
+    <Compile Include="StaticInfoCollections.cs" />
+    <Compile Include="Views\Information\Category\AddCategory.xaml.cs">
+      <DependentUpon>AddCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Category\Categories.xaml.cs">
+      <DependentUpon>Categories.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Category\EditCategory.xaml.cs">
+      <DependentUpon>EditCategory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Need\AddNeed.xaml.cs">
+      <DependentUpon>AddNeed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Need\EditNeed.xaml.cs">
+      <DependentUpon>EditNeed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Need\Needs.xaml.cs">
+      <DependentUpon>Needs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Project\AddProject.xaml.cs">
+      <DependentUpon>AddProject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Project\Projects.xaml.cs">
+      <DependentUpon>Projects.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Training\AddTraining.xaml.cs">
+      <DependentUpon>AddTraining.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Training\EditTraining.xaml.cs">
+      <DependentUpon>EditTraining.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Information\Training\Trainings.xaml.cs">
+      <DependentUpon>Trainings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LeadSearch.xaml.cs">
+      <DependentUpon>LeadSearch.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lead\HelpRequest.xaml.cs">
+      <DependentUpon>HelpRequest.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lead\LeadInfo.xaml.cs">
+      <DependentUpon>LeadInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Add_Help.xaml.cs">
+      <DependentUpon>Add_Help.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Edit_Category_data.xaml.cs">
+      <DependentUpon>Edit_Category_data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Edit_Need_data.xaml.cs">
+      <DependentUpon>Edit_Need_data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Edit_People_data.xaml.cs">
+      <DependentUpon>Edit_People_data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Edit_Training_data.xaml.cs">
+      <DependentUpon>Edit_Training_data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Edit_Types_data.xaml.cs">
+      <DependentUpon>Edit_Types_data.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Prof.xaml.cs">
+      <DependentUpon>Prof.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Profile\Trainings_for_listbox.cs" />
+    <Compile Include="Views\Registration\RegistrationProfile.xaml.cs">
+      <DependentUpon>RegistrationProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Registration\RegistrationUser.xaml.cs">
+      <DependentUpon>RegistrationUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Search.xaml.cs">
+      <DependentUpon>Search.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Authorization.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Category\AddCategory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Category\Categories.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Category\EditCategory.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Need\AddNeed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Need\EditNeed.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Need\Needs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Project\AddProject.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Project\Projects.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Training\AddTraining.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Training\EditTraining.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Information\Training\Trainings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LeadSearch.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Lead\HelpRequest.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Lead\LeadInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Add_Help.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Edit_Category_data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Edit_Need_data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Edit_People_data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Edit_Training_data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Edit_Types_data.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Profile\Prof.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Registration\RegistrationProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Registration\RegistrationUser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Search.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Views\Information\Trainings.xaml.cs~4c51bebfe9a926473897a603299a80ae2e9c7ba8" />
+    <None Include="Views\Information\Trainings.xaml.cs~HEAD" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
