@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp_", "WpfApp_\WpfApp_.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseDTO", "BaseDTO\BaseDTO.csproj", "{A544DAEB-266B-4161-93F4-FDB1A2DC156A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseDDC", "BaseDDC\BaseDDC.csproj", "{352692F2-6925-4829-8E7B-F0CD915C570D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseDDC", "BaseDDC\BaseDDC.csproj", "{A6C5D511-F5BF-442F-9213-6CA850640460}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{A544DAEB-266B-4161-93F4-FDB1A2DC156A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A544DAEB-266B-4161-93F4-FDB1A2DC156A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A544DAEB-266B-4161-93F4-FDB1A2DC156A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{352692F2-6925-4829-8E7B-F0CD915C570D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{352692F2-6925-4829-8E7B-F0CD915C570D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{352692F2-6925-4829-8E7B-F0CD915C570D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{352692F2-6925-4829-8E7B-F0CD915C570D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C5D511-F5BF-442F-9213-6CA850640460}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C5D511-F5BF-442F-9213-6CA850640460}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C5D511-F5BF-442F-9213-6CA850640460}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C5D511-F5BF-442F-9213-6CA850640460}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
