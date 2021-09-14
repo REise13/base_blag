@@ -1,0 +1,29 @@
+﻿<Window x:Class="WpfApp_.Views.Authorization"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp_.Views"
+        mc:Ignorable="d"
+        FontSize="18"
+        Background="Gainsboro"
+        FontStyle="Normal"
+        ResizeMode="NoResize"
+        Title="Авторизация" Height="227.664" Width="328.762" Icon="Properties/app.ico">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <DockPanel Height="50" LastChildFill="False">
+                <Label Width="100" Content="Логин"/>
+                <TextBox TextWrapping="Wrap" x:Name="Login" Width="150" Margin="0,12"/>
+            </DockPanel>
+            <DockPanel Margin="0,10" Height="50" LastChildFill="False">
+                <Label Width="100" Content="Пароль"/>
+                <PasswordBox x:Name="Password" Width="150" Margin="0,12"/>
+            </DockPanel>
+            <DockPanel Margin="0,10" HorizontalAlignment="Center" Height="50" LastChildFill="False">
+                <Button Background="White" Margin="10" HorizontalAlignment="Center" Content="Войти" Width="100" Click="Loggin_Click"/>
+                <Button Background="White" Margin="10" HorizontalAlignment="Center" Content="Выйти" Width="100"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>
