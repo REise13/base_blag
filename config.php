@@ -1,12 +1,12 @@
 <?php
 
-// db variables
-define('DBSERVER', 'localhost');
-define('DBUSER', 'root');
-define('DBPASSWORD', 'YpUVMwmR8)');
-define('DBNAME', 'baseddc');
+// создаем строку подключения к базе
+$link = mysql_connect('127.0.0.1', 'root', 'YpUVMwmR8', 'baseddc');
 
-// connect to MySQL database
-$dbconn = mysqli_connect()
+if (!$link) {
+    die('Ошибка соединения: ' . mysql_error());
+}
+
+echo 'Успешное соединение';
 
 ?>
