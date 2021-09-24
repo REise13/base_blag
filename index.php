@@ -1,59 +1,37 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 
-    <title>База благополучателей</title>
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-lg-3 col-md-2"></div>
-        <div class="col-lg-6 col-md-8 login-box">
-            <div class="col-lg-12 login-key">
-                <i class="fa fa-key" aria-hidden="true"></i>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="style.css">
+
+        <title>База благополучателей</title>
+    </head>
+    <body>
+        <form class="form-signin" action="" method="post">
+            <h1 class="h3 mb-3 text-center"></h1>
+            <label for="login" class="sr-only">Логин</label>
+            <input type="text" id="login" class="mb-3 rounded-pill form-control" placeholder="Логин" required autofocus>
+            <label for="password" class="sr-only">Пароль</label>
+            <input type="password" id="password" class="mb-3 rounded-pill form-control" placeholder="Пароль" required>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Запомнить пароль
+                </label>
             </div>
-            <div class="col-lg-12 login-title">
-                База благополучателей
-            </div>
-
-            <div class="col-lg-12 login-form">
-                <div class="col-lg-12 login-form">
-                    <form>
-                        <div class="form-group">
-                            <label class="form-control-label">Логин</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-control-label">Пароль</label>
-                            <input type="password" class="form-control">
-                        </div>
-
-                        <div class="col-lg-12 loginbttm">
-                            <div class="col-lg-6 login-btm login-text">
-                                <!-- Error Message -->
-                            </div>
-                            <div class="col-lg-6 login-btm login-button">
-                                <button type="submit" class="btn btn-outline-primary">Войти</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-2"></div>
-        </div>
-    </div>
+            <button class="btn btn-primary rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
+        </form>
 
 
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-
-</body>
+    </body>
 </html>
