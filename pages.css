@@ -1,0 +1,80 @@
+:root{
+    --primary-color: #5a5cd3d0;
+    --active-color: #632fc5e8;
+    --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
+    --inputBorder: 2px solid #74b8f0;
+    --inputShadow: 0px 0px 1px #6fb7eb;
+    --formColor: #ebf7fd;
+}
+
+body {
+    background: var(--bg-gradient);
+    min-height: 75rem;
+}
+
+nav {
+    background-color: #2f31aaa4;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
+}
+
+.nav-item a i {
+    color: #ecf6fc;
+} 
+
+.nav-item a{
+    color: #eceff1;
+}
+
+.nav-item a:hover i, .nav-item a:focus i, 
+.nav-item a:active i, 
+.navbar-light .navbar-nav .nav-link:hover, 
+.navbar-light .navbar-nav .nav-link:active {
+    font-weight: 500;
+    color: ghostwhite;
+    border-radius: 10px;
+    background-color: #3f41b49c;
+}
+
+
+
+.nav-item {
+    padding-right: 5px;
+}
+
+.navbar-toggler {
+    border: 1px solid transparent;
+}
+
+.navbar-toggler:hover i, .navbar-toggler:active i {
+    color: var(--active-color);
+}
+
+.nav-link a {
+    color: #3196dac4;
+} 
+
+input[type="text"]:focus, input[type="password"]:focus, 
+input[type="radio"]:focus, input[type="date"]:focus {
+    border: var(--inputBorder);
+    box-shadow: var(--inputShadow);
+    outline: 0 none;
+}
+
+input[type="text"], input[type="password"], 
+input[type="radio"], input[type="date"] {
+    border-radius: 10px;
+}
+
+.bg-form {
+    border-radius: 10px;
+    background-color: var(--formColor);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+    background-color: var(--primary-color);
+}
+
+.btn-custom:active, .btn-custom:hover, .btn-custom:focus {
+    background-color: var(--active-color);
+}

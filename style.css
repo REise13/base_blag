@@ -1,9 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Cuprum&display=swap');
+
 :root{
     --primary-color: #5e9bc7;
     --active-color: #5e8dc6;
     --bg-gradient: linear-gradient(to left bottom, #3c7ccf, #5690d8, #6fa4e0, #8ab8e7, #a6cbee, #a9cfef, #acd2f1, #b0d6f2, #98cbee, #7ec1e9, #60b6e5, #37ace0);;
     --inputBorder: 2px solid #8cbfea;
     --inputShadow: 0px 0px 1px #5e9bc7;
+    --formColor: rgba(255, 255, 255, 0.79);
+}
+
+* {
+    font-family: 'Cuprum', sans-serif;
 }
 
 html,
@@ -33,11 +40,13 @@ body {
     padding: 40px;
     margin: 15px;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.79);
+    background-color: var(--formColor);
 }
+
 .form-signin .checkbox {
     font-weight: 400;
 }
+
 .form-signin .form-control {
     position: relative;
     box-sizing: border-box;
@@ -48,11 +57,7 @@ body {
 .form-signin .form-control:focus {
     z-index: 2;
 }
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
+
 .form-signin input[type="password"] {
     margin-bottom: 10px;
     border-top-left-radius: 0;

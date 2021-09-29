@@ -100,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         <title>База благополучателей</title>
     </head>
     <body>
-        <p>Введите логин и пароль.</p>
+        <!--  <p>Введите логин и пароль.</p>-->
         <?php
         if(!empty($login_err)){
             echo '<div class="alert alert-danger">' . $login_err . '</div>';
@@ -117,7 +117,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="checkbox" value="remember-me"> Запомнить пароль
                 </label>
             </div>
-            <button class="btn btn-primary rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
+            <button class="btn btn-custom rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
         </form>
 
 
