@@ -112,11 +112,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" id="username" class="mb-3 rounded-pill form-control" name="username" placeholder="Логин" required autofocus>
             <label for="password" class="sr-only">Пароль</label>
             <input type="password" id="password" class="mb-3 rounded-pill form-control" name="password" placeholder="Пароль" required>
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" value="remember-me"> Запомнить пароль
-                </label>
-            </div>
             <button class="btn btn-custom rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
         </form>
 
