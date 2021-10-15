@@ -1,86 +1,87 @@
 <?php
-
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: home.php");
-    exit;
-}
-
-// Change this to your connection info.
-$DATABASE_HOST = '127.0.0.1';
-$DATABASE_USER = 'root';
-$DATABASE_PASS = 'YpUVMwmR8)';
-$DATABASE_NAME = 'baseddc';
-// Try and connect using the info above.
-$con = mysqli_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS, $DATABASE_NAME);
-if ( mysqli_connect_errno() ) {
-    // If there is an error with the connection, stop the script and display the error.
-    exit('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
-
+// инициализация сессии
+// Include config file
+require_once "config.php";
+ 
+// Define variables and initialize with empty values
 $username = $password = "";
-$login_error = "";
-
-
-
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
-
-    // создаем хэш введенного пароля
-    $hashedPwd = hash('sha512', $_POST['password']);
-    $hex_strs = str_split($hashedPwd, 2);
-
-    foreach($hex_strs as &$hex) {
-        $hex = preg_replace('/^0/', '', $hex);
+$username_err = $password_err = $login_err = "";
+ 
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+    // Проверяем введен ли логин
+    if(empty(trim($_POST["username"]))){
+        $username_err = "Пожалуйста, введите логин.";
+    } else{
+        $username = trim($_POST["username"]);
     }
-    $hashedPwd = implode('', $hex_strs);
-    $new_hashpass = strtoupper($hashedPwd);
+    
+    // Проверяем введен ли пароль
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Пожалуйста, введите пароль.";
+    } else{
+        $password = trim($_POST["password"]);
 
+        // создаем хэш введенного пароля
+        $hashedPwd = hash('sha512', $_POST['password']);
+        $hex_strs = str_split($hashedPwd, 2);
 
-    $sql = "SELECT id, login, pass FROM user WHERE login = ?";
-
-    if($stmt = mysqli_prepare($con, $sql)) {
-        mysqli_stmt_bind_param($stmt,"s", $param_username);
-
-        // добавляем параметры
-        $param_username = $username;
-
-        // если запрос выполняется
-        if(mysqli_stmt_execute($stmt)) {
-            // сохранить полученный результат запроса
-            mysqli_stmt_store_result($stmt);
-
-            // если такой логин есть в базе, то проверяем пароль
-            if(mysqli_stmt_num_rows($stmt) == 1) {
-                // добавить полученные параметры к переменным
-                mysqli_stmt_bind_result($stmt, $id, $login, $hash_pass);
-                if(mysqli_stmt_fetch($stmt)) {
-                    if ($new_hashpass === $hash_pass) {
-                        // если пароль верный, то создаем сессию
-                        session_start();
-
-                        // сохраняем данные в переменные сессии
-                        $_SESSION["loggedin"] = true;
-                        $_SESSION["id"] = $id;
-                        $_SESSION["username"] = $login;
-
-                        // редирект на главную страницу
-                        header("location: home.php");
-                    } else {
-                        $login_error = "Неверный логин и/или пароль.";
-                    }
-                } else {
-                    echo 'Что-то пошло не так. Попробуйте снова.';
-                }
-
-                mysqli_stmt_close($stmt);
-            }
+        foreach($hex_strs as &$hex) {
+            $hex = preg_replace('/^0/', '', $hex);
         }
+        $hashedPwd = implode('', $hex_strs);
+        $new_hashpass = strtoupper($hashedPwd);
 
     }
-    mysqli_stmt_close($stmt);
-}
+    
+    // Validate credentials
+    if(empty($username_err) && empty($password_err)){
+        // Prepare a select statement
+        $sql = "SELECT id, login, pass FROM user WHERE login = :username";
+        
+        if($stmt = $con->prepare($sql)){
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+            $param_username = trim($_POST["username"]);
+            
+            if($stmt->execute()){
+                // Если имя пользователя есть в базе, то проверяем пароль
+                if($stmt->rowCount() == 1){
+                    if($row = $stmt->fetch()){
+                        $id = $row["id"];
+                        $username = $row["login"];
+                        $hashed_password = $row["pass"];
+                        if($new_hashpass == $hashed_password){
+                            // Пароль верный, открываем сессию пользователя
+                            session_start();
+                            
+                            // Сохраняем данные в переменные сессии
+                            $_SESSION["loggedin"] = true;
+                            $_SESSION["id"] = $id;
+                            $_SESSION["username"] = $username;                            
+                            
+                            // При успешной авторизации перенаправить 
+                            // на страницу поиска профиля
+                            header("location: ../searchprof.php");
+                        } else{
+                            // Неверный пароль, вывести сообщение об ошибке
+                            $login_err = "Неверный логин или пароль.";
+                        }
+                    }
+                } else{
+                    // Username doesn't exist, display a generic error message
+                    $login_err = "Неверный логин или пароль";
+                }
+            } else{
+                echo "Что-то пошло не так. Попробуйте снова.";
+            }
 
+            unset($stmt);
+        }
+    }
+    
+    // Закрываем соединение с базой данных
+    unset($pdo);
+}
 ?>
 
 
@@ -108,10 +109,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         ?>
         <form class="form-signin" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <h1 class="h3 mb-3 text-center"></h1>
-            <label for="login" class="sr-only">Логин</label>
-            <input type="text" id="username" class="mb-3 rounded-pill form-control" name="username" placeholder="Логин" required autofocus>
+            <label for="username" class="sr-only">Логин</label>
+            <input type="text" name="username" class="mb-3 rounded-pill form-control 
+            <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" 
+            value="<?php echo $username; ?>">
+            <span class="invalid-feedback"><?php echo $username_err; ?></span>
+
             <label for="password" class="sr-only">Пароль</label>
-            <input type="password" id="password" class="mb-3 rounded-pill form-control" name="password" placeholder="Пароль" required>
+            <input type="password" name="password" class="mb-3 rounded-pill form-control 
+            <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+            <span class="invalid-feedback"><?php echo $password_err; ?></span>
             <button class="btn btn-custom rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
         </form>
 

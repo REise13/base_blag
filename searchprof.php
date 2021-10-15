@@ -2,6 +2,16 @@
 <?php include('head.php'); ?>
 <?php include('navbar.php'); ?>
 
+<?php 
+require_once "config.php";
+
+$sql = "SELECT id, title FROM category";
+
+$stmt = $con->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetchAll(); 
+
+?>
 <body>
     <div class="page-content p-5" id="content">
         <h2 class="display-4 text-white"></h2>
@@ -44,11 +54,22 @@
                                     </div>
                                 </div> 
                             </div>
-                        
+                            <div class="form-group">
+                                <label for="cities" class="text-uppercase font-weight-bold">Категории</label>
+                                <div class="data_select">
+                                    <select name="cities" id="cities" placeholder="" class="selectpicker" multiple>
+                                        <option>Выберите</option>
+                                        <option value="0" selected>Все</option>
+                                        <?php foreach($data as $row): ?>
+                                            <option value="<?= $row['id']; ?>"> <?= $cat['title']; ?> </option>
+                                        <?php endforeach; ?>    
+                                    </select><hr>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="diagnos" class="text-uppercase font-weight-bold">Донор</label>
                                 <div class="data_select">
-                                    <select name="diagnos" id="diagnos" class="selectpicker form-control">
+                                    <select name="diagnos" id="diagnos" class="form-control">
                                         <option>Выберите</option>
                                         <option value="0">Все</option>
                                         
@@ -58,10 +79,9 @@
                             <div class="form-group">
                                 <label for="cities" class="text-uppercase font-weight-bold">Проект</label>
                                 <div class="data_select">
-                                    <select name="cities" id="cities" placeholder="" class="selectpicker form-fit">
+                                    <select name="cities" id="cities" placeholder="" class="form-control">
                                         <option>Выберите</option>
                                         <option value="0">Все</option>
-                                        
                                     </select><hr>
                                 </div>
                             </div>
@@ -95,4 +115,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 
 </body>
-</html>

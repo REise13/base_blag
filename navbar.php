@@ -56,6 +56,13 @@ if (!isset($_SESSION['loggedin'])) {
                     </div>
                 </li>
             </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <a href="logout.php" class="btn btn-logout my-2 my-sm-0">
+                    Выйти
+                    <i class="fad fa-sign-out-alt"></i>
+                </a>
+                
+            </div>
         </div>
     </nav>
 </header>

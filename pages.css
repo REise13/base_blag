@@ -1,10 +1,12 @@
 :root{
     --primary-color: #5a5cd3d0;
-    --active-color: #632fc5e8;
+    --active-color: #2f31aace;
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
-    --inputBorder: 2px solid #74b8f0;
-    --inputShadow: 0px 0px 1px #6fb7eb;
+    --inputBorder: 2px solid #2f31aace;
+    --inputShadow: 0px 0px 1px #5a5cd3d0;
     --formColor: #ebf7fd;
+    --navColor: #2f31aaa4;
+    --nav-itemColor: #3f41b49c;
 }
 
 body {
@@ -13,7 +15,7 @@ body {
 }
 
 nav {
-    background-color: #2f31aaa4;
+    background-color: var(--navColor);
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
 }
 
@@ -21,7 +23,7 @@ nav {
     color: #ecf6fc;
 } 
 
-.nav-item a{
+.navbar-light .nav-item .nav-link {
     color: #eceff1;
 }
 
@@ -30,12 +32,10 @@ nav {
 .navbar-light .navbar-nav .nav-link:hover, 
 .navbar-light .navbar-nav .nav-link:active {
     font-weight: 500;
-    color: ghostwhite;
+    color: #fff;
     border-radius: 10px;
-    background-color: #3f41b49c;
+    background-color: var(--nav-itemColor);
 }
-
-
 
 .nav-item {
     padding-right: 5px;
@@ -71,10 +71,29 @@ input[type="radio"], input[type="date"] {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.btn {
-    background-color: var(--primary-color);
+.btn-custom {
+    border: 0.5px solid var(--active-color);
+    color: var(--active-color);
+    font-weight: 600;
 }
 
 .btn-custom:active, .btn-custom:hover, .btn-custom:focus {
     background-color: var(--active-color);
+    color: ghostwhite;
+}
+
+.data_select select {
+    background: rgb(248, 246, 243);
+}
+
+.btn-logout, .btn-logout i{
+    color: #ecf6fc;
+ }
+
+.btn-logout:hover, .btn-logout:active, 
+.btn-logout:focus, .btn-logout:hover i, 
+.btn-logout:active i, .btn-logout:focus i {
+    border-radius: 10px;
+    color: #fff;
+    background-color: var(--nav-itemColor);
 }

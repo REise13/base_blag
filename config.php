@@ -1,17 +1,16 @@
 <?php
-    global $conn;
-    // переменные с данными для подкючения к базе данных
-    $server ='127.0.0.1';
-    $user = 'root';
-    $pass ='YpUVMwmR8)';
-    $db = 'baseddc';
+define('DB_SERVER', '127.0.0.1');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'YpUVMwmR8)');
+define('DB_NAME', 'baseddc');
 
-    // подключение к базе данных
-    $conn = new mysqli($server, $user, $pass, $db);
-
-    // проверяем соединение
-    if($conn->connect_error) {
-        die('Не удалось подключиться к MySQL: ' . $conn->connect_error);
-    }
+// подключение к базе данных
+try {
+    $con = new PDO("mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME, DB_USERNAME, DB_PASSWORD);
+    $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e){
+    die("ERROR: Could not connect. " . $e->getMessage());
+}    
 
 ?>
