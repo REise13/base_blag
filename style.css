@@ -6,7 +6,7 @@
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
     --inputBorder: 2px solid #5a5cd3d0;
     --inputShadow: 0px 0px 1px #2f31aace;
-    --formColor: #ebf7fd;
+    --formColor: #faf5ff9c;
 }
 
 * {
@@ -34,13 +34,14 @@ body {
     padding-bottom: 40px;
 }
 
+
 .form-signin {
     width: 100%;
     max-width: 390px;
     padding: 40px;
     margin: 15px;
     border-radius: 10px;
-    background-color: var(--formColor);
+    background-color: var(--formColor);    
 }
 
 .form-signin .checkbox {

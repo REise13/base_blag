@@ -4,7 +4,7 @@
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
     --inputBorder: 2px solid #2f31aace;
     --inputShadow: 0px 0px 1px #5a5cd3d0;
-    --formColor: #ebf7fd;
+    --formColor: #e4f0fda9;
     --navColor: #2f31aaa4;
     --nav-itemColor: #3f41b49c;
 }
@@ -60,15 +60,17 @@ input[type="radio"]:focus, input[type="date"]:focus {
     outline: 0 none;
 }
 
-input[type="text"], input[type="password"], 
-input[type="radio"], input[type="date"] {
-    border-radius: 10px;
-}
-
 .bg-form {
     border-radius: 10px;
     background-color: var(--formColor);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.blur {
+    background: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(8px); 
+    height: 100vh;
+    width: 50%;
 }
 
 .btn-custom {
@@ -94,6 +96,8 @@ input[type="radio"], input[type="date"] {
 .btn-logout:focus, .btn-logout:hover i, 
 .btn-logout:active i, .btn-logout:focus i {
     border-radius: 10px;
+    font-weight: 500;
     color: #fff;
     background-color: var(--nav-itemColor);
 }
+

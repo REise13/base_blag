@@ -80,7 +80,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     
     // Закрываем соединение с базой данных
-    unset($pdo);
+    unset($con);
 }
 ?>
 
@@ -102,23 +102,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     </head>
     <body>
         <!--  <p>Введите логин и пароль.</p>-->
-        <?php
-        if(!empty($login_err)){
-            echo '<div class="alert alert-danger">' . $login_err . '</div>';
-        }
-        ?>
-        <form class="form-signin" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <h1 class="h3 mb-3 text-center"></h1>
-            <label for="username" class="sr-only">Логин</label>
+        <form class="form-signin shadow" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <?php
+            if(!empty($login_err)){
+                echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ' . $login_err . 
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></div>';
+            }
+            ?>
+            <span class="invalid-feedback"><?php echo $username_err; ?></span>
             <input type="text" name="username" class="mb-3 rounded-pill form-control 
             <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" 
-            value="<?php echo $username; ?>">
-            <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            value="<?php echo $username; ?>" placeholder="Логин">
 
-            <label for="password" class="sr-only">Пароль</label>
+            <span class="invalid-feedback" style="margin: 0px;"><?php echo $password_err; ?></span>
             <input type="password" name="password" class="mb-3 rounded-pill form-control 
-            <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
-            <span class="invalid-feedback"><?php echo $password_err; ?></span>
+            <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" placeholder="Пароль">
+            
             <button class="btn btn-custom rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
         </form>
 
