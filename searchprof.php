@@ -126,7 +126,7 @@
                                 </div>
                             </div>
                             
-                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#searchResultModal">Поиск</button>
+                            <button type="button" class="btn btn-custom" data-toggle="modal" data-target="#searchResultModal" name="searchProfile">Поиск</button>
                         </form>
 
                         <div class="modal fade" id="searchResultModal" tabindex="-1"
@@ -162,373 +162,1652 @@
                                                 $age1 = trim($_POST['age1']);
                                                 $age2 = trim($_POST['age2']);
                                                 $city = trim($_POST['city']);
-                                                $categories = explode(",", $_POST['categories']);
                                                 $donor = trim($_POST['donor']);
                                                 $project = trim($_POST['project']);
-
+                                                $i = 0;
+                                                $selectedCategoryCount = count($_POST['categories']);
+                                                $selectedCategory = "";
+                                                while ($i < $selectedCategoryCount) {
+                                                    $selectedCategory = $selectedCategory . "'" . $_POST['categories'][$i] . "'";
+                                                    if ($i < $selectedCategoryCount - 1) {
+                                                        $selectedCategory = $selectedCategory . ", ";
+                                                    }
+                                                    
+                                                    $i ++;
+                                                }
+                                                $sqldata = [];
                                                 $default_sql_search = "SELECT profile_id, fio, age, city_info, gender_info, INN, Passport, category_info, help_info";
-                                                foreach ($categories as $category) {
-                                                    if ($category == 0) {
-                                                        if ($sname == '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%' ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE project_ids LIKE ':project' OR project_ids LIKE ':project,%' "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE (project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE (donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE (donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                if ($selectedCategoryCount == 0) {
+                                                    if ($sname == '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute();
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE donor_ids IN (:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor));
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':city'=>$city));
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':project'=>$project));
                                                         }
-                                                        
-                                                        elseif ($sname == '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND"
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND"
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE project_ids IN(:project) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':project'=>$project, ':city'=> $city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (donor_ids LIKE ':donor' "
+                                                                ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor, ':city'=> $city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=> $donor, ':project'=>$project));
                                                         }
-                                                        
-                                                        elseif ($sname != '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2)"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor, ':project'=>$project, ':city'=> $city));
                                                         }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=> $city));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND "
+                                                                ."(project_ids IN(:project) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=>$age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND "
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor)) " .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname != '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName:sname AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
 
-                                                        elseif ($sname != '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE sName=:sname"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND "
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
-                                                        }
+                                                    elseif ($sname != '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':city'=>$city));
 
-                                                        elseif ($sname == '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE Name=:name "; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND "
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':donor'=>$donor, ':project'=>$project, ));    
                                                         }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
 
-                                                        elseif ($sname == '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2)"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
-                                                        }
-                                                        
-                                                        elseif ($sname == '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr "; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND "
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
-                                                        }
-                                                        
-                                                        elseif ($sname == '' and $name == '' and $patr != '' and $age1 != '' and $age2 != '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2)"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
-                                                        }
+                                                    elseif ($sname == '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':city'=>$city));
 
-                                                        elseif ($sname != '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name "; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND "
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':donor'=>$donor, ':project'=>$project, ));    
                                                         }
-                                                        
-                                                        elseif ($sname != '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2)"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND"
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Name=:name AND (age >= :age1 AND age <= :age2) AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
                                                         }
+                                                    }
 
-                                                        elseif ($sname != '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
-                                                            if ($donor == 0 and $city == 0 and $project == 0){
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr "; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city == 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND " 
-                                                                    . "(donor_ids LIKE ':donor' OR donor_ids LIKE ':donor,%') ";
-                                                            }    
-                                                            elseif ($donor == 0 and $city != 0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND id_City=:city ";
-                                                            } 
-                                                            elseif ($donor == 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND " 
-                                                                    . "(project_ids LIKE ':project' OR project_ids LIKE ':project,%') "
-                                                            }   
-                                                            elseif ($donor == 0 and $city != 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND "
-                                                                    ."(project_ids LIKE ':project'"
-                                                                    ."OR project_ids LIKE ':project,%') AND id_City=:city"; 
-                                                            }    
-                                                            elseif ($donor != 0 and $city !=0 and $project == 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND id_City=:city";
-                                                            }    
-                                                            else ($donor != 0 and $city == 0 and $project != 0) {
-                                                                $sql = $default_sql_search . " WHERE sName=:sname AND Patr=:patr AND "
-                                                                    ."(donor_ids LIKE ':donor' "
-                                                                    ."OR donor_ids LIKE ':donor,%') AND (project_ids LIKE ':project' "
-                                                                    ."OR project_ids LIKE ':project,%')";
-                                                            }
+                                                    elseif ($sname == '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
                                                         }
-                                                    }                
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr "; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname != '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name == '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name != '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname == '' and $name != '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name != '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND " 
+                                                                . "project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    else {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2)"; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor) ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city ";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city"; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))";
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city";
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                }
+
+                                                // if $selectedCategoryCount != 0
+                                                else {
+                                                    $getcatfromsql = " cat_ids in (". $selectedCategory .")";
+                                                    if ($sname == '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE ". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute();
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE donor_ids IN (:donor)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor));
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE id_City=:city  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':city'=>$city));
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE project_ids IN(:project)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':project'=>$project));
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE project_ids IN(:project) AND id_City=:city AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':project'=>$project, ':city'=> $city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (donor_ids LIKE ':donor' "
+                                                                ."OR donor_ids LIKE ':donor,%') AND id_City=:city AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor, ':city'=> $city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE donor_ids IN(:donor) AND (project_ids IN(:project)) AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=> $donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':donor'=>$donor, ':project'=>$project, ':city'=> $city));
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE age >= :age1 AND age <= :age2 AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=> $city));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND id_City=:city  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND "
+                                                                ."(project_ids IN(:project) AND id_City=:city AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=>$age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND "
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE (age >= :age1 AND age <= :age2) AND donor_ids IN(:donor) AND (project_ids IN(:project)) AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor)) " .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname != '' and $name == '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project) ".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city".$getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project))".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName:sname AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND " 
+                                                                . "donor_ids IN(:donor)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND id_City=:city  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND " 
+                                                                . "project_ids IN(:project)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname == '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND " 
+                                                                . "donor_ids IN(:donor)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND id_City=:city  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND " 
+                                                                . "project_ids IN(:project)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname == '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND".$getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND".$getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND".$getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND".$getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr  AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND id_City=:city  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND " 
+                                                                . "project_ids IN(:project)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name == '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND". $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND". $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND". $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':patr'=>$patr,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name != '' and $patr == '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname != '' and $name != '' and $patr == '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name,':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name == '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name == '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                    
+                                                    elseif ($sname == '' and $name != '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    elseif ($sname == '' and $name != '' and $patr != '' and $age1 != '' and $age2 != '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+
+                                                    elseif ($sname != '' and $name != '' and $patr != '' and $age1 == '' and $age2 == '') {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr,));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr,':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':city'=>$city));
+
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':project'=>$project));
+                                                        }   
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(project_ids LIKE IN(:project)"
+                                                                ." AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':project'=>$project, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids LIKE IN(:donor) "
+                                                                ." AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND "
+                                                                ."(donor_ids IN(:donor)) "
+                                                                ." AND project_ids IN(:project)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ));    
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name, Patr=:patr AND (donor_ids IN(:donor))" .
+                                                            "AND (project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':donor'=>$donor, ':project'=>$project, ':city'=>$city));
+                                                        }
+                                                    }
+
+                                                    else {
+                                                        if ($donor == 0 and $city == 0 and $project == 0){
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND" . $getcatfromsql; 
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "donor_ids IN(:donor)  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor));    
+                                                        }    
+                                                        elseif ($donor == 0 and $city != 0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND id_City=:city  AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':city'=>$city));    
+                                                        } 
+                                                        elseif ($donor == 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND " 
+                                                                . "project_ids IN(:project)  AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project));    
+                                                        }
+                                                        elseif ($donor == 0 and $city != 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(project_ids IN(:project)) AND id_City=:city AND" . $getcatfromsql; 
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':project'=>$project, ':city'=>$city));    
+                                                        }    
+                                                        elseif ($donor != 0 and $city !=0 and $project == 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND"
+                                                                ."(donor_ids IN(:donor)) AND id_City=:city AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':city'=>$city));
+                                                        }    
+                                                        elseif ($donor != 0 and $city == 0 and $project != 0) {
+                                                            $sql = $default_sql_search . " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND "
+                                                                ."donor_ids IN(:donor) AND (project_ids IN(:project)) AND" . $getcatfromsql;
+                                                                $stmt->$con->prepare($sql);
+                                                                $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project));
+                                                        }
+                                                        else {
+                                                            $sql = $default_sql_search. " WHERE sName=:sname, Name=:name, Patr=:patr AND (age >= :age1 AND age <= :age2) AND (donor_ids IN(:donor))" .
+                                                            "AND project_ids IN(:project) AND id_City=:city AND" . $getcatfromsql;
+                                                            $stmt->$con->prepare($sql);
+                                                            $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':age1'=> $age1, ':age2'=> $age2, ':donor'=>$donor, ':project'=>$project, ':city'=>$city)); 
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                $searchResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                foreach ($searchResult as $key => $value) {
+                                                    ?>
+                                                    <tr>
+                                                        <td><div class="col" id="user_data_1">
+                                                                <?php echo $result[$key]['sName']; ?>
+                                                            </div></td>
+                                                        <td><div class="col" id="user_data_2">
+                                                                <?php echo $result[$key]['Name']; ?>
+                                                            </div></td>
+                                                        <td><div class="col" id="user_data_3">
+                                                                <?php echo $result[$key]['Patr']; ?>
+                                                            </div></td>
+                                                    </tr>
+                                                    <?php
                                                 }
                                                 ?>
+                                                
                                             </tbody>
                                          <?php } ?>   
                                         </table>        
