@@ -101,3 +101,12 @@ input[type="radio"]:focus, input[type="date"]:focus {
     background-color: var(--nav-itemColor);
 }
 
+.table-wrapper-scroll-y {
+    display: block;
+}
+
+.table-scrollbar {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+}
