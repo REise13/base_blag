@@ -4,7 +4,7 @@
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
     --inputBorder: 2px solid #2f31aace;
     --inputShadow: 0px 0px 1px #5a5cd3d0;
-    --formColor: #e4f0fda9;
+    --formColor: #f6fafdda;
     --navColor: #2f31aaa4;
     --nav-itemColor: #3f41b49c;
 }
@@ -53,6 +53,12 @@ nav {
     color: #3196dac4;
 } 
 
+input[type="text"], input[type="password"], 
+input[type="radio"], input[type="date"] {
+    border: 1px solid #dcdedf;
+    background: #f9fbff;
+}
+
 input[type="text"]:focus, input[type="password"]:focus, 
 input[type="radio"]:focus, input[type="date"]:focus {
     border: var(--inputBorder);
@@ -71,6 +77,15 @@ input[type="radio"]:focus, input[type="date"]:focus {
     backdrop-filter: blur(8px); 
     height: 100vh;
     width: 50%;
+}
+
+.separator {
+    margin: 3rem 0;
+    border-bottom: 1px solid #dbd9d9d3;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--primary-color) !important;
 }
 
 .btn-custom {
@@ -101,12 +116,37 @@ input[type="radio"]:focus, input[type="date"]:focus {
     background-color: var(--nav-itemColor);
 }
 
+.table thead {
+    background-color: #648de6a4;
+    color: whitesmoke
+}
+
+.table tbody {
+    background-color: #f4f5f7a9;
+    color: rgb(54, 54, 54);
+}
+
 .table-wrapper-scroll-y {
     display: block;
 }
 
 .table-scrollbar {
     position: relative;
-    height: 200px;
+    height: 766px;
     overflow: auto;
+}
+
+.table tbody tr:hover {
+    cursor: pointer;
+    background-color: #648de646;
+    color: #242222;
+    font-weight: 500;
+} 
+
+.heading-small {
+    font-size: .75rem;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
 }
