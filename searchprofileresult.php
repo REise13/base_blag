@@ -1661,7 +1661,7 @@
                                         $searchResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php foreach ($searchResult as $row) { ?>
-                                                <tr class="row-click" data-href="profileinfo.php/profile=$row['profile_id']">      
+                                                <tr class="row-click" data-href="profileinfo.php/?profile=<?php echo $row['profile_id'] ?>">      
                                                     <td><?php echo $row['fio'] ?></td>
                                                     <td><?php echo $row['age'] ?></td>
                                                     <td><?php echo $row['city_info'] ?></td>
