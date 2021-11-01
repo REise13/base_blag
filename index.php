@@ -113,15 +113,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
             ?>
             <span class="invalid-feedback"><?php echo $username_err; ?></span>
-            <input type="text" name="username" class="mb-3 rounded-pill form-control 
+            <input type="text" name="username" class="form-control rounded-pill
+											border-0 shadow-sm px-4 mb-2
             <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" 
             value="<?php echo $username; ?>" placeholder="Логин">
 
             <span class="invalid-feedback" style="margin: 0px;"><?php echo $password_err; ?></span>
-            <input type="password" name="password" class="mb-3 rounded-pill form-control 
+            <input type="password" name="password" class="form-control rounded-pill
+											border-0 shadow-sm px-4 mb-3
             <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" placeholder="Пароль">
             
-            <button class="btn btn-custom rounded-pill btn-block p-2" type="submit" name="login">Войти</button>
+            <button class="btn btn-block btn-custom rounded-pill px-2" type="submit" name="login">Войти</button>
         </form>
 
 
