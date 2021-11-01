@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cuprum&display=swap');
 
 :root{
-    --primary-color: #5a5cd3d0;
-    --active-color: #2f31aace;
+    --primary-color: #c8bee7;
+    --active-color: #856fce;
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
-    --inputBorder: 2px solid #5a5cd3d0;
-    --inputShadow: 0px 0px 1px #2f31aace;
-    --formColor: #faf5ff9c;
+    --inputBorder: 2px solid #9d8bdbab;
+    --inputShadow: 0px 0px 2px #B9ACE2;
+    --formColor: #f6fafdda;
 }
 
 * {
@@ -75,9 +75,8 @@ input[type="text"]:focus, input[type="password"]:focus {
 
 .btn-custom {
     font-size: 18px;
-    border: 1px solid var(--active-color);
-    background-color: transparent;
-    color: var(--active-color);
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
 .btn-custom:focus, .btn-custom:hover, .btn-custom:active {
