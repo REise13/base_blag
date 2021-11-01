@@ -14,38 +14,41 @@
                             <form role="form" action="searchprofileresult.php" method="GET">
                                 <div class="form-row">
                                     <div class="col">
-                                        <label for="sname" class="font-weight-bold">Фамилия</label>
-                                        <input type="text" class="form-control" id="sname" name="sname">
+                                        <label for="sname" class="">Фамилия</label>
+                                        <input type="text" class="form-control
+											border-0 px-4" id="sname" name="sname">
                                     </div>
                                     <div class="col">
-                                        <label for="name" class="font-weight-bold">Имя</label>
-                                        <input type="text" class="form-control" id="name" name="name">
+                                        <label for="name" class="">Имя</label>
+                                        <input type="text" class="form-control
+											border-0 px-4" id="name" name="name">
                                     </div>
                                     <div class="col">
-                                        <label for="patr" class="font-weight-bold">Отчество</label>
-                                        <input type="text" class="form-control" id="patr" name="patr">
+                                        <label for="patr" class="">Отчество</label>
+                                        <input type="text" class="form-control
+											border-0 px-4" id="patr" name="patr">
                                     </div>
                                 </div>
                                 
                                 <div class="form-group mt-3">
-                                    <label for="age" class="font-weight-bold">Возраст</label>
+                                    <label for="age" class="">Возраст</label>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="age1">От</label>
-                                                <input type="text" name="age1" id="age1" class="form-control">
+                                                <input type="text" name="age1" id="age1" class="form-control border-0 px-4">
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label for="age2">До</label>
-                                                <input type="text" class="form-control" name="age2" id="age2">
+                                                <input type="text" class="form-control border-0  px-4" name="age2" id="age2">
                                             </div>
                                         </div>
                                     </div> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="cities" class="font-weight-bold">Город</label>
+                                    <label for="cities" class="">Город</label>
                                     <div class="data_select">
                                     <?php
                                     $stmt = $con->prepare("SELECT id, title AS city FROM city");
@@ -65,7 +68,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="categories" class="font-weight-bold">Категории</label>
+                                    <label for="categories" class="">Категории</label>
                                     <div class="data_select">
                                     <?php
                                     $stmt = $con->prepare("SELECT id, title AS cat FROM category");
@@ -85,7 +88,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="donor" class="font-weight-bold">Донор</label>
+                                    <label for="donor" class="">Донор</label>
                                     <div class="data_select" data-width="150px;">
                                     <?php
                                     $stmt = $con->prepare("SELECT id, title AS donor FROM donor");
@@ -105,7 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="project" class="font-weight-bold">Проект</label>
+                                    <label for="project" class="">Проект</label>
                                     <div class="data_select">
                                     <?php
                                     $stmt = $con->prepare("SELECT id, title AS prj FROM project");
@@ -125,7 +128,7 @@
                                     </div>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-custom"  name="searchProfile">Поиск</button>
+                                <button type="submit" class="btn btn-custom px-4"  name="searchProfile">Поиск</button>
                             </form>
                         </div>
                     </div>    
