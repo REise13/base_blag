@@ -1,12 +1,14 @@
 :root{
-    --primary-color: #5a5cd3d0;
-    --active-color: #2f31aace;
+    --primary-color: #c8bee7;
+    --btn-color: #d3caf170;
+    --active-color: #856fce;
     --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
-    --inputBorder: 2px solid #2f31aace;
-    --inputShadow: 0px 0px 1px #5a5cd3d0;
+    --inputBorder: 2px solid #9d8bdbab;
+    --inputShadow: 0px 0px 2px #B9ACE2;
     --formColor: #f6fafdda;
-    --navColor: #2f31aaa4;
-    --nav-itemColor: #3f41b49c;
+    --navColor: #7e50e9be;
+    --nav-itemColor: #7245db79;
+    --nav-tabs-bg: #a390df;
 }
 
 body {
@@ -27,8 +29,8 @@ nav {
     color: #eceff1;
 }
 
-.nav-item a:hover i, .nav-item a:focus i, 
-.nav-item a:active i, 
+.navbar .nav-item a:hover i, .navbar .nav-item a:focus i, 
+.navbar .nav-item a:active i, 
 .navbar-light .navbar-nav .nav-link:hover, 
 .navbar-light .navbar-nav .nav-link:active {
     font-weight: 500;
@@ -53,17 +55,17 @@ nav {
     color: #3196dac4;
 } 
 
-input[type="text"], input[type="password"], 
-input[type="radio"], input[type="date"] {
-    border: 1px solid #dcdedf;
-    background: #f9fbff;
-}
-
 input[type="text"]:focus, input[type="password"]:focus, 
-input[type="radio"]:focus, input[type="date"]:focus {
+input[type="date"]:focus {
+    font-weight: 600;
+    color: var(--active-color);
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none;
+}
+
+input[readonly], textarea[readonly] {
+    background-color: #fff !important;
 }
 
 .bg-form {
@@ -84,12 +86,26 @@ input[type="radio"]:focus, input[type="date"]:focus {
     border-bottom: 1px solid #dbd9d9d3;
 }
 
-.nav-pills .nav-link.active {
-    background-color: var(--primary-color) !important;
+.nav-pills .nav-item .nav-link i, .nav-pills .nav-item .nav-link:hover i {
+    color: var(--active-color);
 }
 
-.btn-custom {
-    border: 0.5px solid var(--active-color);
+.nav-pills .nav-item .nav-link.active i {
+    color: whitesmoke;
+}
+
+.nav-pills .nav-item .nav-link {
+    color: var(--active-color);
+    font-weight: 500;
+}
+
+.nav-pills .nav-link.active {
+    color: whitesmoke;
+    background-color: var(--nav-tabs-bg) !important;
+}
+
+.btn-custom, .btn-edit {
+    background-color: var(--btn-color);
     color: var(--active-color);
     font-weight: 600;
 }
@@ -102,6 +118,17 @@ input[type="radio"]:focus, input[type="date"]:focus {
 .data_select select {
     background: rgb(248, 246, 243);
 }
+
+
+.btn-edit i {
+    color: #856fce;
+}
+
+.btn-edit:hover, .btn-edit:hover i, .btn-edit:active, .btn-edit:active i {
+    color: #fff;
+    background-color: var(--active-color);
+}
+
 
 .btn-logout, .btn-logout i{
     color: #ecf6fc;
@@ -117,8 +144,8 @@ input[type="radio"]:focus, input[type="date"]:focus {
 }
 
 .table thead {
-    background-color: #648de6a4;
-    color: whitesmoke
+    background-color: #aa9dd6;
+    color: whitesmoke;
 }
 
 .table tbody {
@@ -138,8 +165,8 @@ input[type="radio"]:focus, input[type="date"]:focus {
 
 .table tbody tr:hover {
     cursor: pointer;
-    background-color: #648de646;
-    color: #242222;
+    background-color: #d5cbf8a2;
+    color: rgb(128, 70, 194);
     font-weight: 500;
 } 
 
@@ -150,3 +177,4 @@ input[type="radio"]:focus, input[type="date"]:focus {
     letter-spacing: .04em;
     text-transform: uppercase;
 }
+
