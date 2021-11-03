@@ -44,6 +44,12 @@ body {
     background-color: var(--formColor);    
 }
 
+img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .form-signin .checkbox {
     font-weight: 400;
 }

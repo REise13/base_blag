@@ -82,7 +82,7 @@ input[readonly], textarea[readonly] {
 }
 
 .separator {
-    margin: 3rem 0;
+    margin: 2rem 0;
     border-bottom: 1px solid #dbd9d9d3;
 }
 
@@ -104,7 +104,7 @@ input[readonly], textarea[readonly] {
     background-color: var(--nav-tabs-bg) !important;
 }
 
-.btn-custom, .btn-edit {
+.btn-custom, .btn-edit, .btn-delete {
     background-color: var(--btn-color);
     color: var(--active-color);
     font-weight: 600;
@@ -129,6 +129,19 @@ input[readonly], textarea[readonly] {
     background-color: var(--active-color);
 }
 
+.btn-change i {
+    color: #e6cf4d;
+}
+
+.btn-change:hover, .btn-change:hover i, .btn-change:active, .btn-change:active i {
+    color: #fff;
+    background-color: #f3d138;
+}
+
+.btn-delete:hover, .btn-delete:hover i, .btn-delete:active, .btn-delete:active i {
+    color: #fff;
+    background-color: #eb3939;
+}
 
 .btn-logout, .btn-logout i{
     color: #ecf6fc;
@@ -178,3 +191,7 @@ input[readonly], textarea[readonly] {
     text-transform: uppercase;
 }
 
+input[disabled]:checked {
+    background-color: #7e2fc9;
+    border: 1px solid #bdbdbd;
+}
