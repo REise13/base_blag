@@ -9,6 +9,7 @@ $peopleID = $_GET['people'];
 $_SESSION['profID'] = $profID;
 $_SESSION['peopleID'] = $peopleID;
 
+
 $getGeneralInfo = "SELECT sName, Name, Patr, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
 $stmt = $con->prepare($getGeneralInfo);
 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
@@ -49,8 +50,6 @@ $profileInfo = $stmt->fetch();
                     <!-- nav-tab-general-info -->
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
                         <form class="pt-3">
-                            <p><?php echo $profID ?></p>
-                            <p><?php echo $peopleID ?></p>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="sname">Фамилия</label>
@@ -110,19 +109,17 @@ $profileInfo = $stmt->fetch();
                                     </div>
                                     <div class="modal-body">    
                                         <form role="form" action="/updategeneralinfo.php" method="post">
-                                            <div class="form-row">
-                                                <div class="form-group col">
-                                                    <label for="sname">Фамилия</label>
-                                                    <input type="text" name="sname_edit" id="sname_edit" class="form-control px-4" value="<?php echo $profileInfo['sName'] ?>">
-                                                </div>
-                                                <div class="form-group col">
-                                                    <label for="name">Имя</label>
-                                                    <input type="text" name="name_edit" id="name_edit" class="form-control px-4" value="<?php echo $profileInfo['Name'] ?>">
-                                                </div>
-                                                <div class="form-group col">
-                                                    <label for="patr">Отчество</label>
-                                                    <input type="text" name="patr_edit" id="patr_edit" class="form-control px-4" value="<?php echo $profileInfo['Patr'] ?>">
-                                                </div>
+                                            <div class="form-group ">
+                                                <label for="sname">Фамилия</label>
+                                                <input type="text" name="sname_edit" id="sname_edit" class="form-control" value="<?php echo $profileInfo['sName'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">Имя</label>
+                                                <input type="text" name="name_edit" id="name_edit" class="form-control" value="<?php echo $profileInfo['Name'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="patr">Отчество</label>
+                                                <input type="text" name="patr_edit" id="patr_edit" class="form-control" value="<?php echo $profileInfo['Patr'] ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="gender">Пол</label>
@@ -149,19 +146,19 @@ $profileInfo = $stmt->fetch();
                                             </div>
                                             <div class="form-group">
                                                 <label for="birth">Год рождения</label>
-                                                <input type="text" name="birth_edit" id="birth_edit" class="form-control px-4" value="<?php echo $profileInfo['yearbirth'] ?>">
+                                                <input type="text" name="birth_edit" id="birth_edit" class="form-control" value="<?php echo $profileInfo['yearbirth'] ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="inn">ИНН</label>
-                                                <input type="text" name="inn_edit" id="inn_edit" class="form-control px-4" value="<?php echo $profileInfo['INN'] ?>"> 
+                                                <input type="text" name="inn_edit" id="inn_edit" class="form-control" value="<?php echo $profileInfo['INN'] ?>"> 
                                             </div>
                                             <div class="form-group">
                                                 <label for="passport">Паспорт</label>
-                                                <input type="text" name="passport_edit" id="passport_edit" class="form-control px-4" value="<?php echo $profileInfo['Passport'] ?>">
+                                                <input type="text" name="passport_edit" id="passport_edit" class="form-control" value="<?php echo $profileInfo['Passport'] ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="phone">Телефон</label>
-                                                <input type="text" name="phone_edit" id="phone_edit" class="form-control px-4" value="<?php echo $profileInfo['Phone'] ?>">
+                                                <input type="text" name="phone_edit" id="phone_edit" class="form-control" value="<?php echo $profileInfo['Phone'] ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label for="city">Город</label>
@@ -174,7 +171,7 @@ $profileInfo = $stmt->fetch();
 
                                                 if ($stmt->rowCount() > 0) { ?>
                                                     <select name="city_edit" id="city_edit" 
-                                                        class="selectpicker show-tick" data-width="150px;" data-size="7" required>
+                                                        class="selectpicker show-tick" data-width="150px;" data-size="7" data-live-search="true" required>
                                                         <?php foreach ($city as $res) { ?>
                                                             <?php if ($profileInfo['city_info'] == $res['city']) { ?>
                                                                 <option value="<?php echo $res['id']; ?>" selected><?php echo $res['city'] ?></option>
@@ -186,11 +183,10 @@ $profileInfo = $stmt->fetch();
                                                 <?php } ?>                    
                                                 </div>
                                             </div>
+                                            <div class="separator"></div>
                                             <button type="submit" class="btn btn-custom" name="btnEditProfInfo" id="btnEditProfInfo">Сохранить</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
                                         </form>    
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
                                     </div>
                                 </div>
 

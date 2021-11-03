@@ -24,11 +24,9 @@ if (isset($_POST['btnEditProfInfo'])) {
     if($stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':year'=> $birth, 
         ':inn'=> $inn, ':phone'=>$phone, ':passport'=>$passport, ':city_id'=>$city, 
         ':gender_id'=>$gender, ':people_id'=> $_SESSION['peopleID']))) {
-            header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
-            echo '<div class="alert alert-success" role="alert">
-                Данные успешно обновлены
-            </div>';
-        }
+        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;            
+    }
     
-    }   
+}   
 ?>
