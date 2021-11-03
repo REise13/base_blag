@@ -45,7 +45,7 @@
                                         $categories = $_GET['categories'];
                                         $selectedCategory[] = join(",",$categories);
                                         $cats = implode(",",$categories);
-                                        $default_sql_search = "SELECT profile_id, fio, age, city_info, gender_info, INN, Passport, category_info, help_info FROM profile_search";
+                                        $default_sql_search = "SELECT profile_id, id_people, fio, age, city_info, gender_info, INN, Passport, category_info, help_info FROM profile_search";
                                         if (in_array( "0", $selectedCategory)) {
                                             if ($sname == '' and $name == '' and $patr == '' and $age1 == '' and $age2 == '') {
                                                 if ($donor == 0 and $city == 0 and $project == 0){
@@ -1661,7 +1661,7 @@
                                         $searchResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         ?>
                                         <?php foreach ($searchResult as $row) { ?>
-                                                <tr class="row-click" data-href="profileinfo.php/?profile=<?php echo $row['profile_id'] ?>">      
+                                                <tr class="row-click" data-href="profileinfo.php/?profile=<?php echo $row['profile_id'] ?>&people=<?php echo $row['id_people'] ?>">      
                                                     <td><?php echo $row['fio'] ?></td>
                                                     <td><?php echo $row['age'] ?></td>
                                                     <td><?php echo $row['city_info'] ?></td>

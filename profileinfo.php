@@ -5,6 +5,10 @@
 
 <?php 
 $profID = $_GET['profile'];
+$peopleID = $_GET['people'];
+$_SESSION['profID'] = $profID;
+$_SESSION['peopleID'] = $peopleID;
+
 $getGeneralInfo = "SELECT sName, Name, Patr, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
 $stmt = $con->prepare($getGeneralInfo);
 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
@@ -44,8 +48,9 @@ $profileInfo = $stmt->fetch();
                 <div class="tab-content">
                     <!-- nav-tab-general-info -->
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
-                        <form role="form" class="pt-3" action="" method="POST">
-                            <p><?php echo $_GET['profile'] ?></p>
+                        <form class="pt-3">
+                            <p><?php echo $profID ?></p>
+                            <p><?php echo $peopleID ?></p>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="sname">Фамилия</label>
@@ -89,11 +94,108 @@ $profileInfo = $stmt->fetch();
                                 <label for="city">Город</label>
                                 <input type="text" name="city" id="city" class="info form-control border-0 px-4" value="<?php echo $profileInfo['city_info'] ?>"> 
                             </div>
-                            <button type="submit" class="btn btn-edit mt-2">
+                            <button type="button" class="btn btn-edit mt-2" data-toggle="modal" data-target="#editGeneralInfo">
                                 <i class="fad fa-edit"></i>
                                 Редактировать
                             </button>
-                        </form>     
+                        </form>
+                        <div class="modal fade" id="editGeneralInfo" tabindex="-1" aria-labelledby="editGeneralInfoLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editGeneralInfoLabel">Основная информация</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">    
+                                        <form role="form" action="/updategeneralinfo.php" method="post">
+                                            <div class="form-row">
+                                                <div class="form-group col">
+                                                    <label for="sname">Фамилия</label>
+                                                    <input type="text" name="sname_edit" id="sname_edit" class="form-control px-4" value="<?php echo $profileInfo['sName'] ?>">
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label for="name">Имя</label>
+                                                    <input type="text" name="name_edit" id="name_edit" class="form-control px-4" value="<?php echo $profileInfo['Name'] ?>">
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label for="patr">Отчество</label>
+                                                    <input type="text" name="patr_edit" id="patr_edit" class="form-control px-4" value="<?php echo $profileInfo['Patr'] ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="gender">Пол</label>
+                                                <div class="data_select">
+                                                <?php
+                                                $stmt = $con->prepare("SELECT id, title AS gender FROM gender");
+                                                $stmt->execute();
+
+                                                $gender = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                if ($stmt->rowCount() > 0) { ?>
+                                                    <select name="gender_edit" id="gender_edit" 
+                                                        class="selectpicker show-tick" data-width="150px;" data-size="7" required>
+                                                        <?php foreach ($gender as $row) { ?>
+                                                            <?php if ($profileInfo['gender_info'] == $row['gender']) { ?>
+                                                                <option value="<?php echo $row['id']; ?>" selected><?php echo $row['gender'] ?></option>
+                                                            <?php } else { ?>
+                                                                <option value="<?php echo $row['id']; ?>"><?php echo $row['gender'] ?></option>
+                                                            <?php } ?>    
+                                                        <?php } ?>    
+                                                    </select>   
+                                                <?php } ?>                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="birth">Год рождения</label>
+                                                <input type="text" name="birth_edit" id="birth_edit" class="form-control px-4" value="<?php echo $profileInfo['yearbirth'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="inn">ИНН</label>
+                                                <input type="text" name="inn_edit" id="inn_edit" class="form-control px-4" value="<?php echo $profileInfo['INN'] ?>"> 
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="passport">Паспорт</label>
+                                                <input type="text" name="passport_edit" id="passport_edit" class="form-control px-4" value="<?php echo $profileInfo['Passport'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">Телефон</label>
+                                                <input type="text" name="phone_edit" id="phone_edit" class="form-control px-4" value="<?php echo $profileInfo['Phone'] ?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="city">Город</label>
+                                                <div class="data_select">
+                                                <?php
+                                                $stmt = $con->prepare("SELECT id, title AS city FROM city");
+                                                $stmt->execute();
+
+                                                $city = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                if ($stmt->rowCount() > 0) { ?>
+                                                    <select name="city_edit" id="city_edit" 
+                                                        class="selectpicker show-tick" data-width="150px;" data-size="7" required>
+                                                        <?php foreach ($city as $res) { ?>
+                                                            <?php if ($profileInfo['city_info'] == $res['city']) { ?>
+                                                                <option value="<?php echo $res['id']; ?>" selected><?php echo $res['city'] ?></option>
+                                                            <?php } else { ?>
+                                                                <option value="<?php echo $res['id']; ?>"><?php echo $res['city'] ?></option>
+                                                            <?php } ?>    
+                                                        <?php } ?>    
+                                                    </select>   
+                                                <?php } ?>                    
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-custom" name="btnEditProfInfo" id="btnEditProfInfo">Сохранить</button>
+                                        </form>    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>     
                     </div>
                     <!-- end -->
 
@@ -116,6 +218,27 @@ $profileInfo = $stmt->fetch();
                                     </button>
                                     <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
                                 </div>
+
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
+
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -135,6 +258,27 @@ $profileInfo = $stmt->fetch();
                                     </button>
                                     <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
                                 </div>
+
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="separator"></div>
                             </div>
@@ -175,6 +319,27 @@ $profileInfo = $stmt->fetch();
                                         Редактировать
                                     </button> 
                                 </div>
+
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>              
+
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -195,6 +360,26 @@ $profileInfo = $stmt->fetch();
                                 $profileCategory = $stmt->fetchAll(PDO::FETCH_ASSOC);  
                                 ?>
                                 <textarea name="categories" id="categories" class="info form-control border-0 px-4" readonly><?php foreach ($profileCategory as $category) { ?><?php echo $category['category'] . '; ' ?> <?php } ?></textarea>
+
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -214,6 +399,27 @@ $profileInfo = $stmt->fetch();
                                 $profileTraining = $stmt->fetchAll(PDO::FETCH_ASSOC);   
                                 ?>
                                 <textarea name="training" id="training" class="info form-control border-0 px-4"><?php foreach ($profileTraining as $training) { ?><?php echo $training['training'] . '; ' ?> <?php } ?></textarea>
+                            
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>          
+
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -233,6 +439,27 @@ $profileInfo = $stmt->fetch();
                                 $profileNeed = $stmt->fetchAll(PDO::FETCH_ASSOC);   
                                 ?>    
                                 <textarea name="needs" id="needs" class="info form-control border-0 px-4"><?php foreach ($profileNeed as $need) { ?><?php echo $need['need'] . '; ' ?> <?php } ?></textarea>
+                            
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>          
+
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -284,6 +511,27 @@ $profileInfo = $stmt->fetch();
                                         <i class="fal fa-minus"></i>
                                         Удалить
                                 </button>
+
+                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary"></button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>  
+
                             </div>
                         </form>
                     </div>
