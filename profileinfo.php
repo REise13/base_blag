@@ -31,12 +31,14 @@ $profileInfo = $stmt->fetch();
                                             Дополнительно
                                         </a>
                     </li>
+                    <?php if($_SESSION['user_role'] == 1) { ?>
                     <li class="nav-item">
                         <a data-toggle="pill" href="#nav-tab-delete-profile" class="nav-link rounded-pill">
                                              <i class="fad fa-minus-circle"></i>
                                             Удалить профиль
                                         </a>
                     </li>
+                    <?php } ?>
                 </ul>
                  <!-- end -->
                 <div class="tab-content">
@@ -87,7 +89,7 @@ $profileInfo = $stmt->fetch();
                                 <label for="city">Город</label>
                                 <input type="text" name="city" id="city" class="info form-control border-0 px-4" value="<?php echo $profileInfo['city_info'] ?>"> 
                             </div>
-                            <button type="submit" class="btn btn-edit center">
+                            <button type="submit" class="btn btn-edit mt-2">
                                 <i class="fad fa-edit"></i>
                                 Редактировать
                             </button>
@@ -108,10 +110,34 @@ $profileInfo = $stmt->fetch();
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="family">Семья</label>
-                                    <textarea name="family" id="family" class="info form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
+                                    <button class="btn btn-edit b-block right mx-2 mb-2 p-1">
+                                        <i class="fad fa-pencil-alt"></i>
+                                        Изменить
+                                    </button>
+                                    <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
                                 </div>
                             </div>
                             <div class="separator"></div>
+                            <div class="form-group">
+                            <?php
+                            $getProfOtherInfo = "SELECT Note FROM profile WHERE id=:id ";
+                            $stmt = $con->prepare($getProfOtherInfo);
+                            $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
+                            $stmt->execute();
+                            $profileNote = $stmt->fetch();  
+                            ?>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="family">Примечание</label>
+                                    <button class="btn btn-edit b-block right mx-2 mb-2 p-1">
+                                        <i class="fad fa-pencil-alt"></i>
+                                        Изменить
+                                    </button>
+                                    <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="house_type">Тип жилья</label>
@@ -125,7 +151,7 @@ $profileInfo = $stmt->fetch();
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="form-check">
+                                <div class="form-check mx-4">
                                     <?php if ($profileOtherInfo['Forced_migrant'] == 1) { ?>
                                         <input class="info form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $profileOtherInfo['Forced_migrant'] ?>" checked>
                                     <?php } else { ?>
@@ -135,7 +161,7 @@ $profileInfo = $stmt->fetch();
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="form-check">
+                                <div class="form-check mx-4">
                                     <?php if ($profileOtherInfo['Destroyed_house'] == 1) { ?>
                                         <input class="info form-check-input" type="checkbox" id="inlineCheckbox2" value="<?php echo $profileOtherInfo['Destroyed_house'] ?>" checked>
                                     <?php } else { ?>
@@ -143,39 +169,121 @@ $profileInfo = $stmt->fetch();
                                     <?php } ?>   
                                     <label class="form-check-label" for="inlineCheckbox2">Разрушено жилье</label>
                                 </div>
+                                <div class="form-group">
+                                   <button type="submit" class="btn btn-edit mt-4">
+                                        <i class="fad fa-pencil-alt"></i>
+                                        Редактировать
+                                    </button> 
+                                </div>
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="categories">Категории</label>
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
+                                        <i class="fal fa-plus fa-lg"></i>
+                                </button>
+                                <button class="btn btn-delete b-block right mb-2 px-3">
+                                        <i class="fal fa-minus fa-lg"></i>
+                                </button>
                                 <?php 
-                                $getProfOtherInfo = "SELECT category_info FROM profile_search WHERE profile_id=:id ";
+                                $getProfOtherInfo = "SELECT crosscategory.id_Category, category.title AS category 
+                                    FROM crosscategory JOIN category ON crosscategory.id_Category=category.id 
+                                    WHERE crosscategory.id_Profile=:id ";
                                 $stmt = $con->prepare($getProfOtherInfo);
                                 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
                                 $stmt->execute();
-                                $profileCategory = $stmt->fetch();  
+                                $profileCategory = $stmt->fetchAll(PDO::FETCH_ASSOC);  
                                 ?>
-                                <textarea name="categories" id="categories" class="info form-control border-0 px-4" readonly><?php echo $profileCategory['category_info'] ?></textarea>
+                                <textarea name="categories" id="categories" class="info form-control border-0 px-4" readonly><?php foreach ($profileCategory as $category) { ?><?php echo $category['category'] . '; ' ?> <?php } ?></textarea>
                             </div>
                             <div class="separator"></div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="training">Тренинги</label>
-                                    <textarea name="training" id="training" class="info form-control border-0 px-4" readonly></textarea>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="needs">Нужды</label>
-                                    <textarea name="needs" id="needs" class="info form-control border-0 px-4" readonly></textarea>
-                                </div>
+                            <div class="form-group">
+                                <label for="training">Тренинги</label>
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
+                                        <i class="fal fa-plus fa-lg"></i>
+                                </button>
+                                <button class="btn btn-delete b-block right mb-2 px-3">
+                                        <i class="fal fa-minus fa-lg"></i>
+                                </button>
+
+                                <?php
+                                $getProfTraining = "SELECT crosstraining.id_Training, training.title AS training FROM crosstraining JOIN training ON crosstraining.id_Training=training.id WHERE crosstraining.id_Profile=:id ";
+                                $stmt = $con->prepare($getProfTraining);
+                                $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $profileTraining = $stmt->fetchAll(PDO::FETCH_ASSOC);   
+                                ?>
+                                <textarea name="training" id="training" class="info form-control border-0 px-4"><?php foreach ($profileTraining as $training) { ?><?php echo $training['training'] . '; ' ?> <?php } ?></textarea>
                             </div>
+                            <div class="separator"></div>
+                            <div class="form-group">
+                                <label for="needs">Нужды</label>
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
+                                        <i class="fal fa-plus fa-lg"></i>
+                                </button>
+                                <button class="btn btn-delete b-block right mb-2 px-3">
+                                        <i class="fal fa-minus fa-lg"></i>
+                                </button>        
+
+                                <?php
+                                $getProfTraining = "SELECT crossneed.id_Need, need.title AS need FROM crossneed JOIN need ON crossneed.id_Need=need.id WHERE crossneed.id_Profile=:id ";
+                                $stmt = $con->prepare($getProfTraining);
+                                $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
+                                $stmt->execute();
+                                $profileNeed = $stmt->fetchAll(PDO::FETCH_ASSOC);   
+                                ?>    
+                                <textarea name="needs" id="needs" class="info form-control border-0 px-4"><?php foreach ($profileNeed as $need) { ?><?php echo $need['need'] . '; ' ?> <?php } ?></textarea>
+                            </div>
+                            <div class="separator"></div>
                             <div class="form-group">
                                 <label for="help">Помощь</label>
-                                <table class="table table-light">
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Проект</th>
+                                                <th>Дата начала</th>
+                                                <th>Дата окончания</th>
+                                                <th>Тип проекта</th>
+                                                <th>Донор</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $getProfHelp = "SELECT help.start_date, help.end_date, project.title AS project, 
+                                                helptype.title AS project_type, donor.title AS donor
+                                                FROM help
+                                                JOIN project ON help.id_project = project.id
+                                                JOIN helptype ON help.id_helptype = helptype.id
+                                                JOIN donor ON help.id_donor = donor.id
+                                                WHERE help.id_profile=:id ";
+                                            $stmt = $con->prepare($getProfHelp);
+                                            $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
+                                            $stmt->execute();
+                                            $profileHelp = $stmt->fetchAll(PDO::FETCH_ASSOC);   
+                                            ?>
+                                            
+                                            <?php foreach ($profileHelp as $help) { ?>
+                                            <tr>
+                                                <td><?php echo $help['project'] ?></td>
+                                                <td><?php echo $help['start_date'] ?></td>
+                                                <td><?php echo $help['end_date'] ?></td>
+                                                <td><?php echo $help['project_type'] ?></td>
+                                                <td><?php echo $help['donor'] ?></td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <button class="btn btn-edit b-block right mx-2 mb-2">
+                                        <i class="fad fa-pencil-alt"></i>
+                                        Добавить помощь
+                                </button>
+                                <button class="btn btn-delete b-block right mb-2">
+                                        <i class="fal fa-minus"></i>
+                                        Удалить
+                                </button>
                             </div>
                         </form>
                     </div>
