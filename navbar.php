@@ -9,7 +9,9 @@ if (!isset($_SESSION['loggedin'])) {
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <a href="#" class="navbar-brand">(лого)</a>
+        <a class="navbar-brand" href="#">
+            <img src="/logoBaseBlag.png" height="48" class="d-inline-block align-top mx-2" alt="baseddc logo">
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fad fa-bars"></i>
         </button>
