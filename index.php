@@ -37,7 +37,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, login, pass FROM user WHERE login = :username";
+        $sql = "SELECT id, login, pass, role_id FROM user WHERE login = :username";
         
         if($stmt = $con->prepare($sql)){
             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
@@ -50,6 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $id = $row["id"];
                         $username = $row["login"];
                         $hashed_password = $row["pass"];
+                        $userRole = $row["role_id"];
                         if($new_hashpass == $hashed_password){
                             // Пароль верный, открываем сессию пользователя
                             session_start();
@@ -58,7 +59,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;                            
-                            
+                            $_SESSION["user_role"] = $userRole;
                             // При успешной авторизации перенаправить 
                             // на страницу поиска профиля
                             header("location: ../searchprof.php");
@@ -100,9 +101,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <title>База благополучателей</title>
     </head>
-    <body>
+    <body class="login-page">
         <!--  <p>Введите логин и пароль.</p>-->
         <form class="form-signin shadow" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+			<img src="/logoBaseBlag[login form].png" width="64" height="66" class="mr-auto ny-auto" alt="logo">
             <?php
             if(!empty($login_err)){
                 echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -114,7 +116,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             ?>
             <span class="invalid-feedback"><?php echo $username_err; ?></span>
             <input type="text" name="username" class="form-control rounded-pill
-											border-0 shadow-sm px-4 mb-2
+											border-0 shadow-sm px-4 mt-4 mb-2
             <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" 
             value="<?php echo $username; ?>" placeholder="Логин">
 
