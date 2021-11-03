@@ -3,6 +3,7 @@
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>
 
+
 <body>
     <div class="page-content p-3" id="content">
         <div class="search-form">
