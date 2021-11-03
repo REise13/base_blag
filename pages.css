@@ -190,8 +190,3 @@ input[readonly], textarea[readonly] {
     letter-spacing: .04em;
     text-transform: uppercase;
 }
-
-input[disabled]:checked {
-    background-color: #7e2fc9;
-    border: 1px solid #bdbdbd;
-}
