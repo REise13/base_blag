@@ -10,6 +10,7 @@ $_SESSION['profID'] = $profID;
 $_SESSION['peopleID'] = $peopleID;
 
 
+
 $getGeneralInfo = "SELECT sName, Name, Patr, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
 $stmt = $con->prepare($getGeneralInfo);
 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
@@ -18,12 +19,24 @@ $profileInfo = $stmt->fetch();
 
 ?>
 
+<script>
+    $(document).ready(function(){
+        $('a[data-toggle="pill"]').on('show.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if(activeTab){
+            $('#navPill a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+</script>
+
 <body>
     <div class="row">
         <div class="col-lg-8 pt-5 mx-auto">
             <div class="bg-form rounded-lg shadow-sm p-5">
                 <!-- Profile form tabs -->
-                <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3">
+                <ul role="tablist" class="nav bg-light nav-pills rounded-pill nav-fill mb-3" id="navPill">
                     <li class="nav-item">
                         <a data-toggle="pill" href="#nav-tab-general-info" class="nav-link active rounded-pill">
                                             <i class="fad fa-user"></i>
@@ -49,6 +62,16 @@ $profileInfo = $stmt->fetch();
                 <div class="tab-content">
                     <!-- nav-tab-general-info -->
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
+                        <?php if ($_SESSION['message'] != "") { ?>
+                            <!-- alert message -->
+                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                <?php echo $_SESSION['message']; $_SESSION['message'] = "";?>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!-- end -->
+                        <?php } ?>
                         <form class="pt-3">
                             <div class="form-row">
                                 <div class="form-group col">
@@ -197,7 +220,6 @@ $profileInfo = $stmt->fetch();
 
                     <!-- nav-tab-other-info -->
                     <div id="nav-tab-other-info" class="tab-pane fade">
-                        <form role="form" class="pt-3" action="" method="post">
                             <?php
                             $getProfOtherInfo = "SELECT * FROM profile_info WHERE profile_id=:id ";
                             $stmt = $con->prepare($getProfOtherInfo);
@@ -205,37 +227,18 @@ $profileInfo = $stmt->fetch();
                             $stmt->execute();
                             $profileOtherInfo = $stmt->fetch();  
                             ?>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label for="family">Семья</label>
-                                    <button class="btn btn-edit b-block right mx-2 mb-2 p-1">
-                                        <i class="fad fa-pencil-alt"></i>
-                                        Изменить
-                                    </button>
-                                    <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
-                                </div>
-
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
-                                        </div>
+                            <form action="/edit_family.php"  method="post">
+                                <div class="form-row">
+                                    <div class="form-group col">
+                                        <label for="family">Семья</label>
+                                        <button type="submit" class="btn btn-edit b-block right mx-2 mb-2 p-1" name="btnEditFamily" id="btnEditFamily">
+                                            <i class="fad fa-pencil-alt"></i>
+                                            Изменить
+                                        </button>
+                                        <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
                                     </div>
-                                </div>  
-
-                            </div>
+                                </div>
+                            </form>    
                             <div class="separator"></div>
                             <div class="form-group">
                             <?php
@@ -252,7 +255,7 @@ $profileInfo = $stmt->fetch();
                                         <i class="fad fa-pencil-alt"></i>
                                         Изменить
                                     </button>
-                                    <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
+                                    <textarea name="note" id="note" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
                                 </div>
 
                                 <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
@@ -548,6 +551,7 @@ $profileInfo = $stmt->fetch();
     <script>
         $(document).ready(function() {
             $('.info').prop('readonly', true);
+
         })
     </script>
 </body>                   
