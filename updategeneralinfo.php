@@ -25,6 +25,8 @@ if (isset($_POST['btnEditProfInfo'])) {
         ':inn'=> $inn, ':phone'=>$phone, ':passport'=>$passport, ':city_id'=>$city, 
         ':gender_id'=>$gender, ':people_id'=> $_SESSION['peopleID']))) {
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        $message = "Информация успешно обновлена.";
+        $_SESSION['message'] = $message;
         exit;            
     }
     
