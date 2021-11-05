@@ -231,7 +231,7 @@ $profileInfo = $stmt->fetch();
                                 <div class="form-row">
                                     <div class="form-group col">
                                         <label for="family">Семья</label>
-                                        <button type="submit" class="btn btn-edit b-block right mx-2 mb-2 p-1" name="btnEditFamily" id="btnEditFamily">
+                                        <button type="submit" class="btn btn-edit right mx-2 mb-2 p-1" name="btnEditFamily" id="btnEditFamily">
                                             <i class="fad fa-pencil-alt"></i>
                                             Изменить
                                         </button>
@@ -248,111 +248,105 @@ $profileInfo = $stmt->fetch();
                             $stmt->execute();
                             $profileNote = $stmt->fetch();  
                             ?>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label for="family">Примечание</label>
-                                    <button class="btn btn-edit b-block right mx-2 mb-2 p-1">
-                                        <i class="fad fa-pencil-alt"></i>
-                                        Изменить
-                                    </button>
-                                    <textarea name="note" id="note" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
-                                </div>
+                                <form action="/edit_note.php" method="post">
+                                    <div class="form-group">
+                                        <label for="family">Примечание</label>
+                                        <button type="submit" class="btn btn-edit right mx-2 mb-2 p-1" name="btnEditNote" id="btnEditNote">
+                                            <i class="fad fa-pencil-alt"></i>
+                                            Изменить
+                                        </button>
+                                        <textarea name="note" id="note" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
+                                    </div>
+                                </form>
+                            </div> 
+                            <div class="separator"></div>
+                            
+                            <form action="/edit_note.php" method="post">
+                                <div class="form-row">
+                                     <div class="form-group col">
+                                        <label for="house_type">Тип жилья</label>
+                                        <div class="data_select">
+                                        <?php
+                                        $stmt = $con->prepare("SELECT id, title AS house_type FROM type_of_house");
+                                        $stmt->execute();
 
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
+                                        $house = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                        if ($stmt->rowCount() > 0) { ?>
+                                            <select name="housetype_edit" id="housetype_edit" 
+                                                class="selectpicker show-tick form-control" data-width="150px;" data-size="7" required>
+                                                <?php foreach ($house as $row) { ?>
+                                                    <?php if ($profileOtherInfo['house_type'] == $row['house_type']) { ?>
+                                                        <option value="<?php echo $row['id']; ?>" selected><?php echo $row['house_type'] ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?php echo $row['id']; ?>"><?php echo $row['house_type'] ?></option>
+                                                    <?php } ?>    
+                                                <?php } ?>    
+                                            </select>   
+                                        <?php } ?>                    
                                         </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
+                                    </div>
+                                    <div class="form-group col">
+                                        <label for="heating">Тип отопления</label>
+                                        <div class="data_select">
+                                        <?php
+                                        $stmt = $con->prepare("SELECT id, title AS heating FROM heating_type");
+                                        $stmt->execute();
+
+                                        $heating = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                        if ($stmt->rowCount() > 0) { ?>
+                                            <select name="heating_edit" id="heating_edit" 
+                                                class="selectpicker show-tick form-control" data-width="150px;" data-size="7" required>
+                                                <?php foreach ($heating as $row) { ?>
+                                                    <?php if ($profileOtherInfo['heat_type'] == $row['heating']) { ?>
+                                                        <option value="<?php echo $row['id']; ?>" selected><?php echo $row['heating'] ?></option>
+                                                    <?php } else { ?>
+                                                        <option value="<?php echo $row['id']; ?>"><?php echo $row['heating'] ?></option>
+                                                    <?php } ?>    
+                                                <?php } ?>    
+                                            </select>   
+                                        <?php } ?>                    
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
-                            <div class="separator"></div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <label for="house_type">Тип жилья</label>
-                                    <input type="text" name="house_type" id="house_type" class="info form-control border-0 px-4" 
-                                        value="<?php echo $profileOtherInfo['house_type'] ?>">    
-                                </div>
-                                <div class="form-group col">
-                                    <label for="heating_type">Тип отопления</label>
-                                    <input type="text" name="heating_type" id="heating_type" class="info form-control border-0 px-4"
-                                       value="<?php echo $profileOtherInfo['heat_type'] ?>">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check mx-4">
-                                    <?php if ($profileOtherInfo['Forced_migrant'] == 1) { ?>
-                                        <input class="info form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $profileOtherInfo['Forced_migrant'] ?>" checked>
-                                    <?php } else { ?>
-                                        <input class="info form-check-input" type="checkbox" id="inlineCheckbox1" value="<?php echo $profileOtherInfo['Forced_migrant'] ?>">
-                                    <?php } ?>   
-                                    <label class="form-check-label" for="inlineCheckbox1">Вынужденный переселенец</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="form-check mx-4">
-                                    <?php if ($profileOtherInfo['Destroyed_house'] == 1) { ?>
-                                        <input class="info form-check-input" type="checkbox" id="inlineCheckbox2" value="<?php echo $profileOtherInfo['Destroyed_house'] ?>" checked>
-                                    <?php } else { ?>
-                                        <input class="info form-check-input" type="checkbox" id="inlineCheckbox2" value="<?php echo $profileOtherInfo['Destroyed_house'] ?>">
-                                    <?php } ?>   
-                                    <label class="form-check-label" for="inlineCheckbox2">Разрушено жилье</label>
+                               
+                                <div class="form-group">
+                                    <div class="form-check col">
+                                        <?php if ($profileOtherInfo['Forced_migrant'] == 1) { ?>
+                                            <input class="info form-check-input" type="checkbox" id="migrant" name="migrant" value="1" checked>
+                                        <?php } else { ?>
+                                            <input class="info form-check-input" type="checkbox" id="migrant" name="migrant" value="1">
+                                        <?php } ?>   
+                                        <label class="form-check-label" for="migrant">Вынужденный переселенец</label>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                   <button type="submit" class="btn btn-edit mt-4">
-                                        <i class="fad fa-pencil-alt"></i>
-                                        Редактировать
-                                    </button> 
-                                </div>
-
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
-                                        </div>
+                                    <div class="form-check col">
+                                        <?php if ($profileOtherInfo['Destroyed_house'] == 1) { ?>
+                                            <input class="info form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1" checked>
+                                        <?php } else { ?>
+                                            <input class="info form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1">
+                                        <?php } ?>   
+                                        <label class="form-check-label" for="inlineCheckbox2">Разрушено жилье</label>
                                     </div>
-                                </div>              
-
-                            </div>
+                                </div>
+                                <button type="submit" class="btn btn-custom" name="btnEditHouseHeating" id="btnEditHouseHeating">Изменить</button>       
+                            </form>             
+                            
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="categories">Категории</label>
-                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3" data-toggle="modal" data-target="#addCategory">
                                         <i class="fal fa-plus fa-lg"></i>
                                 </button>
-                                <button class="btn btn-delete b-block right mb-2 px-3">
+                                <button class="btn btn-delete b-block right mb-2 px-3" data-toggle="modal" data-target="#deleteCategory">
                                         <i class="fal fa-minus fa-lg"></i>
                                 </button>
                                 <?php 
                                 $getProfOtherInfo = "SELECT crosscategory.id_Category, category.title AS category 
-                                    FROM crosscategory JOIN category ON crosscategory.id_Category=category.id 
-                                    WHERE crosscategory.id_Profile=:id ";
+                                    FROM crosscategory left JOIN category ON crosscategory.id_Category=category.id 
+                                    WHERE crosscategory.id_Profile=:id  ";
                                 $stmt = $con->prepare($getProfOtherInfo);
                                 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
                                 $stmt->execute();
@@ -360,22 +354,48 @@ $profileInfo = $stmt->fetch();
                                 ?>
                                 <textarea name="categories" id="categories" class="info form-control border-0 px-4" readonly><?php foreach ($profileCategory as $category) { ?><?php echo $category['category'] . '; ' ?> <?php } ?></textarea>
 
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addCategoryLabel">Основная информация</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="" method="post">
+                                                    <div class="form-group">
+                                                        <label for="add_category">Категории</label>
+                                                        <div class="data_select">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS cat_title FROM category");
+                                                        $stmt->execute();
+
+                                                        $select_category = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="select_category" id="select_category" 
+                                                                class="selectpicker show-tick form-control" data-width="150px;" data-size="7" multiple required>
+                                                                <?php foreach ($select_category as $cat) { ?>
+                                                                    <?php foreach($profileCategory as $category) { ?>
+                                                                        <?php if ($cat['cat_title'] == $category['category']) { ?>
+                                                                            <option value="<?php echo $cat['id']; ?>" disabled><?php echo $cat['cat_title'] ?></option>
+                                                                        <?php } ?>
+                                                                        <?php if ($cat['cat_title'] != $category['category']) { ?>
+                                                                            <option value="<?php echo $cat['id']; ?>"><?php echo $cat['cat_title'] ?></option>
+                                                                        <?php } ?>      
+                                                                    <?php } ?>        
+                                                                <?php } ?>        
+                                                            </select>   
+                                                        <?php } ?>                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="separator"></div>
+                                                    <button type="submit" class="btn btn-custom" name="btnAddCategory" id="btnAddCategory">Сохранить</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>  
