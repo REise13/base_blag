@@ -248,7 +248,7 @@ $profileInfo = $stmt->fetch();
                             $stmt->execute();
                             $profileNote = $stmt->fetch();  
                             ?>
-                                <form action="/edit_note.php" method="post">
+                                <form action="/edit_profile.php" method="post">
                                     <div class="form-group">
                                         <label for="family">Примечание</label>
                                         <button type="submit" class="btn btn-edit right mx-2 mb-2 p-1" name="btnEditNote" id="btnEditNote">
@@ -261,7 +261,7 @@ $profileInfo = $stmt->fetch();
                             </div> 
                             <div class="separator"></div>
                             
-                            <form action="/edit_note.php" method="post">
+                            <form action="/edit_profile.php" method="post">
                                 <div class="form-row">
                                      <div class="form-group col">
                                         <label for="house_type">Тип жилья</label>
@@ -337,14 +337,14 @@ $profileInfo = $stmt->fetch();
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="categories">Категории</label>
-                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3" data-toggle="modal" data-target="#addCategory">
-                                        <i class="fal fa-plus fa-lg"></i>
+                                <button class="btn btn-custom right mb-2 px-3" data-toggle="modal" data-target="#addCategory">
+                                    <i class="fal fa-plus fa-lg"></i>
                                 </button>
-                                <button class="btn btn-delete b-block right mb-2 px-3" data-toggle="modal" data-target="#deleteCategory">
+                                <button class="btn btn-delete right mb-2 px-3" data-toggle="modal" data-target="#deleteCategory">
                                         <i class="fal fa-minus fa-lg"></i>
                                 </button>
                                 <?php 
-                                $getProfOtherInfo = "SELECT crosscategory.id_Category, category.title AS category 
+                                $getProfOtherInfo = "SELECT crosscategory.id_Category AS id, category.title AS category 
                                     FROM crosscategory left JOIN category ON crosscategory.id_Category=category.id 
                                     WHERE crosscategory.id_Profile=:id  ";
                                 $stmt = $con->prepare($getProfOtherInfo);
@@ -353,53 +353,89 @@ $profileInfo = $stmt->fetch();
                                 $profileCategory = $stmt->fetchAll(PDO::FETCH_ASSOC);  
                                 ?>
                                 <textarea name="categories" id="categories" class="info form-control border-0 px-4" readonly><?php foreach ($profileCategory as $category) { ?><?php echo $category['category'] . '; ' ?> <?php } ?></textarea>
+                            </div>
 
-                                <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addCategoryLabel">Основная информация</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="" method="post">
-                                                    <div class="form-group">
-                                                        <label for="add_category">Категории</label>
-                                                        <div class="data_select">
-                                                        <?php
-                                                        $stmt = $con->prepare("SELECT id, title AS cat_title FROM category");
-                                                        $stmt->execute();
+                            <!-- modal addCategory -->
+                            <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="addCategoryLabel">Добавить категорию</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/edit_profile.php" method="post">
+                                                <div class="form-group">
+                                                    <label for="gender">Категории</label>
+                                                    <div class="data_select">
+                                                    <?php
+                                                    $stmt = $con->prepare("SELECT id, title AS category FROM category");
+                                                    $stmt->execute();
 
-                                                        $select_category = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                                        if ($stmt->rowCount() > 0) { ?>
-                                                            <select name="select_category" id="select_category" 
-                                                                class="selectpicker show-tick form-control" data-width="150px;" data-size="7" multiple required>
-                                                                <?php foreach ($select_category as $cat) { ?>
-                                                                    <?php foreach($profileCategory as $category) { ?>
-                                                                        <?php if ($cat['cat_title'] == $category['category']) { ?>
-                                                                            <option value="<?php echo $cat['id']; ?>" disabled><?php echo $cat['cat_title'] ?></option>
-                                                                        <?php } ?>
-                                                                        <?php if ($cat['cat_title'] != $category['category']) { ?>
-                                                                            <option value="<?php echo $cat['id']; ?>"><?php echo $cat['cat_title'] ?></option>
-                                                                        <?php } ?>      
-                                                                    <?php } ?>        
-                                                                <?php } ?>        
-                                                            </select>   
-                                                        <?php } ?>                    
-                                                        </div>
+                                                    $cats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                    foreach ($profileCategory as $category) {
+                                                        if (($key = array_search($category, $cats)) !== false) { 
+                                                            unset($cats[$key]);
+                                                            continue;
+                                                        }
+                                                    }        
+                                                    ?>
+                                                        <select name="select_category[]" id="select_category" 
+                                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                            <?php foreach ($cats as $cat) {?>
+                                                                <option value="<?php echo $cat['id']; ?>"><?php echo $cat['category'] ?></option>     
+                                                            <?php } ?>   
+                                                        </select>                  
                                                     </div>
                                                     <div class="separator"></div>
-                                                    <button type="submit" class="btn btn-custom" name="btnAddCategory" id="btnAddCategory">Сохранить</button>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
-                                                </form>
-                                            </div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-custom" name="btnAddCategory" id="btnAddCategory">Добавить</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+                            <!-- end -->
+
+                            <!-- modal deleteCategory -->
+                            <div class="modal fade" id="deleteCategory" tabindex="-1" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteCategoryLabel">Удалить категорию</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/edit_profile.php" method="post">
+                                                <div class="form-group">
+                                                    <label for="gender">Категории</label>
+                                                    <div class="data_select">
+                                                        <select name="profile_category[]" id="profile_category" 
+                                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                            <?php foreach ($profileCategory as $prof_cat) {?>
+                                                                <option value="<?php echo $prof_cat['id']; ?>"><?php echo $prof_cat['category'] ?></option>     
+                                                            <?php } ?>   
+                                                        </select>                  
+                                                    </div>
+                                                    <div class="separator"></div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-delete" name="btnDeleteCategory" id="btnDeleteCategory">Удалить</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>  
                             </div>
+                            <!-- end -->
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="training">Тренинги</label>
@@ -429,7 +465,7 @@ $profileInfo = $stmt->fetch();
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            
+                                             
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary"></button>

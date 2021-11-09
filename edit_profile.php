@@ -44,17 +44,50 @@ if(isset($_POST['btnEditHouseHeating'])) {
 }
 unset($stmt);
 
-f(isset($_POST['btnEAddCategory'])) { 
-    
-    $sql = "";
-    $stmt=$con->prepare($sql);
-    if($stmt->execute(array(':profile_id'=> $profID))) {
-        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
-    }
-    else {
-        echo 'something went wrong';
-    }
-}    
+if(isset($_POST['btnAddCategory'])) {
+    $category = $_POST['select_category'];
+    $arrayLength = count($category);
 
+    $sql = "INSERT INTO crosscategory(id_Profile, id_Category) VALUES(:profile_id, :category_id) ";
+    $stmt= $con->prepare($sql);
+    $i = 0;
+    try {
+        $con->beginTransaction();
+        foreach($category as $cat)
+        {
+            $stmt->execute(array(':profile_id'=>$profID, ':category_id'=>$cat));
+        }
+        $con->commit();
+        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+    } catch (Exception $e){
+        $con->rollback();
+        throw $e;
+    }  
+}
+unset($stmt);
+
+
+if(isset($_POST['btnDeleteCategory'])) {
+    $category = $_POST['profile_category'];
+    $arrayLength = count($category);
+
+    $sql = "DELETE FROM crosscategory WHERE id_Profile=:profile_id AND id_Category=:category_id";
+    $stmt= $con->prepare($sql);
+    $i = 0;
+    try {
+        $con->beginTransaction();
+        foreach($category as $cat)
+        {
+            $stmt->execute(array(':profile_id'=>$profID, ':category_id'=>$cat));
+        }
+        $con->commit();
+        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+    } catch (Exception $e){
+        $con->rollback();
+        throw $e;
+    }
+   
+}
+unset($stmt);
 
 ?>    
