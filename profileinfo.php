@@ -9,8 +9,6 @@ $peopleID = $_GET['people'];
 $_SESSION['profID'] = $profID;
 $_SESSION['peopleID'] = $peopleID;
 
-
-
 $getGeneralInfo = "SELECT sName, Name, Patr, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
 $stmt = $con->prepare($getGeneralInfo);
 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
@@ -18,6 +16,8 @@ $stmt->execute();
 $profileInfo = $stmt->fetch();
 
 ?>
+
+
 
 <script>
     $(document).ready(function(){
@@ -62,16 +62,6 @@ $profileInfo = $stmt->fetch();
                 <div class="tab-content">
                     <!-- nav-tab-general-info -->
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
-                        <?php if ($_SESSION['message'] != "") { ?>
-                            <!-- alert message -->
-                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                                <?php echo $_SESSION['message']; $_SESSION['message'] = "";?>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <!-- end -->
-                        <?php } ?>
                         <form class="pt-3">
                             <div class="form-row">
                                 <div class="form-group col">
@@ -220,13 +210,11 @@ $profileInfo = $stmt->fetch();
 
                     <!-- nav-tab-other-info -->
                     <div id="nav-tab-other-info" class="tab-pane fade">
-                            <?php
-                            $getProfOtherInfo = "SELECT * FROM profile_info WHERE profile_id=:id ";
-                            $stmt = $con->prepare($getProfOtherInfo);
-                            $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
-                            $stmt->execute();
-                            $profileOtherInfo = $stmt->fetch();  
-                            ?>
+                        <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                        }    
+                        ?> 
                             <form action="/edit_family.php"  method="post">
                                 <div class="form-row">
                                     <div class="form-group col">
@@ -235,6 +223,13 @@ $profileInfo = $stmt->fetch();
                                             <i class="fad fa-pencil-alt"></i>
                                             Изменить
                                         </button>
+                                        <?php
+                                        $getProfOtherInfo = "SELECT * FROM profile_info WHERE profile_id=:id ";
+                                        $stmt = $con->prepare($getProfOtherInfo);
+                                        $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
+                                        $stmt->execute();
+                                        $profileOtherInfo = $stmt->fetch();  
+                                        ?>
                                         <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
                                     </div>
                                 </div>
@@ -344,7 +339,7 @@ $profileInfo = $stmt->fetch();
                                         <i class="fal fa-minus fa-lg"></i>
                                 </button>
                                 <?php 
-                                $getProfOtherInfo = "SELECT crosscategory.id_Category AS id, category.title AS category 
+                                $getProfOtherInfo = "SELECT crosscategory.id, crosscategory.id_Category, category.title AS category 
                                     FROM crosscategory left JOIN category ON crosscategory.id_Category=category.id 
                                     WHERE crosscategory.id_Profile=:id  ";
                                 $stmt = $con->prepare($getProfOtherInfo);
@@ -439,82 +434,211 @@ $profileInfo = $stmt->fetch();
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="training">Тренинги</label>
-                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3" data-toggle="modal" data-target="#addTraining">
                                         <i class="fal fa-plus fa-lg"></i>
                                 </button>
-                                <button class="btn btn-delete b-block right mb-2 px-3">
+                                <button class="btn btn-delete b-block right mb-2 px-3" data-toggle="modal" data-target="#deleteTraining">
                                         <i class="fal fa-minus fa-lg"></i>
                                 </button>
 
                                 <?php
-                                $getProfTraining = "SELECT crosstraining.id_Training, training.title AS training FROM crosstraining JOIN training ON crosstraining.id_Training=training.id WHERE crosstraining.id_Profile=:id ";
+                                $getProfTraining = "SELECT crosstraining.id, crosstraining.id_Training, training.title AS training, 
+                                    crosstraining.date_training FROM crosstraining 
+                                    JOIN training ON crosstraining.id_Training=training.id WHERE crosstraining.id_Profile=:id ";
                                 $stmt = $con->prepare($getProfTraining);
                                 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
                                 $stmt->execute();
                                 $profileTraining = $stmt->fetchAll(PDO::FETCH_ASSOC);   
                                 ?>
-                                <textarea name="training" id="training" class="info form-control border-0 px-4"><?php foreach ($profileTraining as $training) { ?><?php echo $training['training'] . '; ' ?> <?php } ?></textarea>
-                            
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
+                                <textarea name="training" id="training" class="info form-control border-0 px-4"><?php foreach ($profileTraining as $training) { ?><?php echo $training['training'] . '[' . $training['date_training'] . ']' . '; ' ?> <?php } ?></textarea>
+                            </div>
+                            <!-- modal addTraining -->
+                             <div class="modal fade" id="addTraining" tabindex="-1" aria-labelledby="addTrainingLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
+                                            <h5 class="modal-title" id="addTrainingLabel">Добавить тренинг</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                             
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
+                                            <form action="/edit_profile.php" method="post">
+                                                <div class="form-group">
+                                                    <label for="gender">Тренинги</label>
+                                                    <div class="data_select">
+                                                    <?php
+                                                    $stmt = $con->prepare("SELECT id, title AS training FROM training");
+                                                    $stmt->execute();
+
+                                                    $trainings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                    foreach ($profileTraining as $training) {
+                                                        if (($key = array_search($training, $trainings)) !== false) { 
+                                                            unset($trainings[$key]);
+                                                            continue;
+                                                        }
+                                                    }        
+                                                    ?>
+                                                        <select name="select_training" id="select_training" 
+                                                            class="selectpicker show-tick" data-width="200px;" 
+                                                            data-size="5" title="Выберите" data-live-search="true">
+                                                            <?php foreach ($trainings as $sel_tr) {?>
+                                                                <option value="<?php echo $sel_tr['id']; ?>"><?php echo $sel_tr['training'] ?></option>     
+                                                            <?php } ?>   
+                                                        </select>
+                                                        <input type="text" name="date_training" id="date_training" class="mt-3 form-control">                  
+                                                    </div>
+                                                    <div class="separator"></div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-custom" name="btnAddTraining" id="btnAddTraining">Добавить</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                </div>          
+                                </div>
+                            </div>    
+                            <!-- end -->
 
+                            <!-- modal deleteTraining -->
+                            <div class="modal fade" id="deleteTraining" tabindex="-1" aria-labelledby="deleteTrainingLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteTrainingLabel">Удалить тренинг</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="/edit_profile.php" method="post">
+                                                <div class="form-group">
+                                                    <label for="gender">Тренинги</label>
+                                                    <div class="data_select">
+                                                        <select name="profile_training[]" id="profile_training" 
+                                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                            <?php foreach ($profileTraining as $prof_tr) {?>
+                                                                <option value="<?php echo $prof_tr['id']; ?>">
+                                                                    <?php echo $prof_tr['training'] . '['. $prof_tr['date_training'] . ']' ?>
+                                                                </option>     
+                                                            <?php } ?>   
+                                                        </select>                  
+                                                    </div>
+                                                    <div class="separator"></div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-delete" name="btnDeleteTraining" id="btnDeleteTraining">Удалить</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>  
                             </div>
+                            <!-- end -->
                             <div class="separator"></div>
                             <div class="form-group">
                                 <label for="needs">Нужды</label>
-                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3">
-                                        <i class="fal fa-plus fa-lg"></i>
+                                <button class="btn btn-edit b-block right mx-2 mb-2 px-3" data-toggle="modal" data-target="#addNeed">
+                                    <i class="fal fa-plus fa-lg"></i>
                                 </button>
-                                <button class="btn btn-delete b-block right mb-2 px-3">
-                                        <i class="fal fa-minus fa-lg"></i>
+                                <button class="btn btn-delete b-block right mb-2 px-3" data-toggle="modal" data-target="#deleteNeed">
+                                    <i class="fal fa-minus fa-lg"></i>
                                 </button>        
 
                                 <?php
-                                $getProfTraining = "SELECT crossneed.id_Need, need.title AS need FROM crossneed JOIN need ON crossneed.id_Need=need.id WHERE crossneed.id_Profile=:id ";
+                                $getProfTraining = "SELECT crossneed.id, crossneed.id_Need, need.title AS need 
+                                    FROM crossneed JOIN need ON crossneed.id_Need=need.id 
+                                    WHERE crossneed.id_Profile=:id ";
                                 $stmt = $con->prepare($getProfTraining);
                                 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
                                 $stmt->execute();
                                 $profileNeed = $stmt->fetchAll(PDO::FETCH_ASSOC);   
                                 ?>    
                                 <textarea name="needs" id="needs" class="info form-control border-0 px-4"><?php foreach ($profileNeed as $need) { ?><?php echo $need['need'] . '; ' ?> <?php } ?></textarea>
-                            
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                
+                                 <!-- modal addNeed -->
+                                <div class="modal fade" id="addNeed" tabindex="-1" aria-labelledby="addNeedLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addNeedLabel">Добавить нужды</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/edit_profile.php" method="post">
+                                                    <div class="form-group">
+                                                        <label for="need">Нужды</label>
+                                                        <div class="data_select">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS need FROM need");
+                                                        $stmt->execute();
+
+                                                        $needs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        foreach ($profileNeed as $need) {
+                                                            if (($key = array_search($need, $needs)) !== false) { 
+                                                                unset($needs[$key]);
+                                                                continue;
+                                                            }
+                                                        }        
+                                                        ?>
+                                                            <select name="select_need[]" id="select_need" 
+                                                                class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                                <?php foreach ($needs as $need) {?>
+                                                                    <option value="<?php echo $need['id']; ?>"><?php echo $need['need'] ?></option>     
+                                                                <?php } ?>   
+                                                            </select>                  
+                                                        </div>
+                                                        <div class="separator"></div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-custom" name="btnAddNeed" id="btnAddNeed">Добавить</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>          
+                                </div>    
+                                <!-- end -->
 
+                                <!-- modal deleteNeed -->
+                                <div class="modal fade" id="deleteNeed" tabindex="-1" aria-labelledby="deleteNeedLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteNeedLabel">Удалить нужды</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/edit_profile.php" method="post">
+                                                    <div class="form-group">
+                                                        <label for="need">Нужды</label>
+                                                        <div class="data_select">
+                                                            <select name="profile_need[]" id="profile_need" 
+                                                                class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                                <?php foreach ($profileNeed as $prof_need) {?>
+                                                                    <option value="<?php echo $prof_need['id']; ?>"><?php echo $prof_need['need'] ?></option>     
+                                                                <?php } ?>   
+                                                            </select>                  
+                                                        </div>
+                                                        <div class="separator"></div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-delete" name="btnDeleteNeed" id="btnDeleteNeed">Удалить</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <!-- end -->
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
@@ -523,6 +647,7 @@ $profileInfo = $stmt->fetch();
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Проект</th>
                                                 <th>Дата начала</th>
                                                 <th>Дата окончания</th>
@@ -532,7 +657,7 @@ $profileInfo = $stmt->fetch();
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $getProfHelp = "SELECT help.start_date, help.end_date, project.title AS project, 
+                                            $getProfHelp = "SELECT help.id, help.start_date, help.end_date, project.title AS project, 
                                                 helptype.title AS project_type, donor.title AS donor
                                                 FROM help
                                                 JOIN project ON help.id_project = project.id
@@ -547,46 +672,147 @@ $profileInfo = $stmt->fetch();
                                             
                                             <?php foreach ($profileHelp as $help) { ?>
                                             <tr>
-                                                <td><?php echo $help['project'] ?></td>
-                                                <td><?php echo $help['start_date'] ?></td>
-                                                <td><?php echo $help['end_date'] ?></td>
-                                                <td><?php echo $help['project_type'] ?></td>
-                                                <td><?php echo $help['donor'] ?></td>
+                                                <td>
+                                                    <input type="checkbox" name="help_id" id="help_id"
+                                                    value="<?php echo $help['id']; ?>">
+                                                </td>
+                                                <td><?php echo $help['project']; ?></td>
+                                                <td><?php echo $help['start_date']; ?></td>
+                                                <td><?php echo $help['end_date']; ?></td>
+                                                <td><?php echo $help['project_type']; ?></td>
+                                                <td><?php echo $help['donor']; ?></td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
 
-                                <button class="btn btn-edit b-block right mx-2 mb-2">
+                                <button class="btn btn-edit b-block right mx-2 mb-2" data-toggle="modal" data-target="#addHelp">
                                         <i class="fad fa-pencil-alt"></i>
                                         Добавить помощь
                                 </button>
-                                <button class="btn btn-delete b-block right mb-2">
+                                <button class="btn btn-delete b-block right mb-2" data-toggle="modal" data-target="#deleteHelp">
                                         <i class="fal fa-minus"></i>
                                         Удалить
                                 </button>
 
-                                <div class="modal fade" id="" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+                                <!-- modal addHelp -->
+                                <div class="modal fade" id="addHelp" tabindex="-1" aria-labelledby="addHelpLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="Label">Основная информация</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary"></button>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                                        </div>
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addHelpLabel">Добавить помощь</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/edit_profile.php" method="post">
+                                                    <div class="form-group mb-3">
+                                                        <label for="donor">Донор</label>
+                                                        <div class="data_select">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS donor FROM donor");
+                                                        $stmt->execute();
+                                                        $donors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        ?>
+                                                            <select name="select_donor" id="select_donor" 
+                                                                class="selectpicker show-tick" data-width="150px;" data-size="7" title="Выберите">
+                                                                <?php foreach ($donors as $donor) {?>
+                                                                    <option value="<?php echo $donor['id']; ?>"><?php echo $donor['donor'] ?></option>     
+                                                                <?php } ?> 
+                                                                <?php unset($stmt); ?>  
+                                                            </select>                  
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="help_type">Тип помощи</label>
+                                                        <div class="data_select">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS helptype FROM helptype");
+                                                        $stmt->execute();
+                                                        $helptypes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        ?>
+                                                            <select name="select_helptype" id="select_helptype" 
+                                                                class="selectpicker form-control show-tick" data-width="150px;" data-size="7" title="Выберите">
+                                                                <?php foreach ($helptypes as $helptype) {?>
+                                                                    <option value="<?php echo $helptype['id']; ?>"><?php echo $helptype['helptype'] ?></option>     
+                                                                <?php } ?> 
+                                                                <?php unset($stmt); ?>  
+                                                            </select>                  
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="start_date">Дата начала</label>
+                                                        <input type="text" name="start_date" id="start-date" class="form-control mt-3 mb-3">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="end_date">Дата окончания</label>
+                                                        <input type="text" name="end_date" id="end_date" class="form-control mb-3">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="project">Проект</label>
+                                                        <div class="data_select">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS project FROM project");
+                                                        $stmt->execute();
+                                                        $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        ?>
+                                                            <select name="select_project" id="select_project" 
+                                                                class="selectpicker form-control show-tick" data-width="150px;" data-size="7" title="Выберите">
+                                                                <?php foreach ($projects as $project) {?>
+                                                                    <option value="<?php echo $project['id']; ?>"><?php echo $project['project'] ?></option>     
+                                                                <?php } ?> 
+                                                                <?php unset($stmt); ?>  
+                                                            </select>                  
+                                                        </div>
+                                                    </div>    
+                                                    <div class="separator"></div>
+                                                    <div class="form-group">
+                                                        <button type="submit" class="btn btn-custom" name="btnAddHelp" id="btnAddHelp">Добавить</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>  
+                                </div>    
+                                <!-- end -->
 
+                                <!-- modal deleteHelp -->
+                                <div class="modal fade" id="deleteHelp" tabindex="-1" aria-labelledby="deleteHelpLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteHelpLabel">Удалить помощь</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/edit_profile.php" method="post">
+                                                    <div class="form-group">
+                                                        <label for="help">Помощь</label>
+                                                        <div class="data_select">
+                                                            <select name="profile_help[]" id="profile_help" 
+                                                                class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                                <?php foreach ($profileNeed as $prof_need) {?>
+                                                                    <option value="<?php echo $prof_need['id_Need']; ?>"><?php echo $prof_need['need'] ?></option>     
+                                                                <?php } ?>   
+                                                            </select>                  
+                                                        </div>
+                                                        <div class="separator"></div>
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-delete" name="btnDeleteHelp" id="btnDeleteHelp">Удалить</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                                <!-- end -->
                             </div>
                         </form>
                     </div>
@@ -594,7 +820,7 @@ $profileInfo = $stmt->fetch();
 
                     <!-- nav-tab-delete-profile -->
                     <div id="nav-tab-delete-profile" class="tab-pane fade">
-                        <form action="" role="form">
+                        <form role="form">
                             <p class="alert alert-danger">Удалить данный профиль?</p>
                         </form>
                     </div>
@@ -608,6 +834,9 @@ $profileInfo = $stmt->fetch();
         $(document).ready(function() {
             $('.info').prop('readonly', true);
 
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd';
+            });
         })
     </script>
 </body>                   

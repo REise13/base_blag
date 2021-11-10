@@ -190,3 +190,24 @@ input[readonly], textarea[readonly] {
     letter-spacing: .04em;
     text-transform: uppercase;
 }
+
+tr {
+    /* https://github.com/w3c/csswg-drafts/issues/1899 */
+    transform: scale(1);
+    position: relative;
+}
+
+:checked::before {
+    content: ' ';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #d5cbf8a2;
+    color: rgb(128, 70, 194);
+    font-weight: 500;
+    opacity: .5;
+    z-index: -1;
+}

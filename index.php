@@ -60,6 +60,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;                            
                             $_SESSION["user_role"] = $userRole;
+                            $_SESSION['message'] = "";
                             // При успешной авторизации перенаправить 
                             // на страницу поиска профиля
                             header("location: ../searchprof.php");
