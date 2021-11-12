@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="search-form bg-form p-5 rounded shadow-sm">
-                            <form role="form" action="searchprofileresult.php" method="GET">
+                            <form role="form" action="/searchprofileresult.php" method="GET">
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="sname" class="">Фамилия</label>
@@ -29,10 +29,9 @@
                                         <input type="text" class="form-control
 											border-0 px-4" id="patr" name="patr">
                                     </div>
-                                </div>
-                                
+                                </div>                                
                                 <div class="form-group mt-3">
-                                    <label for="age" class="">Возраст</label>
+                                    <label for="age">Возраст</label>
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">

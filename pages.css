@@ -183,16 +183,15 @@ input[readonly], textarea[readonly] {
     font-weight: 500;
 } 
 
-.heading-small {
+.label-custom {
     font-size: .75rem;
+    font-weight: 600;
     padding-top: .25rem;
-    padding-bottom: .25rem;
-    letter-spacing: .04em;
     text-transform: uppercase;
+    color:#575656b2;
 }
 
 tr {
-    /* https://github.com/w3c/csswg-drafts/issues/1899 */
     transform: scale(1);
     position: relative;
 }
@@ -210,4 +209,8 @@ tr {
     font-weight: 500;
     opacity: .5;
     z-index: -1;
+}
+
+input[type=checkbox] {
+    transform: scale(1.2);
 }

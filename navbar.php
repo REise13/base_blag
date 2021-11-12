@@ -25,7 +25,7 @@ if (!isset($_SESSION['loggedin'])) {
                 </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="../register_profile.php" class="nav-link">
                         <i class="fad fa-user-plus"></i>
                         Регистрация профиля
                     </a>

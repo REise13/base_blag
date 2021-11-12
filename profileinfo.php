@@ -65,45 +65,45 @@ $profileInfo = $stmt->fetch();
                         <form class="pt-3">
                             <div class="form-row">
                                 <div class="form-group col">
-                                    <label for="sname">Фамилия</label>
+                                    <label for="sname" class="label-custom">Фамилия</label>
                                     <input type="text" name="sname" id="sname" class="info form-control border-0 px-4" value="<?php echo $profileInfo['sName'] ?>">
                                 </div>
                                 <div class="form-group col">
-                                    <label for="name">Имя</label>
+                                    <label for="name" class="label-custom">Имя</label>
                                     <input type="text" name="name" id="name" class="info form-control border-0 px-4" value="<?php echo $profileInfo['Name'] ?>">
                                 </div>
                                 <div class="form-group col">
-                                    <label for="patr">Отчество</label>
+                                    <label for="patr" class="label-custom">Отчество</label>
                                     <input type="text" name="patr" id="patr" class="info form-control border-0 px-4" value="<?php echo $profileInfo['Patr'] ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-2">
-                                   <label for="gender">Пол</label>
+                                   <label for="gender" class="label-custom">Пол</label>
                                     <input type="text" name="gender" id="gender" class="info form-control border-0 px-4" value="<?php echo $profileInfo['gender_info'] ?>"> 
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-2">
-                                    <label for="birth">Год рождения</label>
+                                <div class="col-md-3">
+                                    <label for="birth" class="label-custom">Год рождения</label>
                                     <input type="text" name="birth" id="birth" class="info form-control border-0 px-4" value="<?php echo $profileInfo['yearbirth'] ?>">
                                 </div>
                                 
                             </div>
                             <div class="form-group">
-                                <label for="inn">ИНН</label>
+                                <label for="inn" class="label-custom">ИНН</label>
                                 <input type="text" name="inn" id="inn" class="info form-control border-0 px-4" value="<?php echo $profileInfo['INN'] ?>"> 
                             </div>
                             <div class="form-group">
-                                <label for="passport">Паспорт</label>
+                                <label for="passport" class="label-custom">Паспорт</label>
                                 <input type="text" name="passport" id="passport" class="info form-control border-0 px-4" value="<?php echo $profileInfo['Passport'] ?>">
                             </div>
                             <div class="form-group">
-                                <label for="phone">Телефон</label>
+                                <label for="phone" class="label-custom">Телефон</label>
                                 <input type="text" name="phone" id="phone" class="info form-control border-0 px-4" value="<?php echo $profileInfo['Phone'] ?>">
                             </div>
                             <div class="form-group">
-                                <label for="city">Город</label>
+                                <label for="city" class="label-custom">Город</label>
                                 <input type="text" name="city" id="city" class="info form-control border-0 px-4" value="<?php echo $profileInfo['city_info'] ?>"> 
                             </div>
                             <button type="button" class="btn btn-edit mt-2" data-toggle="modal" data-target="#editGeneralInfo">
@@ -217,7 +217,7 @@ $profileInfo = $stmt->fetch();
                         ?> 
                             <form action="/edit_profile.php" class="pt-2" method="post">
                                 <div class="form-group">
-                                    <label for="family">Семья</label>
+                                    <label for="family" class="label-custom">Семья</label>
                                     <?php
                                     $getProfOtherInfo = "SELECT * FROM profile_info WHERE profile_id=:id ";
                                     $stmt = $con->prepare($getProfOtherInfo);
@@ -244,7 +244,7 @@ $profileInfo = $stmt->fetch();
                                     $profileNote = $stmt->fetch();  
                                     ?>
                                     <div class="form-group">
-                                        <label for="family">Примечание</label>
+                                        <label for="family" class="label-custom">Примечание</label>
                                         <textarea name="note" id="note" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
                                     </div>
                                     <div class="form-group">
@@ -259,7 +259,7 @@ $profileInfo = $stmt->fetch();
                             <form action="/edit_profile.php" method="post">
                                 <div class="form-row">
                                      <div class="form-group col">
-                                        <label for="house_type">Тип жилья</label>
+                                        <label for="house_type" class="label-custom">Тип жилья</label>
                                         <div class="data_select">
                                         <?php
                                         $stmt = $con->prepare("SELECT id, title AS house_type FROM type_of_house");
@@ -282,7 +282,7 @@ $profileInfo = $stmt->fetch();
                                         </div>
                                     </div>
                                     <div class="form-group col">
-                                        <label for="heating">Тип отопления</label>
+                                        <label for="heating" class="label-custom">Тип отопления</label>
                                         <div class="data_select">
                                         <?php
                                         $stmt = $con->prepare("SELECT id, title AS heating FROM heating_type");
@@ -307,21 +307,21 @@ $profileInfo = $stmt->fetch();
                                 </div>
                                
                                 <div class="form-group">
-                                    <div class="form-check col">
+                                    <div class="form-check px-4">
                                         <?php if ($profileOtherInfo['Forced_migrant'] == 1) { ?>
-                                            <input class="info form-check-input" type="checkbox" id="migrant" name="migrant" value="1" checked>
+                                            <input class="form-check-input" type="checkbox" id="migrant" name="migrant" value="1" checked>
                                         <?php } else { ?>
-                                            <input class="info form-check-input" type="checkbox" id="migrant" name="migrant" value="1">
+                                            <input class="form-check-input" type="checkbox" id="migrant" name="migrant" value="1">
                                         <?php } ?>   
                                         <label class="form-check-label" for="migrant">Вынужденный переселенец</label>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="form-check col">
+                                    <div class="form-check px-4">
                                         <?php if ($profileOtherInfo['Destroyed_house'] == 1) { ?>
-                                            <input class="info form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1" checked>
+                                            <input class="form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1" checked>
                                         <?php } else { ?>
-                                            <input class="info form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1">
+                                            <input class="form-check-input" type="checkbox" id="dest_house" name="dest_house" value="1">
                                         <?php } ?>   
                                         <label class="form-check-label" for="inlineCheckbox2">Разрушено жилье</label>
                                     </div>
@@ -331,7 +331,7 @@ $profileInfo = $stmt->fetch();
                             
                             <div class="separator"></div>
                             <div class="form-group">
-                                <label for="categories">Категории</label>
+                                <label for="categories" class="label-custom">Категории</label>
                                 <?php 
                                 $getProfOtherInfo = "SELECT crosscategory.id, crosscategory.id_Category, category.title AS category 
                                     FROM crosscategory left JOIN category ON crosscategory.id_Category=category.id 
@@ -374,7 +374,7 @@ $profileInfo = $stmt->fetch();
                                         <div class="modal-body">
                                             <form action="/edit_profile.php" method="post">
                                                 <div class="form-group">
-                                                    <label for="gender">Категории</label>
+                                                    <label for="category">Категории</label>
                                                     <div class="data_select">
                                                     <?php
                                                     $stmt = $con->prepare("SELECT id, title AS category FROM category");
@@ -421,7 +421,7 @@ $profileInfo = $stmt->fetch();
                                         <div class="modal-body">
                                             <form action="/edit_profile.php" method="post">
                                                 <div class="form-group">
-                                                    <label for="gender">Категории</label>
+                                                    <label for="category">Категории</label>
                                                     <div class="data_select">
                                                         <select name="profile_category[]" id="profile_category" 
                                                             class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
@@ -444,7 +444,7 @@ $profileInfo = $stmt->fetch();
                             <!-- end -->
                             <div class="separator"></div>
                             <div class="form-group">
-                                <label for="training">Тренинги</label>
+                                <label for="training" class="label-custom">Тренинги</label>
                                 <?php
                                 $getProfTraining = "SELECT crosstraining.id, crosstraining.id_Training, training.title AS training, 
                                     crosstraining.date_training FROM crosstraining 
@@ -485,7 +485,7 @@ $profileInfo = $stmt->fetch();
                                         <div class="modal-body">
                                             <form action="/edit_profile.php" method="post">
                                                 <div class="form-group">
-                                                    <label for="gender">Тренинги</label>
+                                                    <label for="training">Тренинги</label>
                                                     <div class="data_select">
                                                     <?php
                                                     $stmt = $con->prepare("SELECT id, title AS training FROM training");
@@ -534,7 +534,7 @@ $profileInfo = $stmt->fetch();
                                         <div class="modal-body">
                                             <form action="/edit_profile.php" method="post">
                                                 <div class="form-group">
-                                                    <label for="gender">Тренинги</label>
+                                                    <label for="training">Тренинги</label>
                                                     <div class="data_select">
                                                         <select name="profile_training[]" id="profile_training" 
                                                             class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
@@ -559,7 +559,7 @@ $profileInfo = $stmt->fetch();
                             <!-- end -->
                             <div class="separator"></div>
                             <div class="form-group">
-                                <label for="needs">Нужды</label>
+                                <label for="needs" class="label-custom">Нужды</label>
                                 <?php
                                 $getProfTraining = "SELECT crossneed.id, crossneed.id_Need, need.title AS need 
                                     FROM crossneed JOIN need ON crossneed.id_Need=need.id 
@@ -671,7 +671,7 @@ $profileInfo = $stmt->fetch();
                             </div>
                             <div class="separator"></div>
                             <div class="form-group">
-                                <label for="help">Помощь</label>
+                                <label for="help" class="label-custom">Помощь</label>
                                 <?php
                                 $getProfTraining = "SELECT help.id, help.start_date, help.end_date, project.title AS project, 
                                 helptype.title AS project_type, donor.title AS donor
