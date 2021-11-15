@@ -12,6 +12,11 @@
                 <div class="row">
                     <div class="col">
                         <div class="search-form bg-form p-5 rounded shadow-sm">
+                        <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                        }    
+                        ?>
                             <form role="form" action="/searchprofileresult.php" method="GET">
                                 <div class="form-row">
                                     <div class="col">

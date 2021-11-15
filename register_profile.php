@@ -3,63 +3,6 @@
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>
 
-<?php 
-if (isset($_POST['btnRegisterProfile'])) {
-    $sname = trim($_POST['sname']);
-    $name = trim($_POST['name']);
-    $patr = trim($_POST['patr']);
-    $gender = trim($_POST['gender']);
-    $yearBirth = trim($_POST['yearBirth']);
-    
-    $notinn = trim($_POST['notINN']);
-    $phone = trim($_POST['phone']);
-    $passport = trim($_POST['passport']);
-    $city = trim($_POST['city']);
-    $category = $_POST['category'];
-
-    if ($notinn == "") {
-        $peopleINN = null;
-    }
-    else {
-        $inn = trim($_GET['inn']);
-        $peopleINN = $inn;
-    }
-
-    $insertPeople = "INSERT INTO people(sName, Name, Patr, Year, INN, Phone, Passport, id_City, id_Gender)
-        VALUES(:sname, :name, :patr, :yearBirth, :inn, :phone, :passport, :city, :gender)";
-    $stmt=$con->prepare($insertPeople);
-
-    try{
-        $con->beginTransaction();
-        $stmt->execute(array(':sname'=>$sname, ':name'=>$name, ':patr'=>$patr, ':yearBirth'=>$yearBirth,
-            ':inn'=>$peopleINN, ':phone'=>$phone, ':passport'=>$passport, ':city'=>$city, ':gender'=>$gender));
-        $stmt=$con->prepare("SELECT LAST_INSERT_ID()");
-        $stmt->execute();
-        $lastPeopleID = $stmt->fetchColumn();
-
-        $stmt=$con->prepare("INSERT INTO profile(id_people, Forced_migrant, Destroyed_house, id_type_of_house, 
-            id_type_heating, Family, Numb_of_Child, Note) VALUES(:people_id, 0, 0, 1, 1, null, null, null)");
-        $stmt->bindParam(':people_id', $lastPeopleID, PDO::PARAM_INT);
-        $stmt->execute();
-        $stmt = $con->prepare("SELECT LAST_INSERT_ID()");
-        $stmt->execute();
-        $lastProfileID = $stmt->fetchColumn();
-
-        $insertProfCategories = "INSERT INTO crosscategory(id_Profile, id_Category) VALUES(:profile_id, :category_id)";
-        $stmt= $con->prepare($insertProfCategories);
-        foreach($category as $cat) {
-            $stmt->execute(array(':profile_id'=>$lastProfileID, ':category_id'=>$cat));
-        }
-        $con->commit();
-        unset($stmt);
-        header("location: ../profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
-    }
-    catch (Exception $e) {
-        throw $e;
-    }
-
-}
-?>
 
 <body>
     <div class="page-content p-3" id="content">
@@ -69,7 +12,7 @@ if (isset($_POST['btnRegisterProfile'])) {
                 <div class="row">
                     <div class="col">
                         <div class="register-form bg-form p-5 rounded shadow-sm">
-                            <form method="post">
+                            <form action="\add_profile.php" method="post">
                                 <div class="form-group">
                                     <label for="sname">Фамилия</label>
                                     <input type="text" name="sname" id="sname" class="form-control">
@@ -110,12 +53,12 @@ if (isset($_POST['btnRegisterProfile'])) {
                                         <label for="inn">ИНН</label>
                                         <input type="text" name="inn" id="inn" class="form-control">
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="form-check" style="padding: 35px 10px 0 40px; position: absolute;">
                                             <input type="checkbox" name="notINN" id="notiNN" class="form-check-input" value="1">
                                             <label for="notINN" class="form-check-label">Отсутствует</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Телефон</label>
@@ -195,4 +138,5 @@ if (isset($_POST['btnRegisterProfile'])) {
             });    
         });
     </script>
-</body>                            
+</body>
+</html>                            

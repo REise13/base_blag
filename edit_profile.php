@@ -29,6 +29,7 @@ if (isset($_POST['btnEditProfInfo'])) {
         $con->commit();
         unset($stmt);
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -47,6 +48,7 @@ if(isset($_POST['btnEditFamily'])) {
         $_SESSION["flash"] = ["type" => "primary", "message" => "Данные о семье обновлены."];
         unset($stmt);
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -66,6 +68,7 @@ if(isset($_POST['btnEditNote'])) {
         $_SESSION["flash"] = ["type" => "primary", "message" => "Примечание обновлено."];
         unset($stmt);
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -96,6 +99,7 @@ if(isset($_POST['btnEditHouseHeating'])) {
         $_SESSION["flash"] = ["type" => "primary", "message" => "Данные изменены."];
         unset($stmt);
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -118,6 +122,7 @@ if(isset($_POST['btnAddCategory'])) {
         $con->commit();
         $_SESSION["flash"] = ["type" => "success", "message" => "Категория добавлена."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -141,6 +146,7 @@ if(isset($_POST['btnDeleteCategory'])) {
         unset($stmt);
         $_SESSION["flash"] = ["type" => "warning", "message" => "Категория удалена."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -163,6 +169,7 @@ if(isset($_POST['btnAddTraining'])) {
         unset($stmt);
         $_SESSION["flash"] = ["type" => "success", "message" => "Тренинг добавлен."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -186,6 +193,7 @@ if(isset($_POST['btnDeleteTraining'])) {
         unset($stmt);
         $_SESSION["flash"] = ["type" => "warning", "message" => "Тренинг удален."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -207,8 +215,9 @@ if(isset($_POST['btnAddNeed'])) {
         }
         $con->commit();
         unset($stmt);
-        $_SESSION["flash"] = ["type" => "warning", "message" => "Данные удалены."];
+        $_SESSION["flash"] = ["type" => "warning", "message" => "Нужды добавлены."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -218,7 +227,7 @@ if(isset($_POST['btnAddNeed'])) {
 if(isset($_POST['btnDeleteNeed'])) {
     $need= $_POST['profile_need'];
 
-    $sql = "DELETE FROM crossneed WHERE id_Profile=:profile_need_id";
+    $sql = "DELETE FROM crossneed WHERE id=:profile_need_id";
     $stmt= $con->prepare($sql);
     try {
         $con->beginTransaction();
@@ -230,6 +239,7 @@ if(isset($_POST['btnDeleteNeed'])) {
         unset($stmt);
         $_SESSION["flash"] = ["type"=> "warning", "message"=>"Данные удалены."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;
@@ -257,7 +267,8 @@ if(isset($_POST['btnAddHelp'])) {
         $con->commit();
         unset($stmt);
         $_SESSION["flash"] = ["type"=>"success", "message"=>"Помощь добавлена."];
-        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");    
+        header("location: ../profileinfo.php/?profile=$profID&people=$peopleID"); 
+        exit;   
     }
     catch(Exception $e) {
         $con->rollback();
@@ -280,6 +291,7 @@ if(isset($_POST['btnDeleteHelp'])) {
         unset($stmt);
         $_SESSION["flash"] = ["type"=>"warning", "message"=>"Данные удалены."];
         header("location: ../profileinfo.php/?profile=$profID&people=$peopleID");
+        exit;
     }
     catch (Exception $e) {
         $con->rollback();
@@ -287,4 +299,24 @@ if(isset($_POST['btnDeleteHelp'])) {
     }
 }
 
+
+if(isset($_POST['btnDeleteProfile'])) {
+    $sql = "DELETE FROM people WHERE id=:id";
+    $stmt = $con->prepare($sql);
+
+    try{
+        $con->beginTransaction();
+        $stmt->bindParam(':id', $peopleID, PDO::PARAM_INT);
+        $stmt->execute();
+        $con->commit();
+        unset($stmt);
+        $_SESSION["flash"] = ["type"=>"warning", "message"=>"Профиль удален."];
+        header("location: ../searchprof.php");
+        exit;
+    }
+    catch (Exception $e) {
+        $con->rollback();
+        throw $e;
+    }
+}
 ?>    

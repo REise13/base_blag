@@ -863,10 +863,10 @@ $profileInfo = $stmt->fetch();
                         <div class="modal-dialog modal-dialog-centered modal-sm">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <form action="" method="post">
+                                    <form action="/edit_profile.php" method="post">
                                        <p class="pt-2 text-center text-warning">Удалить данный профиль?</p>
                                        <div class="form-group text-center">
-                                            <button type="submit" class="btn mx-2 btn-delete">Да</button>
+                                            <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteProfile" id="btnDeleteProfile">Да</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
                                        </div> 
                                     </form>
