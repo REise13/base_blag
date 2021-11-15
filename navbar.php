@@ -38,7 +38,7 @@ if (!isset($_SESSION['loggedin'])) {
                         Лиды
                     </a>
                     <div class="dropdown-menu" aria-labelledby="leadDropdown">
-                        <a href="#" class="dropdown-item">Поиск</a>
+                        <a href="../searchlead.php" class="dropdown-item">Поиск</a>
                         <a href="#" class="dropdown-item">Добавить лида</a>
                     </div>
                 </li>

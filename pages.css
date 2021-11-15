@@ -196,21 +196,10 @@ tr {
     position: relative;
 }
 
-:checked::before {
-    content: ' ';
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #d5cbf8a2;
-    color: rgb(128, 70, 194);
-    font-weight: 500;
-    opacity: .5;
-    z-index: -1;
+input[type=checkbox] {
+    transform: scale(1.2);
 }
 
-input[type=checkbox] {
+input[type=radio] {
     transform: scale(1.2);
 }
