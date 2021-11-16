@@ -196,8 +196,21 @@ tr {
     position: relative;
 }
 
-input[type=checkbox] {
+/* input[type=checkbox] {
     transform: scale(1.2);
+} */
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: transparent;
+}
+  
+.custom-control-input:checked~.custom-control-label.red::before {
+    background-color: var(--active-color);
+}
+  
+.custom-control-input:checked~.custom-control-label.custom-color::before {
+    background-color: var(--active-color);
 }
 
 input[type=radio] {

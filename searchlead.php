@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="search-lead-form bg-form p-4 rounded shadow-sm">
-                                <form action="" method="get">
+                                <form action="/searchleadres.php" method="post">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="sname" class="">Фамилия</label>
@@ -44,7 +44,7 @@
                                     <div class="form-group mt-3">
                                         <label for="lead_cat">Категории</label>
                                         <div class="data_select">
-                                            <select name="lead_category" id="lead_category" 
+                                            <select name="lead_category[]" id="lead_category" 
                                                 class="selectpicker form-control show-tick" multiple="multiple" title="Выберите">
                                                 <option value="малоимущие">малоимущие</option>
                                                 <option value="одинокие пожилые люди">одинокие пожилые люди</option>
@@ -69,29 +69,65 @@
                                         <div class="form-group col">
                                             <label for="houseType">Тип жилья</label>
                                             <div class="data_select">
+                                                <?php 
+                                                 $sql = "SELECT id, title AS houseType FROM type_of_house";
+                                                 $stmt = $con->prepare($sql);
+                                                 $stmt->execute();
+                                                 $leadHouse = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                 ?>
+                                                 <?php if ($stmt->rowCount() > 0) { ?>
                                                 <select name="houseType" id="houseType" 
                                                 class="form-control selectpicker show-tick" title="Выберите">
-                                                    <option value=""></option>
+                                                    <?php foreach($leadHouse as $row) { ?>
+                                                        <option value="<?php echo $row['id']; ?>">
+                                                            <?php echo $row['houseType']; ?>
+                                                        </option>
+                                                    <?php } ?>    
                                                 </select>
+                                                <?php } unset($stmt); ?>
                                             </div>
                                         </div>
                                         <div class="form-group col">
                                             <label for="family">Семья полная?</label>
                                             <div class="data_select">
+                                                <?php 
+                                                $sql = "SELECT id, title AS family FROM lead_family";
+                                                $stmt = $con->prepare($sql);
+                                                $stmt->execute();
+                                                $leadFamily = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                ?>
+                                                <?php if ($stmt->rowCount() > 0) { ?>
                                                 <select name="family" id="family" 
                                                 class="form-control selectpicker show-tick" title="Выберите">
-                                                    <option value=""></option>
+                                                    <?php foreach($leadFamily as $fam) { ?>
+                                                        <option value="<?php echo $fam['id']; ?>">
+                                                            <?php echo $fam['family']; ?>
+                                                        </option>
+                                                    <?php } ?>    
                                                 </select>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="child">Есть несовершеннолетние?</label>
                                         <div class="data_select">
+                                            <?php 
+                                            $sql = "SELECT id, title AS children FROM lead_childrens";
+                                            $stmt = $con->prepare($sql);
+                                            $stmt->execute();
+                                            $leadChildren = $stmt->fetchALL(PDO::FETCH_ASSOC);
+                                            ?>
+                                            <?php if($stmt->rowCount() > 0) { ?>
                                             <select name="child" id="child" 
                                             class="form-control selectpicker show-tick" title="Выберите">
-                                                <option value=""></option>
+                                                <?php foreach($leadChildren as $ch) { ?>
+                                                    <option value="<?php echo $ch['id']; ?>">
+                                                        <?php echo $ch['children']; ?>
+                                                    </option>
+                                                <?php } ?>    
                                             </select>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -116,7 +152,7 @@
                                         <label for="volunter">Волонтер?</label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="1">
-                                            <label class="form-check-label" for="volunter">
+                                            <label class="form-check-label" for="volunteer">
                                                 Да
                                             </label>
                                         </div>
@@ -146,25 +182,64 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="famUnemp" class="pb-1">Есть ли трудоспособные?</label>
-                                        <select name="famUnemp" id="famUnemp" class="form-control selectpicker show-tick" title="Выберите">
-                                            <option value=""></option>
-                                        </select>
+                                        <div class="data_select">
+                                            <?php 
+                                            $sql = "SELECT id, title  AS famUnemp FROM lead_fam_unemp";
+                                            $stmt = $con->prepare($sql);
+                                            $stmt->execute();
+                                            $leadFamUnemp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                            ?>
+                                            <?php if($stmt->rowCount() > 0) { ?>
+                                            <select name="famUnemp" id="famUnemp" class="form-control selectpicker show-tick" title="Выберите">
+                                                <?php foreach($leadFamUnemp as $famunemp) { ?>
+                                                    <option value="<?php echo $famunemp['id']; ?>">
+                                                        <?php echo $famunemp['famUnemp']; ?>
+                                                    </option>
+                                                <?php } ?>    
+                                            </select>
+                                            <?php } ?>
+                                        </div>
+                                        
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-5">
-                                            <label for="bdistrict">Подвергается район обстрелу?</label>
+                                            <label for="bdisctrict">Подвергается район обстрелу?</label>
                                             <div class="data_select">
-                                                <select name="bdistrict" id="bdistrict" class="form-control selectpicker show-tick" title="Выберите">
-                                                    <option value=""></option>
+                                                <?php 
+                                                $sql = "SELECT id, title AS bdisc FROM lead_bdisctrict";
+                                                $stmt = $con->prepare($sql);
+                                                $stmt->execute();
+                                                $leadBdisc = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                ?>
+                                                <?php if($stmt->rowCount() > 0) { ?>
+                                                <select name="bdisctrict" id="bdisctrict" class="form-control selectpicker show-tick" title="Выберите">
+                                                    <?php foreach($leadBdisc as $bdisc) { ?>
+                                                        <option value="<?php echo $bdisc['id']; ?>">
+                                                            <?php echo $bdisc['bdisc']; ?>
+                                                        </option>
+                                                    <?php } ?>
                                                 </select>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <div class="form-group col-7">
                                             <label for="migrant">Переселенец?</label>
                                             <div class="data_select">
+                                                <?php
+                                                $sql = "SELECT id, title  AS migrant FROM lead_migrant";
+                                                $stmt = $con->prepare($sql);
+                                                $stmt->execute();
+                                                $leadMigrant = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+                                                ?>
+                                                <?php if($stmt->rowCount() > 0) { ?>
                                                 <select name="migrant" id="migrant" class="form-control selectpicker show-tick" title="Выберите">
-                                                    <option value=""></option>
+                                                    <?php foreach($leadMigrant as $migrant) { ?>
+                                                        <option value="<?php echo $migrant['id']; ?>">
+                                                            <?php echo $migrant['migrant']; ?>
+                                                        </option>
+                                                    <?php } ?>
                                                 </select>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>
@@ -173,9 +248,10 @@
                                         <label for="regDate">Выбор даты</label>
                                         <input type="date" name="regDate" id="regDate" class="form-control border-0">
                                     </div>
+                                    <div class="form-group pt-3">
+                                        <button type="submit" class="btn btn-custom" id="btnLeadSearch" name="btnLeadSearch">Поиск</button>
+                                    </div>
                                 </form>
-                                
-
                             </div>    
                         </div>
                     </div>
