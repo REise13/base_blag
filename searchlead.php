@@ -44,7 +44,7 @@
                                     <div class="form-group mt-3">
                                         <label for="lead_cat">Категории</label>
                                         <div class="data_select">
-                                            <select name="lead_category[]" id="lead_category" 
+                                            <select name="categories[]" id="categories" 
                                                 class="selectpicker form-control show-tick" multiple="multiple" title="Выберите">
                                                 <option value="малоимущие">малоимущие</option>
                                                 <option value="одинокие пожилые люди">одинокие пожилые люди</option>
@@ -134,13 +134,13 @@
                                        <div class="form-group col">
                                             <label for="adopted">Есть ли усыновленные дети?</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1">
+                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="0">
                                                 <label class="form-check-label custom" for="adopted">
                                                     Да
                                                 </label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="2">
+                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="-1">
                                                 <label class="form-check-label" for="adopted">
                                                     Нет
                                                 </label>
@@ -157,7 +157,7 @@
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="2">
+                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="0">
                                             <label class="form-check-label" for="volunteer">
                                                 Нет
                                             </label>
@@ -170,6 +170,7 @@
                                                 <input class="form-check-input" type="radio" name="income" id="income" value="1">
                                                 <label class="form-check-label" for="income">
                                                     Да
+                                                    
                                                 </label>
                                             </div>
                                             <div class="form-check">
