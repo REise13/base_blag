@@ -1,5 +1,6 @@
 <?php 
 require_once "config.php";
+session_start();
 
 if(isset($_POST['btnLeadSearch'])) {
     $searchFormFields = array('sname', 'name', 'patr', 'phone', 'city', 
@@ -65,27 +66,31 @@ if(isset($_POST['btnLeadSearch'])) {
         },$categories));
     }
     
+    $searchLead = "SELECT `id`, `fio`, `phone`, `fio_need`, `city`, `need` FROM `lead`";
+
     if (!empty($where) && !empty($searchCategories && !empty($searchNeed))) {
-       $stmt = $con->prepare("SELECT * FROM `lead` WHERE $where AND". $searchCategories . " AND ".$searchNeed);  
+       $stmt = $con->prepare($searchLead . " WHERE $where AND". $searchCategories . " AND ".$searchNeed);  
     } else if (!empty($where) && empty($searchCategories) && empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE $where");
+        $stmt = $con->prepare($searchLead . " WHERE $where");
     } else if (!empty($where) && empty($searchCategories) && !empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE $where AND ".$searchNeed);
+        $stmt = $con->prepare($searchLead . " WHERE $where AND ".$searchNeed);
     } else if (!empty($where) && !empty($searchCategories) && empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE $where AND ".$searchCategories);
+        $stmt = $con->prepare($searchLead . " WHERE $where AND ".$searchCategories);
     } else if (empty($where) && !empty($searchCategories) && empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE " . $searchCategories);   
+        $stmt = $con->prepare($searchLead . " WHERE " . $searchCategories);   
     } else if (empty($where) && empty($searchCategories) && !empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE " . $searchNeed);
+        $stmt = $con->prepare($searchLead . " WHERE " . $searchNeed);
     } else if (empty($where) && !empty($searchCategories) && !empty($searchNeed)) {
-        $stmt = $con->prepare("SELECT * FROM `lead` WHERE " . $searchCategories . " AND " . $searchNeed);
+        $stmt = $con->prepare($searchLead . " WHERE " . $searchCategories . " AND " . $searchNeed);
     } else {
-        $stmt = $con->prepare("SELECT * FROM `lead`");
+        $stmt = $con->prepare($searchLead);
     }
     
     $stmt->execute($params); 
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    print_r($res);
-
+    
+    $_SESSION['leads'] = $res;
+    header("location: ../leads.php");
+    exit;
 }
 ?>

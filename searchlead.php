@@ -3,6 +3,7 @@
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>
 
+<?php unset($_SESSION['leads']); ?>
     <body>
         <div class="page-content p-5" id="content">
             <div class="search-lead-form">
@@ -11,7 +12,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="search-lead-form bg-form p-4 rounded shadow-sm">
-                                <form action="/searchleadres.php" method="post">
+                                <form action="/search_lead_db.php" method="post">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="sname" class="">Фамилия</label>
@@ -170,7 +171,7 @@
                                                 <input class="form-check-input" type="radio" name="income" id="income" value="1">
                                                 <label class="form-check-label" for="income">
                                                     Да
-                                                    
+
                                                 </label>
                                             </div>
                                             <div class="form-check">

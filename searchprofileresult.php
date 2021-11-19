@@ -1,4 +1,4 @@
-<?php $title= 'Поиск профиля' ?>
+<?php $title= 'Поиск: Профили' ?>
 <?php include('head.php'); ?>
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>
@@ -1692,4 +1692,5 @@
             });
         });
     </script>
-</body>                      
+</body>
+</html>                      

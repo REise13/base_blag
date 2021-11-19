@@ -1,9 +1,8 @@
 <?php
 // инициализация сессии
-// Include config file
+session_start();
 require_once "config.php";
  
-// Define variables and initialize with empty values
 $username = $password = "";
 $username_err = $password_err = $login_err = "";
  
@@ -34,9 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     }
     
-    // Validate credentials
     if(empty($username_err) && empty($password_err)){
-        // Prepare a select statement
         $sql = "SELECT id, login, pass, role_id FROM user WHERE login = :username";
         
         if($stmt = $con->prepare($sql)){
@@ -70,7 +67,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         }
                     }
                 } else{
-                    // Username doesn't exist, display a generic error message
                     $login_err = "Неверный логин или пароль";
                 }
             } else{

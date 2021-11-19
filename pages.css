@@ -172,7 +172,7 @@ input[readonly], textarea[readonly] {
 
 .table-scrollbar {
     position: relative;
-    height: 766px;
+    height: 566px;
     overflow: auto;
 }
 
