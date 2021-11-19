@@ -36,7 +36,7 @@ if(isset($_POST['btnLeadSearch'])) {
             if ($field == 'famUnemp')
                 $params['id_fam_unemp'] = $_POST['famUnemp'];
             if ($field == 'bdisctrict')
-                $params['id_bdistrict'] = $_POST['bdiscrict'];
+                $params['id_bdistrict'] = $_POST['bdisctrict'];
             if ($field == 'migrant')
                 $params['id_migrant'] = $_POST['migrant'];
             if ($field == 'regDate') {
