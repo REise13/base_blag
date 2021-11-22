@@ -58,7 +58,7 @@ nav {
 input[type="text"]:focus, input[type="password"]:focus, 
 input[type="date"]:focus {
     font-weight: 600;
-    color: var(--active-color);
+    color: #4922a5c9;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none;
@@ -119,6 +119,10 @@ input[readonly], textarea[readonly] {
     background: rgb(248, 246, 243);
 }
 
+.info {
+    color: #4922a5c9;
+    font-weight: 500;
+}
 
 .btn-edit i {
     color: #856fce;

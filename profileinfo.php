@@ -884,7 +884,6 @@ $profileInfo = $stmt->fetch();
         $(document).ready(function() {
             $('.info').prop('readonly', true);
 
-            
         })
     </script>
 
