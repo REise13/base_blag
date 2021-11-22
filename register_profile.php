@@ -3,7 +3,16 @@
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>
 
-
+<?php
+$leadfio = array();
+$leadphone = "";
+if (isset($_SESSION['lead_fio']) && isset($_SESSION['lead_phone'])) {
+    $leadfio = explode(" ", $_SESSION['lead_fio']);
+    $leadphone = $_SESSION['lead_phone'];
+}
+unset($_SESSION['lead_fio']);
+unset($_SESSION['lead_phone']); 
+ ?>
 <body>
     <div class="page-content p-3" id="content">
         <div class="register-form">
@@ -13,18 +22,36 @@
                     <div class="col">
                         <div class="register-form bg-form p-5 rounded shadow-sm">
                             <form action="\add_profile.php" method="post">
-                                <div class="form-group">
-                                    <label for="sname">Фамилия</label>
-                                    <input type="text" name="sname" id="sname" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="name">Имя</label>
-                                    <input type="text" name="name" id="name" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="patr">Отчество</label>
-                                    <input type="text" name="patr" id="patr" class="form-control">
-                                </div>
+                                <?php if ($leadfio != null ) { ?>
+                                    <div class="form-group">
+                                        <label for="sname">Фамилия</label>
+                                        <input type="text" name="sname" id="sname" class="form-control"
+                                        value="<?php echo $leadfio[0] ?>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Имя</label>
+                                        <input type="text" name="name" id="name" class="form-control"
+                                        value="<?php echo $leadfio[1] ?>">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="patr">Отчество</label>
+                                        <input type="text" name="patr" id="patr" class="form-control"
+                                        value="<?php echo $leadfio[2] ?>">
+                                    </div>
+                                <?php }  else { ?>
+                                    <div class="form-group">
+                                        <label for="sname">Фамилия</label>
+                                        <input type="text" name="sname" id="sname" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Имя</label>
+                                        <input type="text" name="name" id="name" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="patr">Отчество</label>
+                                        <input type="text" name="patr" id="patr" class="form-control">
+                                    </div>
+                                <?php } ?>    
                                 <div class="form-group">
                                     <label for="gender">Пол</label>
                                     <div class="data_select">
@@ -62,7 +89,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Телефон</label>
-                                    <input type="text" name="phone" id="phone" class="form-control">
+                                    <?php if ($leadphone != "") { ?>
+                                        <input type="text" name="phone" id="phone" class="form-control"
+                                        value="<?php echo $leadphone ?>">
+                                    <?php } else { ?>
+                                        <input type="text" name="phone" id="phone" class="form-control">
+                                    <?php } ?>        
                                 </div>
                                 <di class="form-group">
                                     <label for="passport">Паспорт</label>

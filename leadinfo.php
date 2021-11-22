@@ -48,6 +48,7 @@ $stmt = $con->prepare($selectLeadQuery);
 $stmt->bindParam(':id', $leadID, PDO::PARAM_INT);
 $stmt->execute();
 $leadInfo = $stmt->fetch();  
+
  ?>
 
 
@@ -59,7 +60,7 @@ $leadInfo = $stmt->fetch();
                     <div class="row">
                         <div class="col">
                             <div class="lead-info-form bg-form p-5 rounded shadow-sm">
-                                <form action="" method="post">
+                                <form action="\edit_lead.php" method="post">
                                     <div class="form-group row">
                                         <label for="fio" class="col-4 col-form-label">ФИО заявителя</label>
                                         <div class="col-sm-8">
