@@ -5,6 +5,7 @@
 
 <?php
 $leadID = $_GET['lead'];
+$_SESSION['lead'] = $leadID;
 $selectLeadQuery = "SELECT `lead`.id, `lead`.fio, `lead`.phone, `lead`.email, `lead`.id_reason, 
 lead_reason.title AS reason, `lead`.fio_need, `lead`.city, `lead`.district, 
 `lead`.id_type_of_house, type_of_house.title AS houseType, 
@@ -60,6 +61,11 @@ $leadInfo = $stmt->fetch();
                     <div class="row">
                         <div class="col">
                             <div class="lead-info-form bg-form p-5 rounded shadow-sm">
+                            <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                            }    
+                            ?> 
                                 <form action="\edit_lead.php" method="post">
                                     <div class="form-group row">
                                         <label for="fio" class="col-4 col-form-label">ФИО заявителя</label>
@@ -187,165 +193,279 @@ $leadInfo = $stmt->fetch();
                                             <button type="button" class="btn btn-edit mr-3" data-toggle="modal" data-target="#editLeadInfo">Изменить</button>
                                             <button type="submit" class="btn btn-delete" id="btnLeadDelete" name="btnLeadDelete">Удалить</button>
                                         </div>
-                                    </div>
+                                    </div>                         
+                                </form>
 
-                                    <div class="modal fade" id="editLeadInfo" tabindex="-1" aria-labelledby="editLeadInfoLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="editLeadInfoLabel">Изменить информацию о лиде</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">    
-                                                    <form role="form" action="" method="post">
-                                                        <div class="form-group row">
-                                                            <label for="fio" class="col-3 col-form-label">ФИО заявителя</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" name="fio_edit" id="fio_edit" class="form-control" 
-                                                                value="<?php echo $leadInfo['fio']; ?>">
-                                                            </div>
+                                <div class="modal fade" id="editLeadInfo" tabindex="-1" aria-labelledby="editLeadInfoLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-dialog-fullscreen">
+                                        <div class="modal-content modal-content-fullscreen">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editLeadInfoLabel">Изменить информацию о лиде</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">    
+                                                <form role="form" action="\edit_lead.php" method="post">
+                                                    <div class="form-group row">
+                                                        <label for="fio" class="col-3 col-form-label">ФИО заявителя</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="fio_edit" id="fio_edit" class="form-control" 
+                                                            value="<?php echo $leadInfo['fio']; ?>">
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="phone" class="col-3 col-form-label">Телефон</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" name="phone_edit" id="phone_edit" class="form-control" 
-                                                                value="<?php echo $leadInfo['phone']; ?>">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="phone" class="col-3 col-form-label">Телефон</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="phone_edit" id="phone_edit" class="form-control" 
+                                                            value="<?php echo $leadInfo['phone']; ?>">
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="email" class="col-3 col-form-label">Email</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" name="email_edit" id="email_edit" class="form-control" 
-                                                                value="<?php echo $leadInfo['email']; ?>">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="email" class="col-3 col-form-label">Email</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="email_edit" id="email_edit" class="form-control" 
+                                                            value="<?php echo $leadInfo['email']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="lastName_edit" class="col-3 col-form-label">Фамилия нуждающегося</label>
-                                                            <div class="col-sm-9">
-                                                                <input id="lastName_edit" class="form-control" type="text" name="lastName_edit" 
-                                                                value="<?php echo $leadInfo['lastName']; ?>">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="lastName_edit" class="col-3 col-form-label">Фамилия нуждающегося</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="lastName_edit" class="form-control" type="text" name="lastName_edit" 
+                                                            value="<?php echo $leadInfo['lastName']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="firstName_edit" class="col-3 col-form-label">Имя нуждающегося</label>
-                                                            <div class="col-sm-9">
-                                                                <input id="firstName_edit" class="form-control" type="text" name="firstName_edit" 
-                                                                value="<?php echo $leadInfo['firstName']; ?>">
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="firstName_edit" class="col-3 col-form-label">Имя нуждающегося</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="firstName_edit" class="form-control" type="text" name="firstName_edit" 
+                                                            value="<?php echo $leadInfo['firstName']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="patrName_edit" class="col-3 col-form-label">Отчество нуждающегося</label>
-                                                            <div class="col-sm-9"><input id="patrName_edit" class="form-control" type="text" name="patrName_edit" value="<?php echo $leadInfo['patrName']; ?>"></div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="patrName_edit" class="col-3 col-form-label">Отчество нуждающегося</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="patrName_edit" class="form-control" type="text" name="patrName_edit" 
+                                                            value="<?php echo $leadInfo['patrName']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="city_edit" class="col-3 col-form-label">Город</label>
-                                                            <div class="col-sm-9"><input id="city_edit" class="form-control" type="text" name="city_edit" value="<?php echo $leadInfo['city']; ?>"></div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="city_edit" class="col-3 col-form-label">Город</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="city_edit" class="form-control" type="text" name="city_edit" 
+                                                            value="<?php echo $leadInfo['city']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="district_edit" class="col-3 col-form-label">Район</label>
-                                                            <div class="col-sm-9"></div><input id="district_edit" class="form-control" type="text" name="district_edit" value="<?php echo $leadInfo['district']; ?>">
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="district_edit" class="col-3 col-form-label">Район</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="district_edit" class="form-control" type="text" name="district_edit" 
+                                                            value="<?php echo $leadInfo['district']; ?>">
                                                         </div>
-                                                        <div class="form-group">
-                                                            <?php $income_vars = [['id'=> -1, 'title'=>'Нет'], ['id'=>1, 'title'=>'Да'],]; ?>
-                                                            <label for="income_edit">Есть ли доходы?</label>
-                                                            <div class="data_select">
-                                                                <select name="income_edit" id="income_edit" 
-                                                                    class="selectpicker show-tick" data-width="150px;" data-size="7" required>
-                                                                    <?php foreach ($income_vars as $row) { ?>
-                                                                        <?php if($leadInfo['income_id'] == $row['id']) { ?>
-                                                                            <option value="<?php $row['id']; ?>" selected><?php echo $row['title']; ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php $row['id']; ?>"><?php echo $row['title']; ?></option>
-                                                                        <?php } ?>
-                                                                    <?php } ?>        
-                                                                </select>                      
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="income_edit" class="col-3 col-form-label">Есть ли доходы?</label>
+                                                        <div class="data_select col-sm-9">
+                                                            <select name="income_edit" id="income_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                    <option value="1" <?php if($leadInfo['income'] == 'Да') echo 'selected' ?>>Да</option>
+                                                                    <option value="-1" <?php if($leadInfo['income'] == 'Нет') echo 'selected' ?>>Нет</option>
+                                                            </select>                      
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="migrant_edit">Благополучатель переселенец?</label>
-                                                            <div class="data_select">
-                                                            <?php
-                                                            $stmt = $con->prepare("SELECT id, title AS migrant FROM lead_migrant");
-                                                            $stmt->execute();
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="migrant_edit" class="col-3 col-form-label">Благополучатель переселенец?</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS migrant FROM lead_migrant");
+                                                        $stmt->execute();
 
-                                                            $migrant = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        $migrant = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                                            if ($stmt->rowCount() > 0) { ?>
-                                                                <select name="migrant_edit" id="migrant_edit" 
-                                                                    class="selectpicker show-tick" data-width="150px;" data-size="7" data-live-search="true" required>
-                                                                    <?php foreach ($migrant as $res) { ?>
-                                                                        <?php if ($leadInfo['id_migrant'] == $res['id']) { ?>
-                                                                            <option value="<?php echo $res['id']; ?>" selected><?php echo $res['migrant'] ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php echo $res['id']; ?>"><?php echo $res['migrant'] ?></option>
-                                                                        <?php } ?>    
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="migrant_edit" id="migrant_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($migrant as $res) { ?>
+                                                                    <?php if ($leadInfo['id_migrant'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['migrant'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['migrant'] ?></option>
                                                                     <?php } ?>    
-                                                                </select>   
-                                                            <?php } ?>                    
-                                                            </div>
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label for="houseType_edit">Тип жилья благополучателя</label>
-                                                            <div class="data_select">
-                                                            <?php
-                                                            $stmt = $con->prepare("SELECT id, title AS house FROM type_of_house");
-                                                            $stmt->execute();
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="houseType_edit" class="col-3 col-form-label">Тип жилья благополучателя</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS house FROM type_of_house");
+                                                        $stmt->execute();
 
-                                                            $house = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                        $house = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                                            if ($stmt->rowCount() > 0) { ?>
-                                                                <select name="houseType_edit" id="houseType_edit" 
-                                                                    class="selectpicker show-tick" data-width="150px;" data-size="7" data-live-search="true" required>
-                                                                    <?php foreach ($house as $res) { ?>
-                                                                        <?php if ($leadInfo['id_type_of_house'] == $res['id']) { ?>
-                                                                            <option value="<?php echo $res['id']; ?>" selected><?php echo $res['house'] ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php echo $res['id']; ?>"><?php echo $res['house'] ?></option>
-                                                                        <?php } ?>    
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="houseType_edit" id="houseType_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($house as $res) { ?>
+                                                                    <?php if ($leadInfo['id_type_of_house'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['house'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['house'] ?></option>
                                                                     <?php } ?>    
-                                                                </select>   
-                                                            <?php } ?>                    
-                                                            </div>
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
                                                         </div>
-                                                        <div class="form-group">
-                                                            <?php $income_vars = [['id'=> -1, 'title'=>'Нет'], ['id'=> 0, 'title'=>'Неизвестно'], ['id'=>1, 'title'=>'Да'],]; ?>
-                                                            <label for="adopted_edit">Есть ли приемные?</label>
-                                                            <div class="data_select">
-                                                                <select name="gender_edit" id="gender_edit" 
-                                                                    class="selectpicker show-tick" data-width="150px;" data-size="7" required>
-                                                                    <?php foreach ($income_vars as $row) { ?>
-                                                                        <?php if($leadInfo['adopted_id'] == $row['id']) { ?>
-                                                                            <option value="<?php $row['id']; ?>" selected><?php echo $row['title']; ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php $row['id']; ?>"><?php echo $row['title']; ?></option>
-                                                                        <?php } ?>
-                                                                    <?php } ?>        
-                                                                </select>                      
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="adopted_edit" class="col-3 col-form-label">Есть ли приемные?</label>
+                                                        <div class="data_select col-sm-9">
+                                                            <select name="adopted_edit" id="adopted_edit" 
+                                                            class="selectpicker show-tick form-control">
+                                                                <option value="1" <?php if($leadInfo['adopted'] == 'Да') echo 'selected' ?>>Да</option>
+                                                                <option value="-1" <?php if($leadInfo['adopted'] == 'Нет') echo 'selected' ?>>Нет</option>
+                                                                <option value="0" <?php if($leadInfo['adopted'] == 'Неизвестно') echo 'selected' ?>>Неизвестно</option>
+                                                            </select>                      
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="categories" class="col-4 col-form-label">Категории</label>
-                                                            <div class="col-sm-8">
-                                                                <textarea name="categories" id="categories" class="form-control" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="categories" class="col-3 col-form-label">Категории</label>
+                                                        <div class="col-sm-9">
+                                                            <textarea name="categories_edit" id="categories_edit" class="form-control" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="need" class="col-sm-4 col-form-label">Какая помощь необходима?</label>
-                                                            <div class="col-sm-8">
-                                                                <textarea name="need" id="need" class="form-control" rows="3"><?php echo $leadInfo['need']; ?></textarea>
-                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="need" class="col-sm-3 col-form-label">Какая помощь необходима?</label>
+                                                        <div class="col-sm-9">
+                                                            <textarea name="need_edit" id="need_edit" class="form-control" rows="3"><?php echo $leadInfo['need']; ?></textarea>
                                                         </div>
-                                                        <div class="separator"></div>
-                                                        <button type="submit" class="btn btn-custom" name="btnEditLeadInfo" id="btnEditLeadInfo">Сохранить</button>
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
-                                                    </form>    
-                                                </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="volunteer_edit" class="col-3 col-form-label">Желаете ли быть волонтёром?</label>
+                                                        <div class="data_select col-sm-9">
+                                                            <select name="volunteer_edit" id="volunteer_edit" 
+                                                            class="selectpicker show-tick form-control">
+                                                                <option value="1" <?php if($leadInfo['volunteer'] == 'Да') echo 'selected' ?>>Да</option>
+                                                                <option value="-1" <?php if($leadInfo['volunteer'] == 'Нет') echo 'selected' ?>>Нет</option> 
+                                                            </select>                      
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="subcontact_edit" class="col-3 col-form-label">Контакты с нуждающимся</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="subcontact_edit" class="form-control" type="text" name="subcontact_edit" 
+                                                            value="<?php echo $leadInfo['subcontact']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="datelead_edit" class="col-3 col-form-label">Дата анкетирования</label>
+                                                        <div class="col-sm-9">
+                                                            <input id="datelead_edit" class="datepicker form-control" type="text" name="datelead_edit" 
+                                                            value="<?php echo $leadInfo['datelead']; ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="children_edit" class="col-3 col-form-label">У благополучателя в семье есть несовершеннолетние?</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS child FROM lead_childrens");
+                                                        $stmt->execute();
+
+                                                        $child = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="children_edit" id="children_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($child as $res) { ?>
+                                                                    <?php if ($leadInfo['id_child'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['child'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['child'] ?></option>
+                                                                    <?php } ?>    
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="famUnEmp_edit" class="col-3 col-form-label">У благополучателя в семье есть трудоспособные?</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS emp FROM lead_fam_unemp");
+                                                        $stmt->execute();
+
+                                                        $famUnemp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="famUnEmp_edit" id="famUnEmp_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($famUnemp as $res) { ?>
+                                                                    <?php if ($leadInfo['id_fam_unemp'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['emp'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['emp'] ?></option>
+                                                                    <?php } ?>    
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="family_edit" class="col-3 col-form-label">У благополучателя семья полноценная?</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS family FROM lead_family");
+                                                        $stmt->execute();
+
+                                                        $child = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="family_edit" id="family_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($child as $res) { ?>
+                                                                    <?php if ($leadInfo['id_family'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['family'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['family'] ?></option>
+                                                                    <?php } ?>    
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="reason_edit" class="col-3 col-form-label">Для кого была заполнена анкета?</label>
+                                                        <div class="data_select col-sm-9">
+                                                        <?php
+                                                        $stmt = $con->prepare("SELECT id, title AS reason FROM lead_reason");
+                                                        $stmt->execute();
+
+                                                        $child = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                        if ($stmt->rowCount() > 0) { ?>
+                                                            <select name="reason_edit" id="reason_edit" 
+                                                                class="selectpicker show-tick form-control">
+                                                                <?php foreach ($child as $res) { ?>
+                                                                    <?php if ($leadInfo['id_reason'] == $res['id']) { ?>
+                                                                        <option value="<?php echo $res['id']; ?>" selected><?php echo $res['reason'] ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $res['id']; ?>"><?php echo $res['reason'] ?></option>
+                                                                    <?php } ?>    
+                                                                <?php } ?>    
+                                                            </select>   
+                                                        <?php } ?>                    
+                                                        </div>
+                                                    </div>
+                                                    <div class="separator"></div>
+                                                    <button type="submit" class="btn btn-custom" name="btnEditLeadInfo" id="btnEditLeadInfo">Сохранить</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
+                                                </form>    
                                             </div>
                                         </div>
-                                    </div>                                        
-                                </form>
+                                    </div>
+                                </div>               
                             </div>
                         </div>
                     </div>

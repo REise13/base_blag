@@ -112,8 +112,8 @@ $profileInfo = $stmt->fetch();
                             </button>
                         </form>
                         <div class="modal fade" id="editGeneralInfo" tabindex="-1" aria-labelledby="editGeneralInfoLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-                                <div class="modal-content">
+                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable fullscreen">
+                                <div class="modal-content fullscreen">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editGeneralInfoLabel">Основная информация</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -706,8 +706,8 @@ $profileInfo = $stmt->fetch();
                             </div>                                        
                             <!-- modal addHelp -->
                             <div class="modal fade" id="addHelp" tabindex="-1" aria-labelledby="addHelpLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
+                                <div class="modal-dialog modal-lg modal-dialog-fullscreen">
+                                    <div class="modal-content modal-content-fullscreen">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addHelpLabel">Добавить помощь</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -767,9 +767,9 @@ $profileInfo = $stmt->fetch();
                                                     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                     ?>
                                                         <select name="select_project" id="select_project" 
-                                                            class="selectpicker form-control show-tick" data-width="150px;" data-size="7" title="Выберите">
+                                                            class="selectpicker form-control show-tick" title="Выберите">
                                                             <?php foreach ($projects as $project) {?>
-                                                                <option value="<?php echo $project['id']; ?>"><?php echo $project['project'] ?></option>     
+                                                                <option value="<?php echo $project['id']; ?>" style="font-size: 12px;"><?php echo $project['project'] ?></option>     
                                                             <?php } ?> 
                                                             <?php unset($stmt); ?>  
                                                         </select>                  

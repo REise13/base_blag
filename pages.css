@@ -220,3 +220,20 @@ tr {
 input[type=radio] {
     transform: scale(1.2);
 }
+
+@media (min-width: 576px) and (max-width: 1199.98px) {
+    .modal-dialog-fullscreen{
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width:none !important;
+
+    }
+
+    .modal-content-fullscreen{
+        height: auto !important;
+        min-height: 100% !important;
+    }
+
+}
