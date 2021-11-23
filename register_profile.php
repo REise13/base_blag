@@ -1,4 +1,4 @@
-<?php $title= 'Поиск' ?>
+<?php $title= 'Регистрация профиля' ?>
 <?php include('head.php'); ?>
 <?php include('navbar.php'); ?>
 <?php require_once "config.php"; ?>

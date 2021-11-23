@@ -63,4 +63,24 @@ if(isset($_POST['btnEditLeadInfo'])) {
         throw $e;
     }    
 }
+
+if(isset($_POST['btnDeleteLead'])) {
+    $sql = "DELETE FROM `lead` WHERE id=:id";
+    $stmt = $con->prepare($sql);
+
+    try{
+        $con->beginTransaction();
+        $stmt->bindParam(':id', $leadID, PDO::PARAM_INT);
+        $stmt->execute();
+        $con->commit();
+        unset($stmt);
+        $_SESSION["flash"] = ["type"=>"warning", "message"=>"Лид удален."];
+        header("location: ../searchlead.php");
+        exit;
+    }
+    catch (Exception $e) {
+        $con->rollback();
+        throw $e;
+    }
+}
  ?>

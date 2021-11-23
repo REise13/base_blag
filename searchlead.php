@@ -12,6 +12,11 @@
                     <div class="row">
                         <div class="col">
                             <div class="search-lead-form bg-form p-4 rounded shadow-sm">
+                            <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                            }    
+                            ?>
                                 <form action="/search_lead_db.php" method="post">
                                     <div class="form-row">
                                         <div class="form-group col">
@@ -135,7 +140,7 @@
                                        <div class="form-group col">
                                             <label for="adopted">Есть ли усыновленные дети?</label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="0">
+                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1">
                                                 <label class="form-check-label custom" for="adopted">
                                                     Да
                                                 </label>
@@ -158,7 +163,7 @@
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="0">
+                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="-1">
                                             <label class="form-check-label" for="volunteer">
                                                 Нет
                                             </label>

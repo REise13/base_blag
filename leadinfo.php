@@ -191,7 +191,7 @@ $leadInfo = $stmt->fetch();
                                         <div class="btn-group pt-4" role="group">
                                             <button type="submit" class="btn btn-edit mr-3" id="btnLeadRegister" name="btnLeadRegister">Зарегистрировать</button>
                                             <button type="button" class="btn btn-edit mr-3" data-toggle="modal" data-target="#editLeadInfo">Изменить</button>
-                                            <button type="submit" class="btn btn-delete" id="btnLeadDelete" name="btnLeadDelete">Удалить</button>
+                                            <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#deleteLead">Удалить</button>
                                         </div>
                                     </div>                         
                                 </form>
@@ -465,7 +465,25 @@ $leadInfo = $stmt->fetch();
                                             </div>
                                         </div>
                                     </div>
-                                </div>               
+                                </div>
+                                
+                                <!-- modal deleteLead -->
+                                <div class="modal" id="deleteLead" tabindex="-1" aria-labelledby="deleteLeadLable" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form action="/edit_lead.php" method="post">
+                                                    <p class="pt-2 text-center text-warning">Удалить данного лида?</p>
+                                                    <div class="form-group text-center">
+                                                        <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteLead" id="btnDeleteLead">Да</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                                                    </div> 
+                                                </form>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end -->
                             </div>
                         </div>
                     </div>
