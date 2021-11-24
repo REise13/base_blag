@@ -46,7 +46,6 @@ try{
         $stmt->execute(array(':profile_id'=>$lastProfileID, ':category_id'=>$cat));
     }
     $con->commit();
-    // header("location: ../profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
     $_SESSION['profID'] = $lastProfileID;
     $_SESSION['peopleID'] = $lastPeopleID;
     unset($stmt);

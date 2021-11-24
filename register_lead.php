@@ -12,20 +12,20 @@
                     <div class="row">
                         <div class="col">
                             <div class="bg-form p-5 rounded shadow-sm">
-                                <form action="" method="post">
+                                <form action="/add_lead.php" method="post">
                                     <p class="font-weight-bold h5 pb-2" style="color: #4922a5c9;">
                                         Заявка на получение гуманитарной помощи нуждающегося и его семьи
                                     </p>
                                     <div class="form-group">
-                                        <label for="fio">Пожалуйста, представьтесь:</label>
+                                        <label for="fio">Пожалуйста, представьтесь</label>
                                         <input id="fio" class="form-control" type="text" name="fio">
                                     </div>
                                     <div class="form-group">
-                                        <label for="phone">Контактный телефон:</label>
+                                        <label for="phone">Контактный телефон</label>
                                         <input id="phone" class="form-control" type="text" name="phone">
                                     </div>
                                     <div class="form-group">
-                                        <label for="email">Email:</label>
+                                        <label for="email">Email</label>
                                         <input id="email" class="form-control" type="text" name="email">
                                     </div>
                                     <div class="form-group">
@@ -122,7 +122,7 @@
                                         $migrant = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                                         if ($stmt->rowCount() > 0) { ?>
-                                            <select name="migrant_edit" id="migrant_edit" 
+                                            <select name="migrant" id="migrant" 
                                             class="selectpicker show-tick form-control" title="Выберите" required>
                                             <?php foreach ($migrant as $res) { ?>
                                                 <option value="<?php echo $res['id']; ?>"><?php echo $res['migrant'] ?></option>  
@@ -144,7 +144,7 @@
                                             $leadFamUnemp = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                             ?>
                                             <?php if($stmt->rowCount() > 0) { ?>
-                                            <select name="famUnemp" id="famUnemp" 
+                                            <select name="famUnEmp" id="famUnEmp" 
                                             class="form-control selectpicker show-tick" title="Выберите" required>
                                                 <?php foreach($leadFamUnemp as $famunemp) { ?>
                                                     <option value="<?php echo $famunemp['id']; ?>">
@@ -163,7 +163,7 @@
                                                 (физиологические и медицинцинские) потребности?
                                             </label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="income" id="income" value="1">
+                                                <input class="form-check-input" type="radio" name="income" id="income" value="1" required>
                                                 <label class="form-check-label" for="income">
                                                     Да
                                                 </label>
@@ -227,7 +227,7 @@
                                                 В семье есть усыновлённые/удочерённые несовершеннолетние лица?
                                             </label>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1">
+                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1" required>
                                                 <label class="form-check-label custom" for="adopted">
                                                     Да
                                                 </label>
@@ -276,11 +276,11 @@
                                         <input id="need" class="form-control" type="text" name="need">
                                     </div>
                                     <div class="form-group py-2">
-                                        <label for="volunter">
+                                        <label for="volunteer">
                                             Есть ли возможность Вам заниматься волонтёрской деятельностью?
                                         </label>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="1">
+                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="1" required>
                                             <label class="form-check-label" for="volunteer">
                                                 Да
                                             </label>
