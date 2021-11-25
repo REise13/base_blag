@@ -1,9 +1,9 @@
-<?php $title= 'Регистрация профиля' ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
 <?php
+ob_start();
+$title= 'Регистрация профиля';
+include('head.php');
+include('navbar.php');
+require_once "config.php";
 $leadfio = array();
 $leadphone = "";
 if (isset($_SESSION['lead_fio']) && isset($_SESSION['lead_phone'])) {

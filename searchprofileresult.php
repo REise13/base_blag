@@ -1,7 +1,9 @@
-<?php $title= 'Поиск: Профили' ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
+<?php
+$title= 'Профили';
+include('head.php');
+include('navbar.php');
+require_once "config.php";
+?>
 
 <body>
     <div class="page-content p-3" id="content">

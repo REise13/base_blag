@@ -1,9 +1,9 @@
-<?php $title= 'Профиль' ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
-<?php 
+<?php
+ob_start();
+$title= 'Профиль';
+include('head.php');
+include('navbar.php');
+require_once "config.php"; 
 $profID = $_GET['profile'];
 $peopleID = $_GET['people'];
 $_SESSION['profID'] = $profID;
@@ -16,20 +16,6 @@ $stmt->execute();
 $profileInfo = $stmt->fetch();
 
 ?>
-
-
-
-<script>
-    $(document).ready(function(){
-        $('a[data-toggle="pill"]').on('show.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(e.target).attr('href'));
-        });
-        var activeTab = localStorage.getItem('activeTab');
-        if(activeTab){
-            $('#navPill a[href="' + activeTab + '"]').tab('show');
-        }
-    });
-</script>
 
 <body>
     <div class="row">
@@ -884,6 +870,22 @@ $profileInfo = $stmt->fetch();
         $(document).ready(function() {
             $('.info').prop('readonly', true);
 
+            $('a[data-toggle="pill"]').on('show.bs.tab', function(e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if(activeTab ){
+                $('#navPill a[href="' + activeTab + '"]').tab('show');
+            }
+
+
+            $(".table tbody tr").click(function(e) {
+                if($(e.target).is(':checkbox')) 
+                    return; 
+            
+                var $cb = $(this).find(':checkbox');
+                $cb.prop('checked', !$cb.is(':checked'));
+            });
         })
     </script>
 

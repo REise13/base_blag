@@ -1,9 +1,11 @@
-<?php $title= 'Лид'; ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
 <?php
+ob_start();
+session_start();
+$title= 'Лид';
+include('head.php');
+include('navbar.php');
+require_once "config.php"; 
+
 $leadID = $_GET['lead'];
 $_SESSION['lead'] = $leadID;
 $selectLeadQuery = "SELECT `lead`.id, `lead`.fio, `lead`.phone, `lead`.email, `lead`.id_reason, 
@@ -49,9 +51,7 @@ $stmt = $con->prepare($selectLeadQuery);
 $stmt->bindParam(':id', $leadID, PDO::PARAM_INT);
 $stmt->execute();
 $leadInfo = $stmt->fetch();  
-
- ?>
-
+?>
 
     <body>
         <div class="page-content p-5" id="content">

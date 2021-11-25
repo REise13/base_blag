@@ -1,9 +1,10 @@
-<?php $title= 'Поиск лида'; ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
-<?php unset($_SESSION['leads']); ?>
+<?php
+$title= 'Поиск лида';
+include('head.php');
+include('navbar.php');
+require_once "config.php";
+unset($_SESSION['leads']);
+?>
     <body>
         <div class="page-content p-5" id="content">
             <div class="search-lead-form">

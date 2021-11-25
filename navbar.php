@@ -1,12 +1,12 @@
 <?php
+ob_start();
 session_start();
-// If the user is not logged in redirect to the login page...
+
 if (!isset($_SESSION['loggedin'])) {
     header('Location: index.php');
     exit;
 }
 ?>
-
 <header>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <a class="navbar-brand" href="#">
@@ -50,9 +50,9 @@ if (!isset($_SESSION['loggedin'])) {
                         Информация
                     </a>
                     <div class="dropdown-menu" aria-labelledby="infodDropdown">
-                        <a href="#" class="dropdown-item">Категории</a>
-                        <a href="#" class="dropdown-item">Нужды</a>
-                        <a href="#" class="dropdown-item">Тренинги</a>
+                        <a href="../category.php" class="dropdown-item">Категории</a>
+                        <a href="../need.php" class="dropdown-item">Нужды</a>
+                        <a href="../training.php" class="dropdown-item">Тренинги</a>
                         <a href="#" class="dropdown-item">Проекты</a>
                         <a href="#" class="dropdown-item">Тип помощи</a>
                     </div>

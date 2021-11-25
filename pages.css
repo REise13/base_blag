@@ -176,8 +176,21 @@ input[readonly], textarea[readonly] {
 
 .table-scrollbar {
     position: relative;
-    height: 566px;
+    height: 466px;
     overflow: auto;
+}
+
+#style-scroll::-webkit-scrollbar
+{
+	width: 7px;
+	background-color: #F5F5F5;
+    border-radius: 3px;
+}
+
+#style-scroll::-webkit-scrollbar-thumb
+{
+	background-color: var(--nav-tabs-bg);
+	border: 2px solid #55555518;
 }
 
 .table tbody tr:hover {
@@ -200,23 +213,6 @@ tr {
     position: relative;
 }
 
-/* input[type=checkbox] {
-    transform: scale(1.2);
-} */
-
-.custom-control-input:checked~.custom-control-label::before {
-    color: #fff;
-    border-color: transparent;
-}
-  
-.custom-control-input:checked~.custom-control-label.red::before {
-    background-color: var(--active-color);
-}
-  
-.custom-control-input:checked~.custom-control-label.custom-color::before {
-    background-color: var(--active-color);
-}
-
 input[type=radio] {
     transform: scale(1.2);
 }
@@ -237,4 +233,21 @@ input[type=radio] {
         min-height: 100% !important;
     }
 
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    color: #fff;
+    border-color: transparent;
+}
+  
+.custom-control-input:checked~.custom-control-label.red::before {
+    background-color: var(--active-color);
+}
+  
+.custom-control-input:checked~.custom-control-label.custom-color::before {
+    background-color: var(--active-color);
 }

@@ -1,9 +1,9 @@
-<?php $title= 'Регистрация лида' ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
-
+<?php
+$title= 'Регистрация лида';
+include('head.php');
+include('navbar.php');
+require_once "config.php";
+?>
     <body>
         <div class="page-content p-3" id="content">
             <div class="register-lead-form">

@@ -1,9 +1,9 @@
-<?php $title= 'Поиск' ?>
-<?php include('head.php'); ?>
-<?php include('navbar.php'); ?>
-<?php require_once "config.php"; ?>
-
-
+<?php 
+$title= 'Поиск профиля';
+include('head.php');
+include('navbar.php');
+require_once "config.php";
+?>
 <body>
     <div class="page-content p-3" id="content">
         <div class="search-form">
