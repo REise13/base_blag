@@ -2,9 +2,9 @@
 ob_start();
 session_start();
 $title= 'Лид';
-include('head.php');
-include('navbar.php');
-require_once "config.php"; 
+include('../includes/head.php');
+include('../includes/navbar.php');
+require_once "../config.php"; 
 
 $leadID = $_GET['lead'];
 $_SESSION['lead'] = $leadID;

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once '../config.php';
 
 $sname = trim($_POST['sname']);
 $name = trim($_POST['name']);

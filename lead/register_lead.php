@@ -1,8 +1,8 @@
 <?php
 $title= 'Регистрация лида';
-include('head.php');
-include('navbar.php');
-require_once "config.php";
+include('../includes/head.php');
+include('../includes/navbar.php');
+require_once "../config.php";
 ?>
     <body>
         <div class="page-content p-3" id="content">

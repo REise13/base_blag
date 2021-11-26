@@ -1,9 +1,9 @@
 <?php
 ob_start();
 $title= 'Категории';
-include('head.php');
-include('navbar.php'); 
-require_once "config.php"; 
+include('../includes/head.php');
+include('../includes/navbar.php'); 
+require_once "../config.php"; 
 
 if (isset($_POST['btnAddNewTraining'])) {
     $newTraining = $_POST['newTraining'];
@@ -14,7 +14,7 @@ if (isset($_POST['btnAddNewTraining'])) {
     try {
         $con->beginTransaction();
         if ($countTrainingArray > 0) {
-            for($i=0; $i < $countTrainingdArray; $i++) {
+            for($i=0; $i < $countTrainingArray; $i++) {
                 if (trim($_POST['newTraining'][$i] != "")) {
                     $stmt->bindParam(':training', $newTraining[$i], PDO::PARAM_STR);
                     $stmt->execute();
@@ -37,7 +37,7 @@ if(isset($_POST['btnDeleteSelTraining'])) {
     $stmt=$con->prepare($sql);
     try{
         $con->beginTransaction();
-        foreach($needID as $id) {
+        foreach($trainingID as $id) {
             $stmt->bindParam(":trainingID", $id, PDO::PARAM_INT);
             $stmt->execute();
         }

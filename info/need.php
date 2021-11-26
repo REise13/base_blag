@@ -1,9 +1,9 @@
 <?php
 ob_start();
 $title= 'Категории';
-include('head.php');
-include('navbar.php'); 
-require_once "config.php"; 
+include('../includes/head.php');
+include('../includes/navbar.php'); 
+require_once "../config.php"; 
 
 if (isset($_POST['btnAddNewNeed'])) {
     $newNeed = $_POST['newNeed'];
@@ -33,14 +33,34 @@ if (isset($_POST['btnAddNewNeed'])) {
 if(isset($_POST['btnDeleteSelNeed'])) {
     $needID = $_POST['needID'];
 
-    $sql = "DELETE FROM need WHERE id=:needID";
-    $stmt=$con->prepare($sql);
     try{
         $con->beginTransaction();
-        foreach($needID as $id) {
-            $stmt->bindParam(":needID", $id, PDO::PARAM_INT);
-            $stmt->execute();
+        $sql = "SELECT id_Need FROM crossneed";
+        $stmt=$con->prepare($sql);
+        $stmt->execute();
+        $crossneed = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($crossneed as $need) {
+            foreach($needID as $id) {
+                if ($id == $need) {
+                    $sql = "DELETE FROM crossneed WHERE id_Need=:crossneed";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":crossneed", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $sql = "DELETE FROM need WHERE id=:need";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":need", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                else {
+                    $sql = "DELETE FROM need WHERE id=:need";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":need", $id, PDO::PARAM_INT);
+                    $stmt->execute(); 
+                }
+                
+            }
         }
+        
         $con->commit();
         unset($stmt);
         header("Refresh:0");

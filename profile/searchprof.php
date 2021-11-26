@@ -1,8 +1,8 @@
 <?php 
 $title= 'Поиск профиля';
-include('head.php');
-include('navbar.php');
-require_once "config.php";
+include('../includes/head.php');
+include('../includes/navbar.php');
+require_once "../config.php";
 ?>
 <body>
     <div class="page-content p-3" id="content">
@@ -17,7 +17,7 @@ require_once "config.php";
                                 unset($_SESSION["flash"]);
                         }    
                         ?>
-                            <form role="form" action="/searchprofileresult.php" method="GET">
+                            <form role="form" action="./searchprofileresult.php" method="GET">
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="sname" class="">Фамилия</label>

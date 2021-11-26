@@ -1,8 +1,8 @@
 <?php
 ob_start();
 $title= 'Категории';
-include('head.php');
-include('navbar.php'); 
+include('../includes/head.php');
+include('../includes/navbar.php'); 
 require_once "config.php"; 
 
 if (isset($_POST['btnAddNewCategory'])) {

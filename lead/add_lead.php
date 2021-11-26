@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'config.php';
+require_once '../config.php';
 
 $fio = trim($_POST['fio']);
 $phone = trim($_POST['phone']);

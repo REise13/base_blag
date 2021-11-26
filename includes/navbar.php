@@ -19,13 +19,13 @@ if (!isset($_SESSION['loggedin'])) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a href="../searchprof.php" class="nav-link">
+                    <a href="../profile/searchprof.php" class="nav-link">
                     <i class="fad fa-search"></i>        
                     Поиск
                 </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../register_profile.php" class="nav-link">
+                    <a href="../profile/register_profile.php" class="nav-link">
                         <i class="fad fa-user-plus"></i>
                         Регистрация профиля
                     </a>
@@ -50,11 +50,11 @@ if (!isset($_SESSION['loggedin'])) {
                         Информация
                     </a>
                     <div class="dropdown-menu" aria-labelledby="infodDropdown">
-                        <a href="../category.php" class="dropdown-item">Категории</a>
-                        <a href="../need.php" class="dropdown-item">Нужды</a>
-                        <a href="../training.php" class="dropdown-item">Тренинги</a>
-                        <a href="#" class="dropdown-item">Проекты</a>
-                        <a href="#" class="dropdown-item">Тип помощи</a>
+                        <a href="/info/category.php" class="dropdown-item">Категории</a>
+                        <a href="/info/need.php" class="dropdown-item">Нужды</a>
+                        <a href="/info/training.php" class="dropdown-item">Тренинги</a>
+                        <a href="/info/project.php" class="dropdown-item">Проекты</a>
+                        <a href="/info/helptype.php" class="dropdown-item">Тип помощи</a>
                     </div>
                 </li>
             </ul>
