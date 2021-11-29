@@ -33,16 +33,33 @@ if (isset($_POST['btnAddNewCategory'])) {
 if(isset($_POST['btnDeleteSelCategory'])) {
     $categoryID = $_POST['categoryID'];
 
-    $sql = "DELETE FROM category WHERE id=:categoryID";
-    $stmt=$con->prepare($sql);
     try{
         $con->beginTransaction();
-        foreach($categoryID as $id) {
-            $stmt->bindParam(":categoryID", $id, PDO::PARAM_INT);
-            $stmt->execute();
-        }
-        $con->commit();
-        unset($stmt);
+        $sql = "SELECT id_Category FROM crosscategory";
+        $stmt=$con->prepare($sql);
+        $stmt->execute();
+        $crosscategory = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($crosscategory as $need) {
+            foreach($needID as $id) {
+                if ($id == $need) {
+                    $sql = "DELETE FROM crosscategory WHERE id_Category=:crosscategory";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":crosscategory", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                    $sql = "DELETE FROM category WHERE id=:category";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":category", $id, PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+                else {
+                    $sql = "DELETE FROM category WHERE id=:category";
+                    $stmt=$con->prepare($sql);
+                    $stmt->bindParam(":category", $id, PDO::PARAM_INT);
+                    $stmt->execute(); 
+                }
+                
+            }
+        }    
     }
     catch (Exception $e) {
         $con->rollback();
