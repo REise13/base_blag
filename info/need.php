@@ -39,25 +39,22 @@ if(isset($_POST['btnDeleteSelNeed'])) {
         $stmt=$con->prepare($sql);
         $stmt->execute();
         $crossneed = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach($crossneed as $need) {
-            foreach($needID as $id) {
-                if ($id == $need) {
-                    $sql = "DELETE FROM crossneed WHERE id_Need=:crossneed";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":crossneed", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $sql = "DELETE FROM need WHERE id=:need";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":need", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                }
-                else {
-                    $sql = "DELETE FROM need WHERE id=:need";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":need", $id, PDO::PARAM_INT);
-                    $stmt->execute(); 
-                }
-                
+        foreach($needID as $id) {
+            if (in_array($id, $need)) {
+                $sql = "DELETE FROM crossneed WHERE id_Need=:crossneed";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":crossneed", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                $sql = "DELETE FROM need WHERE id=:need";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":need", $id, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+            else {
+                $sql = "DELETE FROM need WHERE id=:need";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":need", $id, PDO::PARAM_INT);
+                $stmt->execute(); 
             }
         }
         

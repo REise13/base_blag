@@ -54,7 +54,7 @@ if (!isset($_SESSION['loggedin'])) {
                         <a href="/info/need.php" class="dropdown-item">Нужды</a>
                         <a href="/info/training.php" class="dropdown-item">Тренинги</a>
                         <a href="/info/project.php" class="dropdown-item">Проекты</a>
-                        <a href="/info/helptype.php" class="dropdown-item">Тип помощи</a>
+                        <a href="#" data-toggle="modal" data-target="#my-modal" class="dropdown-item">Тип помощи</a>
                     </div>
                 </li>
             </ul>
@@ -66,7 +66,9 @@ if (!isset($_SESSION['loggedin'])) {
                 
             </div>
         </div>
+        
     </nav>
+    <?php include_once '../info/helptype.php'; ?>
 </header>
 
 <script>

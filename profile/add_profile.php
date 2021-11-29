@@ -49,7 +49,7 @@ try{
     $_SESSION['profID'] = $lastProfileID;
     $_SESSION['peopleID'] = $lastPeopleID;
     unset($stmt);
-    header("location: ../profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
+    header("location: ./profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
     exit;
 }
 catch (Exception $e) {

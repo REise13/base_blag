@@ -38,27 +38,29 @@ if(isset($_POST['btnDeleteSelTraining'])) {
         $stmt=$con->prepare($sql);
         $stmt->execute();
         $crosstraining = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach($crosstraining as $training) {
-            foreach($trainingID as $id) {
-                if ($id == $need) {
-                    $sql = "DELETE FROM crosstraining WHERE id_Training=:crosstraining";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":crosstraining", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $sql = "DELETE FROM training WHERE id=:training";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":training", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                }
-                else {
-                    $sql = "DELETE FROM training WHERE id=:training";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":training", $id, PDO::PARAM_INT);
-                    $stmt->execute(); 
-                }
-                
+        foreach($trainingID as $id) {
+            if ($id == $need) {
+                $sql = "DELETE FROM crosstraining WHERE id_Training=:crosstraining";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":crosstraining", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                $sql = "DELETE FROM training WHERE id=:training";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":training", $id, PDO::PARAM_INT);
+                $stmt->execute();
             }
-        }    
+            else {
+                $sql = "DELETE FROM training WHERE id=:training";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":training", $id, PDO::PARAM_INT);
+                $stmt->execute(); 
+            }
+            
+        }
+        
+        $con->commit();
+        unset($stmt);
+        header("Refresh:0");
     }
     catch (Exception $e) {
         $con->rollback();

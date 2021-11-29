@@ -21,7 +21,7 @@ unset($_SESSION['lead_phone']);
                 <div class="row">
                     <div class="col">
                         <div class="register-form bg-form p-5 rounded shadow-sm">
-                            <form action="\add_profile.php" method="post">
+                            <form action="./add_profile.php" method="post">
                                 <?php if ($leadfio != null ) { ?>
                                     <div class="form-group">
                                         <label for="sname">Фамилия</label>

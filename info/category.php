@@ -3,7 +3,7 @@ ob_start();
 $title= 'Категории';
 include('../includes/head.php');
 include('../includes/navbar.php'); 
-require_once "config.php"; 
+require_once "../config.php"; 
 
 if (isset($_POST['btnAddNewCategory'])) {
     $newCategory = $_POST['newCategory'];
@@ -39,27 +39,28 @@ if(isset($_POST['btnDeleteSelCategory'])) {
         $stmt=$con->prepare($sql);
         $stmt->execute();
         $crosscategory = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach($crosscategory as $need) {
-            foreach($needID as $id) {
-                if ($id == $need) {
-                    $sql = "DELETE FROM crosscategory WHERE id_Category=:crosscategory";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":crosscategory", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                    $sql = "DELETE FROM category WHERE id=:category";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":category", $id, PDO::PARAM_INT);
-                    $stmt->execute();
-                }
-                else {
-                    $sql = "DELETE FROM category WHERE id=:category";
-                    $stmt=$con->prepare($sql);
-                    $stmt->bindParam(":category", $id, PDO::PARAM_INT);
-                    $stmt->execute(); 
-                }
-                
+        foreach($categoryID as $id) {
+            if (in_array($id, $crosscategory)) {
+                $sql = "DELETE FROM crosscategory WHERE id_Category=:crosscategory";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":crosscategory", $id, PDO::PARAM_INT);
+                $stmt->execute();
+                $sql = "DELETE FROM category WHERE id=:category";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":category", $id, PDO::PARAM_INT);
+                $stmt->execute();
             }
-        }    
+            else {
+                $sql = "DELETE FROM category WHERE id=:category";
+                $stmt=$con->prepare($sql);
+                $stmt->bindParam(":category", $id, PDO::PARAM_INT);
+                $stmt->execute(); 
+            }
+            
+        }
+        $con->commit();
+        unset($stmt);
+        header("Refresh:0");   
     }
     catch (Exception $e) {
         $con->rollback();

@@ -57,7 +57,10 @@ if(isset($_POST['btnDeleteSelProject'])) {
                 $stmt->execute(); 
             }
         }
+
+        $con->commit();
         unset($stmt);
+        header("Refresh:0");
     }
     catch (Exception $e) {
         $con->rollback();

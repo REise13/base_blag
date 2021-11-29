@@ -60,7 +60,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION['message'] = "";
                             // При успешной авторизации перенаправить 
                             // на страницу поиска профиля
-                            header("location: ../searchprof.php");
+                            header("location: ../profile/searchprof.php");
                         } else{
                             // Неверный пароль, вывести сообщение об ошибке
                             $login_err = "Неверный логин или пароль.";
