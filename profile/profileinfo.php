@@ -48,7 +48,7 @@ $profileInfo = $stmt->fetch();
                 <div class="tab-content">
                     <!-- nav-tab-general-info -->
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
-                        <form class="pt-3">
+                        <form action=".././edit_profile.php" class="pt-3">
                             <div class="form-row">
                                 <div class="form-group col">
                                     <label for="sname" class="label-custom">Фамилия</label>
@@ -107,7 +107,7 @@ $profileInfo = $stmt->fetch();
                                         </button>
                                     </div>
                                     <div class="modal-body">    
-                                        <form role="form" action=".././edit_profile.php" method="post">
+                                        <form  action=".././edit_profile.php" method="post">
                                             <div class="form-group ">
                                                 <label for="sname">Фамилия</label>
                                                 <input type="text" name="sname_edit" id="sname_edit" class="form-control" value="<?php echo $profileInfo['sName'] ?>">
@@ -201,7 +201,7 @@ $profileInfo = $stmt->fetch();
                                 unset($_SESSION["flash"]);
                         }    
                         ?> 
-                            <form action=".././edit_profile.php" class="pt-2" method="post">
+                            <form  action=".././edit_profile.php" class="pt-2" method="post">
                                 <div class="form-group">
                                     <label for="family" class="label-custom">Семья</label>
                                     <?php
@@ -221,7 +221,7 @@ $profileInfo = $stmt->fetch();
                             </form>    
                             <div class="separator"></div>
                             <div class="form-group">
-                                <form action="/edit_profile.php" method="post">
+                                <form  action=".././edit_profile.php" action="/edit_profile.php" method="post">
                                     <?php
                                     $getProfOtherInfo = "SELECT Note FROM profile WHERE id=:id ";
                                     $stmt = $con->prepare($getProfOtherInfo);
@@ -241,8 +241,7 @@ $profileInfo = $stmt->fetch();
                                 </form>
                             </div> 
                             <div class="separator"></div>
-                            
-                            <form action=".././edit_profile.php" method="post">
+                            <form  action=".././edit_profile.php" method="post">
                                 <div class="form-row">
                                      <div class="form-group col">
                                         <label for="house_type" class="label-custom">Тип жилья</label>
@@ -469,7 +468,7 @@ $profileInfo = $stmt->fetch();
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action=".././edit_profile.php" method="post">
+                                            <form  action=".././edit_profile.php"  method="post">
                                                 <div class="form-group">
                                                     <label for="training">Тренинги</label>
                                                     <div class="data_select">
@@ -518,7 +517,7 @@ $profileInfo = $stmt->fetch();
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action=".././edit_profile.php" method="post">
+                                            <form  action=".././edit_profile.php" method="post">
                                                 <div class="form-group">
                                                     <label for="training">Тренинги</label>
                                                     <div class="data_select">
@@ -584,7 +583,7 @@ $profileInfo = $stmt->fetch();
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action=".././edit_profile.php" method="post">
+                                                <form  action=".././edit_profile.php" method="post">
                                                     <div class="form-group">
                                                         <label for="need">Нужды</label>
                                                         <div class="data_select">
@@ -631,7 +630,7 @@ $profileInfo = $stmt->fetch();
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action=".././edit_profile.php" method="post">
+                                                <form  action=".././edit_profile.php" method="post">
                                                     <div class="form-group">
                                                         <label for="need">Нужды</label>
                                                         <div class="data_select">
@@ -701,7 +700,7 @@ $profileInfo = $stmt->fetch();
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action=".././edit_profile.php" method="post">
+                                            <form  action=".././edit_profile.php"  method="post">
                                                 <div class="form-group mb-3">
                                                     <label for="donor">Донор</label>
                                                     <div class="data_select">
@@ -784,7 +783,7 @@ $profileInfo = $stmt->fetch();
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action=".././edit_profile.php" method="post">
+                                            <form  action=".././edit_profile.php" method="post">
                                                 <div class="form-group mb-3">
                                                     <div class="table-responsive">
                                                         <table class="table table-bordered">
@@ -849,7 +848,7 @@ $profileInfo = $stmt->fetch();
                         <div class="modal-dialog modal-dialog-centered modal-sm">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <form action=".././edit_profile.php" method="post">
+                                    <form  action=".././edit_profile.php" method="post">
                                        <p class="pt-2 text-center text-warning">Удалить данный профиль?</p>
                                        <div class="form-group text-center">
                                             <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteProfile" id="btnDeleteProfile">Да</button>
@@ -905,4 +904,5 @@ $profileInfo = $stmt->fetch();
             $(this).setCursorPosition(0);
           }).mask("99.99.9999");
     </script>
-</body>                   
+</body>
+</html>

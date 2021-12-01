@@ -28,8 +28,22 @@ if (isset($_POST['btnEditProfInfo'])) {
         ':gender_id'=>$gender, ':people_id'=> $peopleID));
         $con->commit();
         unset($stmt);
+        echo "<script>
+            $.confirm({
+                title: 'Профиль',
+                content: 'Информация обновлена',
+                type: 'green',
+                typeAnimated: true,
+                buttons: {
+                    OK: {
+                        text: 'OK',
+                        action: function(){
+                        }
+                    }
+                }
+            });
+        </script>";
         header("location: ./profileinfo.php/?profile=$profID&people=$peopleID");
-        exit;
     } catch (Exception $e){
         $con->rollback();
         throw $e;

@@ -17,7 +17,7 @@ require_once "../config.php";
                                 unset($_SESSION["flash"]);
                         }    
                         ?>
-                            <form role="form" action="./searchprofileresult.php" method="GET">
+                            <form role="form" action="./search_profile_db.php" method="POST">
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="sname" class="">Фамилия</label>

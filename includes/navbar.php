@@ -19,13 +19,13 @@ if (!isset($_SESSION['loggedin'])) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a href="../profile/searchprof.php" class="nav-link">
+                    <a href="/profile/searchprof.php" class="nav-link">
                     <i class="fad fa-search"></i>        
                     Поиск
                 </a>
                 </li>
                 <li class="nav-item">
-                    <a href="../profile/register_profile.php" class="nav-link">
+                    <a href="/profile/register_profile.php" class="nav-link">
                         <i class="fad fa-user-plus"></i>
                         Регистрация профиля
                     </a>
