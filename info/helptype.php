@@ -14,6 +14,7 @@ if (isset($_POST['btnAddHelpType'])) {
         $stmt->execute();
         $con->commit();
         unset($stmt);
+        Header('Refresh: 5');
         echo "<script>
         $.confirm({
             title: 'Тип помощи',

@@ -23,6 +23,7 @@ if (isset($_POST['btnAddNewTraining'])) {
         }
         $con->commit(); 
         unset($stmt);
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Тренинг добавлен."];
         header("Refresh:0");
     } catch(Exception $e) {
         $con->rollback();
@@ -59,6 +60,7 @@ if(isset($_POST['btnDeleteSelTraining'])) {
         }
         
         $con->commit();
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Тренинг удалён."];
         unset($stmt);
         header("Refresh:0");
     }
@@ -75,6 +77,11 @@ if(isset($_POST['btnDeleteSelTraining'])) {
                 <div class="card shadow border-0 mb-5">
                     <div class="card-body bg-form">
                         <p class="font-weight-bold h5 py-3" style="color: #4922a5c9;">Тренинги</p>
+                        <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                        }    
+                        ?> 
                         <form method="post">
                             <div class="table-scrollbar" id="style-scroll">
                                 <?php

@@ -22,8 +22,9 @@ if (isset($_POST['btnAddNewNeed'])) {
             }  
         }
         $con->commit(); 
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Нужды добавлены."];
         unset($stmt);
-        header("Refresh:0");
+        header("Refresh:5");
     } catch(Exception $e) {
         $con->rollback();
         throw $e;
@@ -40,7 +41,7 @@ if(isset($_POST['btnDeleteSelNeed'])) {
         $stmt->execute();
         $crossneed = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach($needID as $id) {
-            if (in_array($id, $need)) {
+            if (in_array($id, $crossneed)) {
                 $sql = "DELETE FROM crossneed WHERE id_Need=:crossneed";
                 $stmt=$con->prepare($sql);
                 $stmt->bindParam(":crossneed", $id, PDO::PARAM_INT);
@@ -59,8 +60,9 @@ if(isset($_POST['btnDeleteSelNeed'])) {
         }
         
         $con->commit();
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Нужды удалены."];
         unset($stmt);
-        header("Refresh:0");
+        header("Refresh:5");
     }
     catch (Exception $e) {
         $con->rollback();
@@ -75,10 +77,15 @@ if(isset($_POST['btnDeleteSelNeed'])) {
                 <div class="card shadow border-0 mb-5">
                     <div class="card-body bg-form">
                         <p class="font-weight-bold h5 py-3" style="color: #4922a5c9;">Нужды</p>
+                        <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                        }    
+                        ?> 
                         <form method="post">
                             <div class="table-scrollbar" id="style-scroll">
                                 <?php
-                                $getNeed = "SELECT * FROM need";
+                                $getNeed = "SELECT * FROM need ORDER BY title";
                                 $stmt = $con->prepare($getNeed);
                                 $stmt->execute();
                                 $need = $stmt->fetchAll(PDO::FETCH_ASSOC);

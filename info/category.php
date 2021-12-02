@@ -22,8 +22,9 @@ if (isset($_POST['btnAddNewCategory'])) {
             }  
         }
         $con->commit(); 
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Категория добавлена."];
         unset($stmt);
-        header("Refresh:0");
+        header("Refresh:5");
     } catch(Exception $e) {
         $con->rollback();
         throw $e;
@@ -59,8 +60,9 @@ if(isset($_POST['btnDeleteSelCategory'])) {
             
         }
         $con->commit();
+        $_SESSION["flash"] = ["type" => "primary", "message" => "Категория удалена."];
         unset($stmt);
-        header("Refresh:0");   
+        header("Refresh:5");   
     }
     catch (Exception $e) {
         $con->rollback();
@@ -75,10 +77,15 @@ if(isset($_POST['btnDeleteSelCategory'])) {
                 <div class="card shadow border-0 mb-5">
                     <div class="card-body bg-form">
                         <p class="font-weight-bold h5 py-3" style="color: #4922a5c9;">Категории</p>
+                        <?php if (isset($_SESSION["flash"])) { 
+                                vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
+                                unset($_SESSION["flash"]);
+                        }    
+                        ?> 
                         <form method="post">
                             <div class="table-scrollbar" id="style-scroll">
                                <?php
-                                $getCategory = "SELECT * FROM category";
+                                $getCategory = "SELECT * FROM category ORDER BY title";
                                 $stmt = $con->prepare($getCategory);
                                 $stmt->execute();
                                 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
