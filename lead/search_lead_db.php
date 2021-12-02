@@ -9,7 +9,7 @@ if(isset($_POST['btnLeadSearch'])) {
         'migrant', 'regDate');
     $params = array();
     $searchCategories = "";
-
+    
     foreach($searchFormFields as $field) {
         if (!empty($_POST[$field])) {
             if ($field == 'sname')
@@ -68,7 +68,7 @@ if(isset($_POST['btnLeadSearch'])) {
     
     $searchLead = "SELECT `id`, `fio`, `phone`, `fio_need`, `city`, `need` FROM `lead`";
 
-    if (!empty($where) && !empty($searchCategories && !empty($searchNeed))) {
+    if (!empty($where) && !empty($searchCategories) && !empty($searchNeed)) {
        $stmt = $con->prepare($searchLead . " WHERE $where AND". $searchCategories . " AND ".$searchNeed);  
     } else if (!empty($where) && empty($searchCategories) && empty($searchNeed)) {
         $stmt = $con->prepare($searchLead . " WHERE $where");
@@ -90,7 +90,7 @@ if(isset($_POST['btnLeadSearch'])) {
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     $_SESSION['leads'] = $res;
-    header("location: ../leads.php");
+    header("location: ./leads.php");
     exit;
 }
 ?>

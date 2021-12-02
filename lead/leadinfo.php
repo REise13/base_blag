@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 $title= 'Лид';
 include('../includes/head.php');
 include('../includes/navbar.php');
@@ -124,13 +123,13 @@ $leadInfo = $stmt->fetch();
                                     <div class="form-group row">
                                         <label for="categories" class="col-4 col-form-label">Категории</label>
                                         <div class="col-sm-8">
-                                            <textarea name="categories" id="categories" class="info form-control border-0 px-2" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
+                                            <textarea name="categories" id="categories" class="info input form-control border-0 px-2" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="need" class="col-sm-4 col-form-label">Какая помощь необходима?</label>
                                         <div class="col-sm-8">
-                                            <textarea name="need" id="need" class="info form-control border-0 px-2" rows="3"><?php echo $leadInfo['need']; ?></textarea>
+                                            <textarea name="need" id="need" class="info input form-control border-0 px-2" rows="3"><?php echo $leadInfo['need']; ?></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -333,13 +332,13 @@ $leadInfo = $stmt->fetch();
                                                     <div class="form-group row">
                                                         <label for="categories" class="col-3 col-form-label">Категории</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="categories_edit" id="categories_edit" class="form-control" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
+                                                            <textarea name="categories_edit" id="categories_edit" class="form-control input" rows="3"><?php echo $leadInfo['categories']; ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="need" class="col-sm-3 col-form-label">Какая помощь необходима?</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="need_edit" id="need_edit" class="form-control" rows="3"><?php echo $leadInfo['need']; ?></textarea>
+                                                            <textarea name="need_edit" id="need_edit" class="form-control input" rows="3"><?php echo $leadInfo['need']; ?></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">

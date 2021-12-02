@@ -211,7 +211,7 @@ $profileInfo = $stmt->fetch();
                                     $stmt->execute();
                                     $profileOtherInfo = $stmt->fetch();  
                                     ?>
-                                    <textarea name="family" id="family" class="form-control border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
+                                    <textarea name="family" id="family" class="form-control input border-0 px-4"><?php echo $profileOtherInfo['Family'] ?></textarea>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-edit mb-2" name="btnEditFamily" id="btnEditFamily">
@@ -231,7 +231,7 @@ $profileInfo = $stmt->fetch();
                                     ?>
                                     <div class="form-group">
                                         <label for="family" class="label-custom">Примечание</label>
-                                        <textarea name="note" id="note" class="form-control border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
+                                        <textarea name="note" id="note" class="form-control input border-0 px-4"><?php echo $profileNote['Note'] ?></textarea>
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-edit mb-2" name="btnEditNote" id="btnEditNote">

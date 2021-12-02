@@ -18,7 +18,7 @@ unset($_SESSION['leads']);
                                 unset($_SESSION["flash"]);
                             }    
                             ?>
-                                <form action="/search_lead_db.php" method="post">
+                                <form action="./search_lead_db.php" method="post">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="sname" class="">Фамилия</label>

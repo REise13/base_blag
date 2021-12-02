@@ -133,7 +133,7 @@ require_once "../config.php";
                                     </div>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-custom px-4"  name="searchProfile">Поиск</button>
+                                <button type="submit" class="btn btn-custom px-4"  name="btnSearchProfile" id="btnSearchProfile">Поиск</button>
                             </form>
                         </div>
                     </div>    

@@ -55,13 +55,14 @@ nav {
     color: #3196dac4;
 } 
 
-input[type="text"]:focus, input[type="password"]:focus, 
+input[type="text"]:focus, .input:focus,
+input[type="password"]:focus, 
 input[type="date"]:focus {
     font-weight: 600;
     color: #4922a5c9;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
-    outline: 0 none;
+    outline: 0 none !important;
 }
 
 input[readonly], textarea[readonly] {

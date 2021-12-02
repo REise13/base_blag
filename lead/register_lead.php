@@ -265,7 +265,7 @@ require_once "../config.php";
                                                 <option value="военные разрушения">военные разрушения</option>
                                                 <option value="дополнительных социальных уязвимостей нет">дополнительных социальных уязвимостей нет</option>
                                             </select>
-                                            <textarea name="addCatLead" id="addCatLead" class="mt-3 form-control col-6" placeholder="Другое" rows="3"></textarea>
+                                            <textarea name="addCatLead" id="addCatLead" class="mt-3 form-control col-6 input" placeholder="Другое" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
