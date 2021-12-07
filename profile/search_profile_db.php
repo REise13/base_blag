@@ -1628,8 +1628,14 @@ if (isset($_POST['btnSearchProfile'])) {
     }
     
     $searchResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $_SESSION['profiles'] = $searchResult;
-    header("location: /profile/profiles.php");
-    exit;
+    if (!empty($searchResult)) {
+        $_SESSION['profiles'] = $searchResult;
+        header("location: /profile/profiles.php");
+        exit; 
+    } else {
+        $_SESSION["flash"] = ["type" => "warning", "message" => "По поиску ничего не найдено."];
+        header("location: /profile/searchprof.php");
+        exit;
+    }
 } 
  ?>

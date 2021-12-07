@@ -9,7 +9,7 @@ if(isset($_POST['btnLeadSearch'])) {
         'migrant', 'regDate');
     $params = array();
     $searchCategories = "";
-    
+
     foreach($searchFormFields as $field) {
         if (!empty($_POST[$field])) {
             if ($field == 'sname')
@@ -89,8 +89,15 @@ if(isset($_POST['btnLeadSearch'])) {
     $stmt->execute($params); 
     $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    $_SESSION['leads'] = $res;
-    header("location: ./leads.php");
-    exit;
+    if (!empty($res)) {
+       $_SESSION['leads'] = $res;
+        header("location: ./leads.php");
+        exit; 
+    } else {
+        $_SESSION["flash"] = ["type" => "warning", "message" => "По поиску ничего не найдено."];
+        header("location: /lead/searchlead.php");
+        exit; 
+    }
+    
 }
 ?>

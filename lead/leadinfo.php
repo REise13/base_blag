@@ -65,7 +65,7 @@ $leadInfo = $stmt->fetch();
                                 unset($_SESSION["flash"]);
                             }    
                             ?> 
-                                <form action="\edit_lead.php" method="post">
+                                <form action=".././edit_lead.php" method="post">
                                     <div class="form-group row">
                                         <label for="fio" class="col-4 col-form-label">ФИО заявителя</label>
                                         <div class="col-sm-8">
@@ -205,7 +205,7 @@ $leadInfo = $stmt->fetch();
                                                 </button>
                                             </div>
                                             <div class="modal-body">    
-                                                <form role="form" action="\edit_lead.php" method="post">
+                                                <form role="form" action=".././edit_lead.php" method="post">
                                                     <div class="form-group row">
                                                         <label for="fio" class="col-3 col-form-label">ФИО заявителя</label>
                                                         <div class="col-sm-9">
@@ -471,7 +471,7 @@ $leadInfo = $stmt->fetch();
                                     <div class="modal-dialog modal-dialog-centered modal-sm">
                                         <div class="modal-content">
                                             <div class="modal-body">
-                                                <form action="/edit_lead.php" method="post">
+                                                <form action=".././edit_lead.php" method="post">
                                                     <p class="pt-2 text-center text-warning">Удалить данного лида?</p>
                                                     <div class="form-group text-center">
                                                         <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteLead" id="btnDeleteLead">Да</button>

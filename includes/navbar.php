@@ -20,9 +20,9 @@ if (!isset($_SESSION['loggedin'])) {
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
                     <a href="/profile/searchprof.php" class="nav-link">
-                    <i class="fad fa-search"></i>        
-                    Поиск
-                </a>
+                        <i class="fad fa-search"></i>        
+                        Поиск
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="/profile/register_profile.php" class="nav-link">
@@ -57,18 +57,26 @@ if (!isset($_SESSION['loggedin'])) {
                         <a href="#" data-toggle="modal" data-target="#my-modal" class="dropdown-item">Тип помощи</a>
                     </div>
                 </li>
+                <?php if($_SESSION['user_role'] == 1) { ?>
+                <li class="nav-item">
+                    <a href="#" data-toggle="modal" data-target="#registerUser" class="nav-link">
+                        <i class="fad fa-user-plus"></i>
+                        Регистрация пользователя
+                    </a>
+                </li>
+                <?php } ?>
             </ul>
             <div class="form-inline my-2 my-lg-0">
                 <a href="../logout.php" class="btn btn-logout my-2 my-sm-0">
                     Выйти
                     <i class="fad fa-sign-out-alt"></i>
                 </a>
-                
             </div>
         </div>
         
     </nav>
     <?php include_once '../info/helptype.php'; ?>
+    <?php include_once '../admin/register_user.php'; ?>
 </header>
 
 <script>

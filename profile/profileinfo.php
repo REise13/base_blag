@@ -98,8 +98,8 @@ $profileInfo = $stmt->fetch();
                             </button>
                         </form>
                         <div class="modal fade" id="editGeneralInfo" tabindex="-1" aria-labelledby="editGeneralInfoLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable fullscreen">
-                                <div class="modal-content fullscreen">
+                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable modal-dialog-fullscreen">
+                                <div class="modal-content modal-content-fullscreen">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editGeneralInfoLabel">Основная информация</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -348,7 +348,7 @@ $profileInfo = $stmt->fetch();
 
                             <!-- modal addCategory -->
                             <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addCategoryLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addCategoryLabel">Добавить категорию</h5>
@@ -395,7 +395,7 @@ $profileInfo = $stmt->fetch();
 
                             <!-- modal deleteCategory -->
                             <div class="modal fade" id="deleteCategory" tabindex="-1" aria-labelledby="deleteCategoryLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteCategoryLabel">Удалить категорию</h5>
@@ -459,7 +459,7 @@ $profileInfo = $stmt->fetch();
                             </div>
                             <!-- modal addTraining -->
                              <div class="modal fade" id="addTraining" tabindex="-1" aria-labelledby="addTrainingLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addTrainingLabel">Добавить тренинг</h5>
@@ -485,19 +485,22 @@ $profileInfo = $stmt->fetch();
                                                     }        
                                                     ?>
                                                         <select name="select_training" id="select_training" 
-                                                            class="selectpicker show-tick" data-width="200px;" 
-                                                            data-size="5" title="Выберите" data-live-search="true">
+                                                            class="selectpicker show-tick form-control"  
+                                                            data-size="7" title="Выберите" data-live-search="true">
                                                             <?php foreach ($trainings as $sel_tr) {?>
                                                                 <option value="<?php echo $sel_tr['id']; ?>"><?php echo $sel_tr['training'] ?></option>     
                                                             <?php } ?>   
-                                                        </select>
-                                                        <input type="text" name="date_training" id="date_training" class="date mt-3 form-control">                  
+                                                        </select>       
                                                     </div>
-                                                    <div class="separator"></div>
-                                                    <div class="form-group">
-                                                        <button type="submit" class="btn btn-custom" name="btnAddTraining" id="btnAddTraining">Добавить</button>
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
-                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="date_training">Дата</label>
+                                                    <input type="text" name="date_training" id="date_training" class="date form-control">   
+                                                </div>
+                                                <div class="separator"></div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-custom" name="btnAddTraining" id="btnAddTraining">Добавить</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button> 
                                                 </div>
                                             </form>
                                         </div>
@@ -508,7 +511,7 @@ $profileInfo = $stmt->fetch();
 
                             <!-- modal deleteTraining -->
                             <div class="modal fade" id="deleteTraining" tabindex="-1" aria-labelledby="deleteTrainingLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteTrainingLabel">Удалить тренинг</h5>
@@ -522,7 +525,7 @@ $profileInfo = $stmt->fetch();
                                                     <label for="training">Тренинги</label>
                                                     <div class="data_select">
                                                         <select name="profile_training[]" id="profile_training" 
-                                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите">
+                                                            class="selectpicker show-tick" data-size="7" multiple="multiple" title="Выберите">
                                                             <?php foreach ($profileTraining as $prof_tr) {?>
                                                                 <option value="<?php echo $prof_tr['id']; ?>">
                                                                     <?php echo $prof_tr['training'] . '['. $prof_tr['date_training'] . ']' ?>
@@ -574,7 +577,7 @@ $profileInfo = $stmt->fetch();
                                 
                                  <!-- modal addNeed -->
                                 <div class="modal fade" id="addNeed" tabindex="-1" aria-labelledby="addNeedLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="addNeedLabel">Добавить нужды</h5>
@@ -621,7 +624,7 @@ $profileInfo = $stmt->fetch();
 
                                 <!-- modal deleteNeed -->
                                 <div class="modal fade" id="deleteNeed" tabindex="-1" aria-labelledby="deleteNeedLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
+                                    <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="deleteNeedLabel">Удалить нужды</h5>
@@ -691,7 +694,7 @@ $profileInfo = $stmt->fetch();
                             </div>                                        
                             <!-- modal addHelp -->
                             <div class="modal fade" id="addHelp" tabindex="-1" aria-labelledby="addHelpLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-lg modal-dialog-fullscreen">
+                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-fullscreen">
                                     <div class="modal-content modal-content-fullscreen">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addHelpLabel">Добавить помощь</h5>
@@ -774,8 +777,8 @@ $profileInfo = $stmt->fetch();
 
                             <!-- modal deleteHelp -->
                             <div class="modal fade" id="deleteHelp" tabindex="-1" aria-labelledby="deleteHelpLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
+                                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-fullscreen">
+                                    <div class="modal-content modal-content-fullscreen">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteHelpLabel">Удалить помощь</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">

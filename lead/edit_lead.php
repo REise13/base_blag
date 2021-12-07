@@ -8,7 +8,7 @@ if(isset($_POST['btnLeadRegister'])) {
     $_SESSION['lead_fio'] = isset($_POST['fioNeed']) ? $_POST['fioNeed'] :'';
     $_SESSION['lead_phone'] = isset($_POST['phone']) ? $_POST['phone'] :'';
 
-    header("location: ../register_profile.php");
+    header("location: ../profile/register_profile.php");
 }
 
 if(isset($_POST['btnEditLeadInfo'])) {
@@ -56,7 +56,7 @@ if(isset($_POST['btnEditLeadInfo'])) {
         $con->commit();
         unset($stmt);
         $_SESSION["flash"] = ["type" => "primary", "message" => "Данные о лиде обновлены."];
-        header("location: ../leadinfo.php/?lead=$leadID");
+        header("location: ./leadinfo.php/?lead=$leadID");
         exit;
     } catch (Exception $e) {
         $con->rollback();
@@ -75,7 +75,7 @@ if(isset($_POST['btnDeleteLead'])) {
         $con->commit();
         unset($stmt);
         $_SESSION["flash"] = ["type"=>"warning", "message"=>"Лид удален."];
-        header("location: ../searchlead.php");
+        header("location: ./searchlead.php");
         exit;
     }
     catch (Exception $e) {

@@ -48,7 +48,7 @@ nav {
 }
 
 .navbar-toggler:hover i, .navbar-toggler:active i {
-    color: var(--active-color);
+    color: whitesmoke;
 }
 
 .nav-link a {
@@ -179,6 +179,14 @@ input[readonly], textarea[readonly] {
     position: relative;
     height: 466px;
     overflow: auto;
+}
+
+@media  (max-width: 920px) {
+    .table-scrollbar {
+        position: relative;
+        height: 569px;
+        overflow: auto;
+    } 
 }
 
 #style-scroll::-webkit-scrollbar
