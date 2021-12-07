@@ -63,7 +63,7 @@ try{
     $con->commit();
     unset($stmt);
     $_SESSION["flash"] = ["type"=>"success", "message"=> "Лид добавлен."];
-    header("location: ../leadinfo.php/?lead=$lastLeadID");
+    header("location: ../lead/leadinfo.php/?lead=$lastLeadID");
     exit;
 } catch (Exception $e) {
     $con->rollback();

@@ -3,10 +3,24 @@ $title= 'Поиск профиля';
 include('../includes/head.php');
 include('../includes/navbar.php');
 require_once "../config.php";
+
+$getAllProfiles = "select count(*) as countPeople from people";
+$stmt = $con->prepare($getAllProfiles);
+$stmt->execute();
+$peoples = $stmt->fetchAll(PDO::FETCH_ASSOC);
+unset($stmt);
+$stmt = $con->prepare("select count(*) as countLeads from `lead`");
+$stmt->execute();
+$leads = $stmt->fetchAll(PDO::FETCH_ASSOC);
+unset($stmt);
 ?>
 <body>
     <div class="page-content p-3" id="content">
         <div class="search-form">
+            <div class="text-center mx-auto mb-2">
+                <p>Количество благополучателей в базе: <strong><?php echo $peoples[0]['countPeople']; ?></strong></p>
+                <p>Количество лидов в базе: <strong><?php echo $leads[0]['countLeads']; ?></strong></p>
+            </div>
         <!-- Форма поиска профиля -->
             <div class="container">
                 <div class="row">

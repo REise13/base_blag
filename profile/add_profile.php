@@ -33,7 +33,7 @@ try{
     $lastPeopleID = $stmt->fetchColumn();
 
     $stmt=$con->prepare("INSERT INTO profile(id_people, Forced_migrant, Destroyed_house, id_type_of_house, 
-        id_type_heating, Family, Numb_of_Child, Note) VALUES(:people_id, 0, 0, 1, 1, null, null, null)");
+        id_type_heating, Family, Numb_of_Child, Note, RegDate) VALUES(:people_id, 0, 0, 1, 1, null, null, null, NOW())");
     $stmt->bindParam(':people_id', $lastPeopleID, PDO::PARAM_INT);
     $stmt->execute();
     $stmt = $con->prepare("SELECT LAST_INSERT_ID()");
@@ -49,7 +49,7 @@ try{
     $_SESSION['profID'] = $lastProfileID;
     $_SESSION['peopleID'] = $lastPeopleID;
     unset($stmt);
-    header("location: ./profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
+    header("location: ../profile/profileinfo.php/?profile=$lastProfileID&people=$lastPeopleID");
     exit;
 }
 catch (Exception $e) {

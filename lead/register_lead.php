@@ -12,7 +12,7 @@ require_once "../config.php";
                     <div class="row">
                         <div class="col">
                             <div class="bg-form p-5 rounded shadow-sm">
-                                <form action="/add_lead.php" method="post">
+                                <form action="./add_lead.php" method="post">
                                     <p class="font-weight-bold h5 pb-2" style="color: #4922a5c9;">
                                         Заявка на получение гуманитарной помощи нуждающегося и его семьи
                                     </p>
@@ -162,15 +162,15 @@ require_once "../config.php";
                                                 позволяющие им удовлетворять свои базовые 
                                                 (физиологические и медицинцинские) потребности?
                                             </label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="income" id="income" value="1" required>
-                                                <label class="form-check-label" for="income">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="income" id="income1" value="1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="income1">
                                                     Да
                                                 </label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="income" id="income" value="-1">
-                                                <label class="form-check-label" for="income">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="income" id="income2" value="-1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="income2">
                                                     Нет
                                                 </label>
                                             </div>
@@ -226,21 +226,21 @@ require_once "../config.php";
                                             <label for="adopted">
                                                 В семье есть усыновлённые/удочерённые несовершеннолетние лица?
                                             </label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1" required>
-                                                <label class="form-check-label custom" for="adopted">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="adopted" id="adopted1" value="1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="adopted1">
                                                     Да
                                                 </label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="-1">
-                                                <label class="form-check-label" for="adopted">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="adopted" id="adopted2" value="-1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="adopted2">
                                                     Нет
                                                 </label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="0">
-                                                <label class="form-check-label" for="adopted">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="adopted" id="adopted3" value="0">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="adopted3">
                                                     Неизвестно
                                                 </label>
                                             </div>
@@ -279,15 +279,15 @@ require_once "../config.php";
                                         <label for="volunteer">
                                             Есть ли возможность Вам заниматься волонтёрской деятельностью?
                                         </label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="1" required>
-                                            <label class="form-check-label" for="volunteer">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="radio" name="volunteer" id="volunteer1" value="1">
+                                            <label class="cursor-pointer custom-control-label custom-color" for="volunteer1">
                                                 Да
                                             </label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="-1">
-                                            <label class="form-check-label" for="volunteer">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="radio" name="volunteer" id="volunteer2" value="-1">
+                                            <label class="cursor-pointer custom-control-label custom-color" for="volunteer2">
                                                 Нет
                                             </label>
                                         </div>
