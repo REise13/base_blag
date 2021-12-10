@@ -47,6 +47,11 @@ $profileInfo = $stmt->fetch();
                  <!-- end -->
                 <div class="tab-content">
                     <!-- nav-tab-general-info -->
+                    <?php if (isset($_SESSION["edit-info"])) { 
+                                vprintf("<div class='alert alert-success'>%s</div>", $_SESSION["edit-info"]);
+                                unset($_SESSION["edit-info"]);
+                        }    
+                        ?> 
                     <div id="nav-tab-general-info" class="tab-pane fade show active">
                         <form action=".././edit_profile.php" class="pt-3">
                             <div class="form-row">
