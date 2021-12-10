@@ -9,7 +9,7 @@ if (!isset($_SESSION['loggedin'])) {
 ?>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/profile/searchprof.php">
             <img src="/logoBaseBlag.png" height="48" class="d-inline-block align-top mx-2" alt="baseddc logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@ if (!isset($_SESSION['loggedin'])) {
                 <?php } ?>
             </ul>
             <div class="form-inline my-2 my-lg-0">
-                <a href="/app/logout.php" class="btn btn-logout my-2 my-sm-0">
+                <a href="/appl/logout.php" class="btn btn-logout my-2 my-sm-0">
                     Выйти
                     <i class="fad fa-sign-out-alt"></i>
                 </a>
