@@ -10,7 +10,7 @@ try {
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch(PDOException $e){
-    die("ERROR: Could not connect. " . $e->getMessage());
+    die("ERROR: Неудачная попытка подключения MySQL. " . $e->getMessage());
 }    
 
 ?>
