@@ -472,7 +472,7 @@ $leadInfo = $stmt->fetch();
                                         <div class="modal-content">
                                             <div class="modal-body">
                                                 <form action=".././edit_lead.php" method="post">
-                                                    <p class="pt-2 text-center text-warning">Удалить данного лида?</p>
+                                                    <p class="pt-2 text-center text-warning">Удалить данного лида? </br> <span class="text-dark"><?php echo $leadInfo['fio_need']; ?></span></p>
                                                     <div class="form-group text-center">
                                                         <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteLead" id="btnDeleteLead">Да</button>
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>

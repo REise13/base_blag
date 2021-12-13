@@ -9,7 +9,7 @@ $peopleID = $_GET['people'];
 $_SESSION['profID'] = $profID;
 $_SESSION['peopleID'] = $peopleID;
 
-$getGeneralInfo = "SELECT sName, Name, Patr, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
+$getGeneralInfo = "SELECT sName, Name, Patr, fio, gender_info, yearbirth, INN, Passport, Phone, city_info FROM profile_search WHERE profile_id=:id";
 $stmt = $con->prepare($getGeneralInfo);
 $stmt -> bindParam(':id', $profID, PDO::PARAM_INT);
 $stmt->execute();
@@ -857,7 +857,7 @@ $profileInfo = $stmt->fetch();
                             <div class="modal-content">
                                 <div class="modal-body">
                                     <form  action=".././edit_profile.php" method="post">
-                                       <p class="pt-2 text-center text-warning">Удалить данный профиль?</p>
+                                       <p class="pt-2 text-center text-warning">Удалить данный профиль? </br> <span class="text-dark"><?php echo $profileInfo['fio']; ?></span></p>
                                        <div class="form-group text-center">
                                             <button type="submit" class="btn mx-2 btn-delete" name="btnDeleteProfile" id="btnDeleteProfile">Да</button>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
