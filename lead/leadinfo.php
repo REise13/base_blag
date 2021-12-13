@@ -186,7 +186,7 @@ $leadInfo = $stmt->fetch();
                                             <input type="text" name="reason" id="reason" class="info form-control border-0 px-2" value="<?php echo $leadInfo['reason']; ?>">
                                         </div>
                                     </div>
-                                    <div class="col-md-10 text-center">
+                                    <div class="form-group text-center">
                                         <div class="btn-group pt-4" role="group">
                                             <button type="submit" class="btn btn-edit mr-3" id="btnLeadRegister" name="btnLeadRegister">Зарегистрировать</button>
                                             <button type="button" class="btn btn-edit mr-3" data-toggle="modal" data-target="#editLeadInfo">Изменить</button>
