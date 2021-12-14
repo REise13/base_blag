@@ -61,7 +61,7 @@ if(isset($_POST['btnEditFamily'])) {
         $con->commit();
         $_SESSION["flash"] = ["type" => "primary", "message" => "Данные о семье обновлены."];
         unset($stmt);
-        $_SESSION['edit-info'] = 'Основная информация изменена';
+        $_SESSION['edit-info'] = 'Основная информация изменена.';
         header("location: ./profileinfo.php/?profile=$profID&people=$peopleID");
         exit;
     } catch (Exception $e){
