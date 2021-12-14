@@ -97,8 +97,8 @@ unset($stmt);
                                             
                                     if ($stmt->rowCount() > 0) { ?>
                                         <select name="categories[]" id="categories" 
-                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple">
-                                            <option value="0" selected>Все</option>
+                                            class="selectpicker show-tick" data-width="150px;" data-size="7" multiple="multiple" title="Выберите" required>
+                                            <option value="0">Все</option>
                                             <?php foreach ($results as $row) { ?>
                                                 <option value="<?php echo $row['id']; ?>"><?php echo $row['cat'] ?></option>
                                             <?php } ?>    
