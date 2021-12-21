@@ -269,9 +269,14 @@ if(isset($_POST['btnAddHelp'])) {
     $endDate = $_POST['endDate'];
     $project = $_POST['select_project'];
 
-    $frmtStartDate = date("Y-m-d", strtotime($startDate));
-    $frmtEndDate = date("Y-m-d", strtotime($endDate));
-
+    if(empty($startDate) and empty($endDate)) {
+        $frmtStartDate = '0000-00-00';
+        $frmtEndDate = '0000-00-00';
+    } else {
+        $frmtStartDate = date("Y-m-d", strtotime($startDate));
+        $frmtEndDate = date("Y-m-d", strtotime($endDate)); 
+    }
+    
     $sql = "INSERT INTO help(id_profile, id_helptype, id_project, id_donor, start_date, end_date)
         VALUES(:profile_id, :helptype, :project, :donor, :startDate, :endDate)";
     $stmt=$con->prepare($sql);
