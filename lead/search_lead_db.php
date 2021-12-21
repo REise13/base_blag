@@ -66,7 +66,7 @@ if(isset($_POST['btnLeadSearch'])) {
         },$categories));
     }
     
-    $searchLead = "SELECT `id`, `fio`, `phone`, `fio_need`, `city`, `need` FROM `lead`";
+    $searchLead = "SELECT `id`, `fio`, `phone`, `fio_need`, `city`, `need`, `categories` FROM `lead`";
 
     if (!empty($where) && !empty($searchCategories) && !empty($searchNeed)) {
        $stmt = $con->prepare($searchLead . " WHERE $where AND". $searchCategories . " AND ".$searchNeed);  

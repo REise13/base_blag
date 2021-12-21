@@ -92,7 +92,7 @@ if(isset($_POST['btnDeleteSelCategory'])) {
                                 
                                 if ($stmt->rowCount() > 0) { 
                                     foreach ($categories as $category) { ?>
-                                    <div class="form-group">
+                                        <div class="form-group px-2">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="<?php echo $category['id']; ?>" 
                                                 name="categoryID[]" value="<?php echo $category['id']; ?>">

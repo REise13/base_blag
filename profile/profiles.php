@@ -33,14 +33,14 @@ require_once "../config.php";
                                 <table id="profileInfo" class="table table-bordered table-responsive">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ФИО</th>
-                                            <th scope="col">Возраст</th>
-                                            <th scope="col">Город</th>
-                                            <th scope="col">Пол</th>
-                                            <th scope="col">ИНН</th>
-                                            <th scope="col">Паспорт</th>
-                                            <th scope="col">Категории</th>
-                                            <th scope="col">Помощь</th>
+                                            <th scope="col-2">ФИО</th>
+                                            <th scope="col-1">Возраст</th>
+                                            <th scope="col-1">Город</th>
+                                            <th scope="col-1">Пол</th>
+                                            <th scope="col-1">ИНН</th>
+                                            <th scope="col-1">Паспорт</th>
+                                            <th scope="col-2">Категории</th>
+                                            <th scope="col-2">Помощь</th>
                                         </tr>
                                     </thead>
                                     <tbody>

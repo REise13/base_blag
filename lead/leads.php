@@ -34,10 +34,10 @@ require_once "../config.php";
                                                 <tr>
                                                     <th scope="col-4">ФИО</th>
                                                     <th scope="col-3">ФИО нуждающегося</th>
+                                                    <th scope="col">Категории</th>
                                                     <th scope="col-3">Город</th>
                                                     <th scope="col">Телефон</th>
                                                     <th scope="col-2">Нужды</th>
-                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -45,6 +45,7 @@ require_once "../config.php";
                                                     <tr class="row-click" data-href="leadinfo.php/?lead=<?php echo $record['id']; ?>">
                                                         <td><?php echo $record['fio']; ?></td>
                                                         <td><?php echo $record['fio_need']; ?></td>
+                                                        <td><?php echo $record['categories']; ?></td>
                                                         <td><?php echo $record['city']; ?></td>
                                                         <td><?php echo $record['phone']; ?></td>
                                                         <td><?php echo $record['need']; ?></td>

@@ -92,7 +92,7 @@ if(isset($_POST['btnDeleteSelNeed'])) {
                                 
                                 if ($stmt->rowCount() > 0) { 
                                     foreach ($need as $row) { ?>
-                                    <div class="form-group">
+                                        <div class="form-group px-2">
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="<?php echo $row['id']; ?>" 
                                                 name="needID[]" value="<?php echo $row['id']; ?>">
