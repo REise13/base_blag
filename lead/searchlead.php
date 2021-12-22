@@ -18,7 +18,7 @@ unset($_SESSION['leads']);
                                 unset($_SESSION["flash"]);
                             }    
                             ?>
-                                <form action="./search_lead_db.php" method="post">
+                                <form id="searchLead" action="./search_lead_db.php" method="post">
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="sname" class="">Фамилия</label>
@@ -140,15 +140,15 @@ unset($_SESSION['leads']);
                                     <div class="form-row">
                                        <div class="form-group col">
                                             <label for="adopted">Есть ли усыновленные дети?</label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="1">
-                                                <label class="form-check-label custom" for="adopted">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="adopted" id="adopted1" value="1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="adopted1">
                                                     Да
                                                 </label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="adopted" id="adopted" value="-1">
-                                                <label class="form-check-label" for="adopted">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="adopted" id="adopted2" value="-1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="adopted2">
                                                     Нет
                                                 </label>
                                             </div>
@@ -157,15 +157,15 @@ unset($_SESSION['leads']);
                                     <div class="separator"></div>
                                     <div class="form-group">
                                         <label for="volunter">Волонтер?</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="1">
-                                            <label class="form-check-label" for="volunteer">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="radio" name="volunteer" id="volunteer1" value="1">
+                                            <label class="cursor-pointer custom-control-label custom-color" for="volunteer1">
                                                 Да
                                             </label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="volunteer" id="volunteer" value="-1">
-                                            <label class="form-check-label" for="volunteer">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="radio" name="volunteer" id="volunteer2" value="-1">
+                                            <label class="cursor-pointer custom-control-label custom-color" for="volunteer2">
                                                 Нет
                                             </label>
                                         </div>
@@ -173,16 +173,15 @@ unset($_SESSION['leads']);
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <label for="adopted">Есть ли доходы?</label>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="income" id="income" value="1">
-                                                <label class="form-check-label" for="income">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="income" id="income1" value="1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="income1">
                                                     Да
-
                                                 </label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="income" id="income" value="-1">
-                                                <label class="form-check-label" for="income">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="radio" name="income" id="income2" value="-1">
+                                                <label class="cursor-pointer custom-control-label custom-color" for="income2">
                                                     Нет
                                                 </label>
                                             </div>
@@ -265,6 +264,15 @@ unset($_SESSION['leads']);
                     </div>
                 </div>
             </div>
-        </div>                
+        </div>
+        <!-- block content end -->
+        <script>
+        $(document).ready(function() {
+            $( "#searchLead" ).submit(function(event) {
+                NProgress.start();
+                NProgress.configure({ easing: 'ease', speed: 500});
+            });
+        })
+    </script>
     </body>
 </html>
