@@ -34,5 +34,9 @@
     <!-- JQuery masked input -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" integrity="sha512-d4KkQohk+HswGs6A1d6Gak6Bb9rMWtxjOa0IiY49Q3TeFd5xAzjWXDCBW9RS7m86FQ4RzM2BdHmdJnnKRYknxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- NProgress bar -->
+    <script src="/js/nprogress/nprogress.js"></script>
+    <link rel="stylesheet" href="/js/nprogress/nprogress.css"/>
+    
     <title><?php echo($title) ?></title>
 </head>

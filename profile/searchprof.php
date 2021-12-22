@@ -31,7 +31,7 @@ unset($stmt);
                                 unset($_SESSION["flash"]);
                         }    
                         ?>
-                            <form role="form" action="./search_profile_db.php" method="POST">
+                            <form id="searchProfile" role="form" action="./search_profile_db.php" method="POST">
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="sname" class="">Фамилия</label>
@@ -156,5 +156,12 @@ unset($stmt);
         </div>
     </div>    
     <!-- block content end -->
-
+    <script>
+        $(document).ready(function() {
+            $( "#searchProfile" ).submit(function(event) {
+                NProgress.start();
+                NProgress.configure({ easing: 'ease', speed: 500});
+            });
+        })
+    </script>
 </body>
