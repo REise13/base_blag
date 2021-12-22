@@ -85,7 +85,7 @@ if(isset($_POST['btnDeleteSelTraining'])) {
                         <form method="post">
                             <div class="table-scrollbar" id="style-scroll">
                                 <?php
-                                $getTraining = "SELECT * FROM training";
+                                $getTraining = "SELECT * FROM training ORDER BY title";
                                 $stmt = $con->prepare($getTraining);
                                 $stmt->execute();
                                 $training = $stmt->fetchAll(PDO::FETCH_ASSOC);
