@@ -13,7 +13,7 @@ require_once "../config.php";
                         <div class="col">
                             <div class="bg-form p-5 rounded shadow-sm">
                                 <form action="./add_lead.php" method="post">
-                                    <p class="font-weight-bold h5 pb-2" style="color: #4922a5c9;">
+                                    <p class="font-weight-bold h5 pb-2" style="color: #1b90f0;">
                                         Заявка на получение гуманитарной помощи нуждающегося и его семьи
                                     </p>
                                     <div class="form-group">
@@ -48,7 +48,7 @@ require_once "../config.php";
                                         </div>
                                     </div>
                                     <div class="separator"></div>
-                                    <p class="font-weight-bold h5 pb-2" style="color: #4922a5c9;">
+                                    <p class="font-weight-bold h5 pb-2" style="color: #1b90f0;">
                                         Непосредственная информация о нуждающемся
                                     </p>
                                     <div class="form-group">
@@ -85,7 +85,7 @@ require_once "../config.php";
                                         </div>
                                     </div>
                                     <div class="separator"></div>
-                                    <p class="font-weight-bold h5 pb-2" style="color: #4922a5c9;">
+                                    <p class="font-weight-bold h5 pb-2" style="color: #1b90f0;">
                                         Социальные уязвимости нуждающегося и его семьи
                                     </p>
                                     <div class="form-group">

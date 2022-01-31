@@ -76,7 +76,7 @@ if(isset($_POST['btnDeleteSelProject'])) {
             <div class="col-lg-8 mx-auto p-5">
                 <div class="card shadow border-0 mb-5">
                     <div class="card-body bg-form">
-                        <p class="font-weight-bold h5 py-3" style="color: #4922a5c9;">Проекты</p>
+                        <p class="font-weight-bold h5 py-3" style="color: #1b90f0;">Проекты</p>
                         <?php if (isset($_SESSION["flash"])) { 
                                 vprintf("<div class='alert alert-%s'>%s</div>", $_SESSION["flash"]);
                                 unset($_SESSION["flash"]);

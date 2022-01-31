@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cuprum&display=swap');
 
 :root{
-    --primary-color: #c8bee7;
-    --active-color: #856fce;
-    --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
-    --inputBorder: 2px solid #9d8bdbab;
-    --inputShadow: 0px 0px 2px #B9ACE2;
+    --primary-color: #8da2cf;
+    --active-color: #1b90f0;
+    --bg-gradient: linear-gradient(to left bottom, #b4c5ec, #aec8f0, #a7caf3, #9fcdf5, #97d0f7, #99d1f7, #9ad3f8, #9cd4f8, #a6d4f8, #b0d5f7, #b9d5f6, #c1d6f4);
+    --inputBorder: 2px solid #4ea6ee;
+    --inputShadow: 0px 0px 2px #8dbde4;
     --formColor: #f6fafdda;
 }
 
@@ -73,7 +73,7 @@ img {
 
 input[type="text"]:focus, input[type="password"]:focus {
     font-weight: 600;
-    color: #4922a5c9;
+    color: #2f87dad8;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none;

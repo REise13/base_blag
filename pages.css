@@ -1,14 +1,14 @@
 :root{
-    --primary-color: #c8bee7;
-    --btn-color: #d3caf170;
-    --active-color: #856fce;
-    --bg-gradient: linear-gradient(to left bottom, #44b7e9, #67baed, #82bef0, #98c1f1, #abc5f2, #abc5f2, #abc5f2, #abc5f2, #98c1f1, #82bef0, #67baed, #44b7e9);
-    --inputBorder: 2px solid #9d8bdbab;
-    --inputShadow: 0px 0px 2px #B9ACE2;
-    --formColor: #f6fafdda;
-    --navColor: #7e50e9be;
-    --nav-itemColor: #7245db79;
-    --nav-tabs-bg: #a390df;
+    --primary-color: #becce7;
+    --btn-color: #cadcf170;
+    --active-color: #1b90f0;
+    --bg-gradient: linear-gradient(to left bottom, #b4c5ec, #aec8f0, #a7caf3, #9fcdf5, #97d0f7, #99d1f7, #9ad3f8, #9cd4f8, #a6d4f8, #b0d5f7, #b9d5f6, #c1d6f4);
+    --inputBorder: 2px solid #4ea6ee;
+    --inputShadow: 0px 0px 2px #8dbde4;
+    --formColor: #f6fafdea;
+    --navColor: #3c9ff0;
+    --nav-itemColor: #84bef5b6;
+    --nav-tabs-bg: #569cd4;
 }
 
 body {
@@ -52,14 +52,14 @@ nav {
 }
 
 .nav-link a {
-    color: #3196dac4;
+    color: #245a8dc4;
 } 
 
 input[type="text"]:focus, .input:focus,
 input[type="password"]:focus, 
 input[type="date"]:focus {
     font-weight: 600;
-    color: #4922a5c9;
+    color: #126cc0;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none !important;
@@ -121,12 +121,12 @@ input[readonly], textarea[readonly] {
 }
 
 .info {
-    color: #4922a5c9;
+    color: #4a8aebc9;
     font-weight: 500;
 }
 
 .btn-edit i {
-    color: #856fce;
+    color: #6f90ce;
 }
 
 .btn-edit:hover, .btn-edit:hover i, .btn-edit:active, .btn-edit:active i {
@@ -162,7 +162,7 @@ input[readonly], textarea[readonly] {
 }
 
 .table thead {
-    background-color: #aa9dd6;
+    background-color: #9daad6;
     color: whitesmoke;
 }
 
@@ -205,7 +205,7 @@ input[readonly], textarea[readonly] {
 .table tbody tr:hover {
     cursor: pointer;
     background-color: #d5cbf8a2;
-    color: rgb(128, 70, 194);
+    color: rgb(53, 105, 202);
     font-weight: 500;
 } 
 
