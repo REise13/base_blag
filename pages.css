@@ -59,7 +59,7 @@ input[type="text"]:focus, .input:focus,
 input[type="password"]:focus, 
 input[type="date"]:focus {
     font-weight: 600;
-    color: #126cc0;
+    color: #292d31;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none !important;
@@ -121,7 +121,7 @@ input[readonly], textarea[readonly] {
 }
 
 .info {
-    color: #4a8aebc9;
+    color: #3b434dc9;
     font-weight: 500;
 }
 
@@ -204,8 +204,8 @@ input[readonly], textarea[readonly] {
 
 .table tbody tr:hover {
     cursor: pointer;
-    background-color: #d5cbf8a2;
-    color: rgb(53, 105, 202);
+    background-color: #cbdbf8a2;
+    color: rgb(44, 52, 68);
     font-weight: 500;
 } 
 

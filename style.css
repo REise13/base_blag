@@ -73,7 +73,7 @@ img {
 
 input[type="text"]:focus, input[type="password"]:focus {
     font-weight: 600;
-    color: #2f87dad8;
+    color: #292c2ed8;
     border: var(--inputBorder);
     box-shadow: var(--inputShadow);
     outline: 0 none;
