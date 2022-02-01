@@ -6,8 +6,8 @@
     --inputBorder: 2px solid #4ea6ee;
     --inputShadow: 0px 0px 2px #8dbde4;
     --formColor: #f6fafdea;
-    --navColor: #3c9ff0;
-    --nav-itemColor: #84bef5b6;
+    --navColor: #fafdff;
+    --nav-itemColor: #4da8f3;
     --nav-tabs-bg: #569cd4;
 }
 
@@ -22,11 +22,11 @@ nav {
 }
 
 .nav-item a i {
-    color: #ecf6fc;
+    color: #3ba2f7;
 } 
 
 .navbar-light .nav-item .nav-link {
-    color: #eceff1;
+    color: #2f363b;
 }
 
 .navbar .nav-item a:hover i, .navbar .nav-item a:focus i, 
@@ -149,7 +149,7 @@ input[readonly], textarea[readonly] {
 }
 
 .btn-logout, .btn-logout i{
-    color: #ecf6fc;
+    color: #2f363b;
  }
 
 .btn-logout:hover, .btn-logout:active, 
