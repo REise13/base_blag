@@ -162,7 +162,7 @@ input[readonly], textarea[readonly] {
 }
 
 .table thead {
-    background-color: #9daad6;
+    background-color: #69b1ec;
     color: whitesmoke;
 }
 
@@ -204,7 +204,7 @@ input[readonly], textarea[readonly] {
 
 .table tbody tr:hover {
     cursor: pointer;
-    background-color: #cbdbf8a2;
+    background-color: #cbe4f8a2;
     color: rgb(44, 52, 68);
     font-weight: 500;
 } 
